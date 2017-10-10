@@ -20,11 +20,59 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.4185241162776947" green="0.96061253547668457" blue="0.28615161776542664" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CdC-js-UGk">
+                                <rect key="frame" x="112" y="567" width="150" height="50"/>
+                                <color key="backgroundColor" red="0.93400031328201294" green="0.80975854396820068" blue="0.15327078104019165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="buj-hR-OVL"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="d5j-gy-3bC"/>
+                                </constraints>
+                                <state key="normal" title="GET STARTED">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Saidai-san" translatesAutoresizingMaskIntoConstraints="NO" id="zuW-12-LPC">
+                                <rect key="frame" x="110" y="265" width="155" height="252"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Balloon" translatesAutoresizingMaskIntoConstraints="NO" id="UoS-QE-kPf">
+                                <rect key="frame" x="30" y="70" width="315" height="197"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ごきげんよう！" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8S-L7-pu5">
+                                <rect key="frame" x="127" y="140" width="122" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.71466803550720215" blue="0.19083356857299805" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Y8S-L7-pu5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3hE-bT-WYF"/>
+                            <constraint firstItem="CdC-js-UGk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="60C-Vu-7CI"/>
+                            <constraint firstItem="zuW-12-LPC" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="265" id="81D-72-2pg"/>
+                            <constraint firstItem="UoS-QE-kPf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EYx-Mu-GhV"/>
+                            <constraint firstAttribute="trailing" secondItem="zuW-12-LPC" secondAttribute="trailing" constant="110" id="Jav-El-eFj"/>
+                            <constraint firstAttribute="trailing" secondItem="UoS-QE-kPf" secondAttribute="trailing" constant="30" id="QCh-Tb-pjI"/>
+                            <constraint firstItem="UoS-QE-kPf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="UA7-so-HAK"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CdC-js-UGk" secondAttribute="bottom" constant="50" id="UMm-rG-CyD"/>
+                            <constraint firstItem="UoS-QE-kPf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="Zt1-Ty-EMx"/>
+                            <constraint firstItem="zuW-12-LPC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="clW-dG-IZE"/>
+                            <constraint firstItem="CdC-js-UGk" firstAttribute="top" secondItem="UoS-QE-kPf" secondAttribute="bottom" constant="300" id="dk3-bU-uDK"/>
+                            <constraint firstItem="Y8S-L7-pu5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="120" id="fmp-3O-q7I"/>
+                            <constraint firstItem="CdC-js-UGk" firstAttribute="top" secondItem="zuW-12-LPC" secondAttribute="bottom" constant="50" id="ifJ-Gg-LwD"/>
+                            <constraint firstItem="zuW-12-LPC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="110" id="jqs-Jk-WCb"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="getStartedButton" destination="CdC-js-UGk" id="ed1-WL-NZ3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
     </scenes>
+    <resources>
+        <image name="Balloon" width="580" height="430"/>
+        <image name="Saidai-san" width="387" height="717"/>
+    </resources>
 </document>
