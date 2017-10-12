@@ -31,6 +31,9 @@
                                 <state key="normal" title="GET STARTED">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <segue destination="X2j-QR-1Cb" kind="show" id="92z-RI-Za0"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Saidai-san" translatesAutoresizingMaskIntoConstraints="NO" id="zuW-12-LPC">
                                 <rect key="frame" x="110" y="265" width="155" height="252"/>
@@ -70,9 +73,210 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
+        <!--設定-->
+        <scene sceneID="YTo-OJ-CNA">
+            <objects>
+                <viewController id="74y-fZ-QUs" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xjj-Vi-kQC"/>
+                        <viewControllerLayoutGuide type="bottom" id="P7c-a0-cld"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YLD-zb-TS4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="設定" image="Setting" id="0HY-L6-R09" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                <color key="value" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <outlet property="animation" destination="8gl-g3-vaQ" id="0LN-GZ-b3S"/>
+                        </connections>
+                    </tabBarItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h6j-A6-A5z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="8gl-g3-vaQ" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="iconSelectedColor">
+                            <color key="value" red="0.0" green="0.71372549019999998" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="250" y="883"/>
+        </scene>
+        <!--地図-->
+        <scene sceneID="A0Q-Hk-vk3">
+            <objects>
+                <viewController id="bzx-jp-XS5" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1rC-HU-osd"/>
+                        <viewControllerLayoutGuide type="bottom" id="7dz-nF-mfO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BVk-1T-IAP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="地図" image="Map" id="OuH-It-9Bz" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                <color key="value" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <outlet property="animation" destination="cwM-lv-afh" id="zUU-Dh-ahR"/>
+                        </connections>
+                    </tabBarItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TYf-6M-uNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="cwM-lv-afh" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="iconSelectedColor">
+                            <color key="value" red="0.0" green="0.71372549019999998" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="940" y="883"/>
+        </scene>
+        <!--ホーム-->
+        <scene sceneID="0qe-c8-eSr">
+            <objects>
+                <viewController id="b76-53-tND" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4dT-jL-9ES"/>
+                        <viewControllerLayoutGuide type="bottom" id="cWy-w5-Obi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LQu-Ps-4W6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="ホーム" image="School" id="qDJ-Oq-1h7" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                <color key="value" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <outlet property="animation" destination="tLF-EA-vzB" id="q93-a0-bmi"/>
+                        </connections>
+                    </tabBarItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uDh-bn-AVh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="tLF-EA-vzB" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="iconSelectedColor">
+                            <color key="value" red="0.0" green="0.71372549019999998" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="1626" y="883"/>
+        </scene>
+        <!--講義-->
+        <scene sceneID="JF8-XB-7va">
+            <objects>
+                <viewController id="LdU-Gz-2QS" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eOZ-C1-Qa9"/>
+                        <viewControllerLayoutGuide type="bottom" id="sWd-KC-D1k"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UO9-l6-wdE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="講義" image="Lecture" id="FVT-4Z-fOf" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                <color key="value" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <outlet property="animation" destination="zXf-9P-Edu" id="mIi-00-RY1"/>
+                        </connections>
+                    </tabBarItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Z3-Dj-lRx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="zXf-9P-Edu" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="iconSelectedColor">
+                            <color key="value" red="0.0" green="0.71372549019999998" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="2324" y="497"/>
+        </scene>
+        <!--カレンダー-->
+        <scene sceneID="HCW-Wt-gbf">
+            <objects>
+                <viewController id="61C-ef-b5p" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yYR-fV-gol"/>
+                        <viewControllerLayoutGuide type="bottom" id="neE-TU-Fvr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jbh-3y-lzM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="カレンダー" image="Calendar" id="20e-AD-0zw" customClass="RAMAnimatedTabBarItem" customModule="RAMAnimatedTabBarController">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="iconColor">
+                                <color key="value" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <outlet property="animation" destination="7UN-wY-pFy" id="xw6-RP-WOA"/>
+                        </connections>
+                    </tabBarItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dih-P9-0qh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="7UN-wY-pFy" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="iconSelectedColor">
+                            <color key="value" red="0.0" green="0.71372549019999998" blue="0.19215686269999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="2324" y="-171"/>
+        </scene>
+        <!--Animated Tab Bar Controller-->
+        <scene sceneID="MmS-vW-wJ2">
+            <objects>
+                <tabBarController id="X2j-QR-1Cb" customClass="RAMAnimatedTabBarController" customModule="RAMAnimatedTabBarController" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vq0-Rw-ZOX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="61C-ef-b5p" kind="relationship" relationship="viewControllers" id="hGx-Vq-3a1"/>
+                        <segue destination="LdU-Gz-2QS" kind="relationship" relationship="viewControllers" id="xvl-m8-AcI"/>
+                        <segue destination="b76-53-tND" kind="relationship" relationship="viewControllers" id="gjX-41-APG"/>
+                        <segue destination="bzx-jp-XS5" kind="relationship" relationship="viewControllers" id="mzI-fH-Sa9"/>
+                        <segue destination="74y-fZ-QUs" kind="relationship" relationship="viewControllers" id="PHj-wl-fin"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qzb-M1-E4P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1353" y="33"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Balloon" width="580" height="430"/>
+        <image name="Calendar" width="32" height="32"/>
+        <image name="Lecture" width="32" height="32"/>
+        <image name="Map" width="32" height="32"/>
         <image name="Saidai-san" width="387" height="717"/>
+        <image name="School" width="32" height="32"/>
+        <image name="Setting" width="32" height="32"/>
     </resources>
 </document>
