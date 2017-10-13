@@ -15,3 +15,4 @@
 「充実した大学生活のための情報をアプリ一つで確認」できます。
 
 # 「イー埼大さん」
+公式ホームページは[こちら](https://struuuuggle.github.io/ESaidaiSan/)
