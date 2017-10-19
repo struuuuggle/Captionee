@@ -58,10 +58,10 @@
             </objects>
             <point key="canvasLocation" x="342" y="33"/>
         </scene>
-        <!--View Controller-->
+        <!--Main Controller-->
         <scene sceneID="7ht-LL-fkl">
             <objects>
-                <viewController id="Z6o-d9-NA3" sceneMemberID="viewController">
+                <viewController id="Z6o-d9-NA3" userLabel="Main Controller" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YeP-2x-JQh"/>
                         <viewControllerLayoutGuide type="bottom" id="FFM-b4-kCp"/>
@@ -69,19 +69,6 @@
                     <view key="view" contentMode="scaleToFill" id="FMJ-NX-m0Y">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CYO-QZ-EX8">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Captionee" id="1Co-rR-rp1"/>
-                                </items>
-                            </navigationBar>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>

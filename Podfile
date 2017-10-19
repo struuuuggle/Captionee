@@ -7,5 +7,9 @@ target 'enPiT2SUProduct' do
 
   # Pods for enPiT2SUProduct
   pod 'TouchVisualizer'
+  pod 'MaterialComponents'
+  pod 'Segmentio'
+  pod 'KRProgressHUD'
+  pod 'DZNEmptyDataSet'
 
 end
