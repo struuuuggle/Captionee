@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5EB3DAFEB5E5841CB7917BBF /* Pods_enPiT2SUProduct.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */; };
+		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
 		C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7E2641F6B7FC90038357B /* AppDelegate.swift */; };
 		C0F7E2671F6B7FC90038357B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7E2661F6B7FC90038357B /* ViewController.swift */; };
 		C0F7E26A1F6B7FC90038357B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E2681F6B7FC90038357B /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* Begin PBXFileReference section */
 		0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17DD6213011BDCB6850B0EB6 /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
+		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = "/Users/yusuke/Documents/swift/team-E/enPiT2SUProduct/MainViewController.swift"; sourceTree = "<absolute>"; };
 		C0F7E2611F6B7FC90038357B /* enPiT2SUProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enPiT2SUProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F7E2641F6B7FC90038357B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0F7E2661F6B7FC90038357B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 			children = (
 				C0F7E2641F6B7FC90038357B /* AppDelegate.swift */,
 				C0F7E2661F6B7FC90038357B /* ViewController.swift */,
+				7068FE0E1F98BD1F00C814FA /* MainViewController.swift */,
 				C0F7E2681F6B7FC90038357B /* Main.storyboard */,
 				C0F7E26B1F6B7FC90038357B /* Assets.xcassets */,
 				C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */,
@@ -203,13 +206,6 @@
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
-				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
-				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
-				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
-				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
-				"${BUILT_PRODUCTS_DIR}/MotionTransitioning/MotionTransitioning.framework",
-				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
 				"${BUILT_PRODUCTS_DIR}/TouchVisualizer/TouchVisualizer.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -217,13 +213,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionAnimator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionTransitioning.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TouchVisualizer.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				C0F7E2671F6B7FC90038357B /* ViewController.swift in Sources */,
 				C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */,
 			);
