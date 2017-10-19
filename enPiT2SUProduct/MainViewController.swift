@@ -7,13 +7,15 @@
 
 import UIKit
 import AVKit
+import DZNEmptyDataSet
 
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     let imagePickerController = UIImagePickerController()
     var videoURL: URL?
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var tableView: UITableView!
     
     @IBAction func selectImage(_ sender: Any) {
         print("UIBarButtonItem。カメラロールから動画を選択")
@@ -31,6 +33,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        let statusBar = UIView(frame:CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
+        statusBar.backgroundColor = UIColor.orange
+        view.addSubview(statusBar)
+        
+        tableView.emptyDataSetSource = self;
+        tableView.emptyDataSetDelegate = self;
+        tableView.tableFooterView = UIView();
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,7 +76,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBAction func playMovie(_ sender: Any) {
         
         if let videoURL = videoURL{
-            let player = AVPlayer(url: videoURL)
+            let player = AVPlayer(url: videoURL as URL)
             let playerViewController = AVPlayerViewController()
             playerViewController.player = player
             present(playerViewController, animated: true){
@@ -75,6 +84,26 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 playerViewController.player!.play()
             }
         }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = "No Movies"
+        let font = UIFont.systemFont(ofSize: 30)
+        return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
+        paragraph.alignment = NSTextAlignment.center
+        paragraph.lineSpacing = 6.0
+        return NSAttributedString(
+            string: "Upload your movies.",
+            attributes:  [
+                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
+                NSAttributedStringKey.paragraphStyle: paragraph
+            ]
+        )
     }
     
 
