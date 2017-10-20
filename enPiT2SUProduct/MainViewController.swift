@@ -9,10 +9,12 @@ import UIKit
 import AVKit
 import DZNEmptyDataSet
 
+
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
-    
+	
     let imagePickerController = UIImagePickerController()
     var videoURL: URL?
+	var window: UIWindow?
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
@@ -27,6 +29,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         //画像だけ
         //imagePickerController.mediaTypes = ["public.image"]
         present(imagePickerController, animated: true, completion: nil)
+		
     }
 
     override func viewDidLoad() {
@@ -40,12 +43,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
         tableView.tableFooterView = UIView();
+		
     }
-
+	
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+	
+	
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
@@ -65,6 +71,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         imageGenerator.appliesPreferredTrackTransform = true
         var time = asset.duration
         time.value = min(time.value,2)
+		print(time)
         do {
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
             return UIImage(cgImage: imageRef)

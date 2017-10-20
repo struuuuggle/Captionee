@@ -26,7 +26,7 @@ class UploadingViewController: UIViewController {
             }
         }
     }
-    
+	
     func success() {
         KRProgressHUD.showSuccess(withMessage: "Successfully uploaded!")
     }
