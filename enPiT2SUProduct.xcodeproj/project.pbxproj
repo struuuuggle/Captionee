@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5EB3DAFEB5E5841CB7917BBF /* Pods_enPiT2SUProduct.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */; };
+		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
+		7068FE131F99736A00C814FA /* UploadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE121F99736A00C814FA /* UploadingViewController.swift */; };
 		C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7E2641F6B7FC90038357B /* AppDelegate.swift */; };
-		C0F7E2671F6B7FC90038357B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7E2661F6B7FC90038357B /* ViewController.swift */; };
 		C0F7E26A1F6B7FC90038357B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E2681F6B7FC90038357B /* Main.storyboard */; };
 		C0F7E26C1F6B7FC90038357B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E26B1F6B7FC90038357B /* Assets.xcassets */; };
 		C0F7E26F1F6B7FC90038357B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */; };
@@ -18,9 +19,10 @@
 /* Begin PBXFileReference section */
 		0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17DD6213011BDCB6850B0EB6 /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
+		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		7068FE121F99736A00C814FA /* UploadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadingViewController.swift; sourceTree = "<group>"; };
 		C0F7E2611F6B7FC90038357B /* enPiT2SUProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enPiT2SUProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F7E2641F6B7FC90038357B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C0F7E2661F6B7FC90038357B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C0F7E2691F6B7FC90038357B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0F7E26B1F6B7FC90038357B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0F7E26E1F6B7FC90038357B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -79,7 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				C0F7E2641F6B7FC90038357B /* AppDelegate.swift */,
-				C0F7E2661F6B7FC90038357B /* ViewController.swift */,
+				7068FE0E1F98BD1F00C814FA /* MainViewController.swift */,
+				7068FE121F99736A00C814FA /* UploadingViewController.swift */,
 				C0F7E2681F6B7FC90038357B /* Main.storyboard */,
 				C0F7E26B1F6B7FC90038357B /* Assets.xcassets */,
 				C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */,
@@ -123,6 +126,7 @@
 				TargetAttributes = {
 					C0F7E2601F6B7FC90038357B = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = U48PC58DNS;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -200,13 +204,17 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
-				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
+				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
+				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
+				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/TouchVisualizer/TouchVisualizer.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TouchVisualizer.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -220,7 +228,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0F7E2671F6B7FC90038357B /* ViewController.swift in Sources */,
+				7068FE131F99736A00C814FA /* UploadingViewController.swift in Sources */,
+				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,11 +366,11 @@
 			baseConfigurationReference = EF9F70AF319855273E39CE4C /* Pods-enPiT2SUProduct.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U48PC58DNS;
 				INFOPLIST_FILE = enPiT2SUProduct/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "jp.ac.saitama-u.enPiT2SUProduct";
+				PRODUCT_BUNDLE_IDENTIFIER = enPiT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -373,11 +382,11 @@
 			baseConfigurationReference = 17DD6213011BDCB6850B0EB6 /* Pods-enPiT2SUProduct.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U48PC58DNS;
 				INFOPLIST_FILE = enPiT2SUProduct/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "jp.ac.saitama-u.enPiT2SUProduct";
+				PRODUCT_BUNDLE_IDENTIFIER = enPiT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
