@@ -56,11 +56,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         videoURL = info["UIImagePickerControllerReferenceURL"] as? URL
-        print(videoURL!)
+		print("=====videoURL is =====")
+		print(videoURL!)
         imageView.image = previewImageFromVideo(videoURL!)!
         imageView.contentMode = .scaleAspectFit
         imagePickerController.dismiss(animated: true, completion: nil)
-        
     }
     
     func previewImageFromVideo(_ url:URL) -> UIImage? {
@@ -70,7 +70,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let imageGenerator = AVAssetImageGenerator(asset:asset)
         imageGenerator.appliesPreferredTrackTransform = true
         var time = asset.duration
-        time.value = min(time.value,2)
+        time.value = min(time.value, 2)
 		print(time)
         do {
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
