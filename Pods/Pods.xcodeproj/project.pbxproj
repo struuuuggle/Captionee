@@ -80,7 +80,7 @@
 /* Begin PBXFileReference section */
 		00BC57802EDCC5B23A14168140E79DFA /* TouchVisualizer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TouchVisualizer-dummy.m"; sourceTree = "<group>"; };
 		01871F04105B494460FA15A2D71273A9 /* DZNEmptyDataSet-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-prefix.pch"; sourceTree = "<group>"; };
-		06159ACA52214A5D780F3847C68AC7E3 /* TouchVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TouchVisualizer.framework; path = TouchVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		06159ACA52214A5D780F3847C68AC7E3 /* TouchVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TouchVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0747C7C856BA2A6EB46AF29CFD79723F /* KRActivityIndicatorPath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KRActivityIndicatorPath.swift; path = KRActivityIndicatorView/Classes/KRActivityIndicatorPath.swift; sourceTree = "<group>"; };
 		1F9AF4B4A99ACCCDAD5D052EA8A4C14E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20CCDBAED1B894AF441BA5DB32C16777 /* Pods-enPiT2SUProduct-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-enPiT2SUProduct-frameworks.sh"; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		40136307D228065829B9009F0FB81D9A /* DZNEmptyDataSet-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DZNEmptyDataSet-dummy.m"; sourceTree = "<group>"; };
 		404C0E1B965E2FC21477BC4085EF9EF3 /* KRActivityIndicatorView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "KRActivityIndicatorView-dummy.m"; sourceTree = "<group>"; };
 		4C29C50F5D81247B2534329266C3B952 /* Pods-enPiT2SUProduct.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-enPiT2SUProduct.debug.xcconfig"; sourceTree = "<group>"; };
-		529EDE849ED38915140576EBE435A0B7 /* KRActivityIndicatorView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = KRActivityIndicatorView.modulemap; sourceTree = "<group>"; };
+		529EDE849ED38915140576EBE435A0B7 /* KRActivityIndicatorView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = KRActivityIndicatorView.modulemap; sourceTree = "<group>"; };
 		58F97A9304BF1B7D68669A61237DC657 /* KRProgressHUDViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KRProgressHUDViewController.swift; path = KRProgressHUD/Classes/KRProgressHUDViewController.swift; sourceTree = "<group>"; };
 		5A0E1AA49AD42E74497A52E4A7D96D2A /* DZNEmptyDataSet-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-umbrella.h"; sourceTree = "<group>"; };
 		5D312D45B9BEAF8D7F464931BE0A732E /* TouchVisualizer.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TouchVisualizer.xcconfig; sourceTree = "<group>"; };
@@ -103,23 +103,23 @@
 		7B55DB50C14BD0042BA59B5C8DBB6DC4 /* Pods-enPiT2SUProduct-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-enPiT2SUProduct-acknowledgements.plist"; sourceTree = "<group>"; };
 		874A8F1E25F179A44FB0FBD4FD05EEE3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		903682E93FCF34720EC26D238542FE7C /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
-		9221096DE3E51013A0708BAE6B8F5949 /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_enPiT2SUProduct.framework; path = "Pods-enPiT2SUProduct.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		943B4C6176111272E52FFE920E7927A3 /* Pods-enPiT2SUProduct.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-enPiT2SUProduct.modulemap"; sourceTree = "<group>"; };
+		9221096DE3E51013A0708BAE6B8F5949 /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		943B4C6176111272E52FFE920E7927A3 /* Pods-enPiT2SUProduct.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-enPiT2SUProduct.modulemap"; sourceTree = "<group>"; };
 		94D5EAD1DDCADDBC24ABE2BCED31C976 /* Visualizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Visualizer.swift; path = TouchVisualizer/Visualizer.swift; sourceTree = "<group>"; };
 		9E8452CFB78DE821EC4312B535CEEA17 /* KRActivityIndicatorViewStyle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KRActivityIndicatorViewStyle.swift; path = KRActivityIndicatorView/Classes/KRActivityIndicatorViewStyle.swift; sourceTree = "<group>"; };
-		AA316D8F06D633B2AD38CC41B1C3BDAD /* TouchVisualizer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = TouchVisualizer.modulemap; sourceTree = "<group>"; };
+		AA316D8F06D633B2AD38CC41B1C3BDAD /* TouchVisualizer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = TouchVisualizer.modulemap; sourceTree = "<group>"; };
 		B1E7C0796E8E939E92883FD8C05E4699 /* KRActivityIndicatorView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KRActivityIndicatorView.xcconfig; sourceTree = "<group>"; };
-		B268C26D7FF734AB93862D8649D8BB22 /* KRProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KRProgressHUD.framework; path = KRProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B268C26D7FF734AB93862D8649D8BB22 /* KRProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KRProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B724C4A2E1A4298A64518029D51B894E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C44A35508C79AE0207FF2CCED7E316EE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7CAED3891FA8FAFB8BBD4E987F3BE22 /* KRActivityIndicatorView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KRActivityIndicatorView-umbrella.h"; sourceTree = "<group>"; };
-		C823691EB62BC4780321D5AB2F71E028 /* KRProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = KRProgressHUD.modulemap; sourceTree = "<group>"; };
+		C823691EB62BC4780321D5AB2F71E028 /* KRProgressHUD.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = KRProgressHUD.modulemap; sourceTree = "<group>"; };
 		C9BAEDC7FB262DFB430B8136365A7EAD /* UIScrollView+EmptyDataSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+EmptyDataSet.h"; path = "Source/UIScrollView+EmptyDataSet.h"; sourceTree = "<group>"; };
-		CC3776EF45F9E6719BF28C30D3583148 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DZNEmptyDataSet.framework; path = DZNEmptyDataSet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC3776EF45F9E6719BF28C30D3583148 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DZNEmptyDataSet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D37D3E81E8AD378782EE1475C94BC13D /* KRActivityIndicatorView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KRActivityIndicatorView-prefix.pch"; sourceTree = "<group>"; };
 		D784001264BC4639DBF3617EAE79D7D8 /* Pods-enPiT2SUProduct-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-enPiT2SUProduct-resources.sh"; sourceTree = "<group>"; };
-		D7E6A18D78A6060713B2B960B2D2D58F /* DZNEmptyDataSet.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = DZNEmptyDataSet.modulemap; sourceTree = "<group>"; };
+		D7E6A18D78A6060713B2B960B2D2D58F /* DZNEmptyDataSet.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = DZNEmptyDataSet.modulemap; sourceTree = "<group>"; };
 		DA12F8B2997830611AD2A7D383FACA43 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC05BCDC52A0B05959477A756DB1EC24 /* DZNEmptyDataSet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DZNEmptyDataSet.xcconfig; sourceTree = "<group>"; };
 		DEB5272ECAD2896FD73EDD2461064629 /* KRActivityIndicatorView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KRActivityIndicatorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,7 +130,7 @@
 		EBA641BF28DA0D198E2FC78961428EEB /* TouchView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TouchView.swift; path = TouchVisualizer/TouchView.swift; sourceTree = "<group>"; };
 		EEC12120526D7435B363B589558D222B /* KRActivityIndicatorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KRActivityIndicatorView.swift; path = KRActivityIndicatorView/Classes/KRActivityIndicatorView.swift; sourceTree = "<group>"; };
 		F2DA2B65F4A78A6BD6C120414C156908 /* UIWindow+Swizzle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIWindow+Swizzle.swift"; path = "TouchVisualizer/UIWindow+Swizzle.swift"; sourceTree = "<group>"; };
-		F33C6B58D39EADB1586A9547B8179862 /* KRActivityIndicatorView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KRActivityIndicatorView.framework; path = KRActivityIndicatorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F33C6B58D39EADB1586A9547B8179862 /* KRActivityIndicatorView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KRActivityIndicatorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8F66268DFA7C9E447C0294DF5BB65A1 /* Pods-enPiT2SUProduct-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-enPiT2SUProduct-umbrella.h"; sourceTree = "<group>"; };
 		FC30B31C45C1C0319E585BED13DE7245 /* TouchVisualizer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TouchVisualizer-umbrella.h"; sourceTree = "<group>"; };
 		FDBD3BFA8E93DB56E353DCCABF20BE2B /* KRProgressHUD-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KRProgressHUD-umbrella.h"; sourceTree = "<group>"; };
@@ -270,7 +270,6 @@
 				9E8452CFB78DE821EC4312B535CEEA17 /* KRActivityIndicatorViewStyle.swift */,
 				052631AE80793849882CDE63EB1CE701 /* Support Files */,
 			);
-			name = KRActivityIndicatorView;
 			path = KRActivityIndicatorView;
 			sourceTree = "<group>";
 		};
@@ -323,7 +322,6 @@
 				94D5EAD1DDCADDBC24ABE2BCED31C976 /* Visualizer.swift */,
 				09AC891F455242E377DC9D7FFF684828 /* Support Files */,
 			);
-			name = TouchVisualizer;
 			path = TouchVisualizer;
 			sourceTree = "<group>";
 		};
@@ -348,7 +346,6 @@
 				6B529E79B9A5DA72979B0ABBFBAED522 /* UIScrollView+EmptyDataSet.m */,
 				C888FF1976D4C6091AFAFBCA63178A3E /* Support Files */,
 			);
-			name = DZNEmptyDataSet;
 			path = DZNEmptyDataSet;
 			sourceTree = "<group>";
 		};
@@ -361,7 +358,6 @@
 				58F97A9304BF1B7D68669A61237DC657 /* KRProgressHUDViewController.swift */,
 				0FA811EF28060C74955275EAF2625058 /* Support Files */,
 			);
-			name = KRProgressHUD;
 			path = KRProgressHUD;
 			sourceTree = "<group>";
 		};
@@ -510,6 +506,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					D386C75EFD4F03725E4EFB866B600B9A = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -695,6 +696,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DC05BCDC52A0B05959477A756DB1EC24 /* DZNEmptyDataSet.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -718,6 +720,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -843,6 +846,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DC05BCDC52A0B05959477A756DB1EC24 /* DZNEmptyDataSet.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";

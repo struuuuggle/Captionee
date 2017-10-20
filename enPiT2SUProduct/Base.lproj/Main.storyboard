@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main Controller-->
+        <!--Main View Controller-->
         <scene sceneID="7ht-LL-fkl">
             <objects>
-                <viewController id="Z6o-d9-NA3" userLabel="Main Controller" customClass="MainViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Z6o-d9-NA3" customClass="MainViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YeP-2x-JQh"/>
                         <viewControllerLayoutGuide type="bottom" id="FFM-b4-kCp"/>
@@ -59,6 +59,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="voK-mz-u6f">
+                                <rect key="frame" x="164" y="538" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="nZC-j1-wew" kind="show" id="Lvv-JR-Tp4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -74,6 +82,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQG-q9-QwP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="590" y="17"/>
+        </scene>
+        <!--Uploading View Controller-->
+        <scene sceneID="gI9-jf-u9U">
+            <objects>
+                <viewController id="nZC-j1-wew" userLabel="Uploading View Controller" customClass="UploadingViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FI5-AH-POX"/>
+                        <viewControllerLayoutGuide type="bottom" id="pAR-QI-VAe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aOz-DU-Pdg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xsK-gZ-K8U">
+                                <rect key="frame" x="295" y="590" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.93400031328201294" green="0.80975854396820068" blue="0.15327078104019165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="50"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="+"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0ea-Xx-Nd7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1314" y="15"/>
         </scene>
     </scenes>
 </document>
