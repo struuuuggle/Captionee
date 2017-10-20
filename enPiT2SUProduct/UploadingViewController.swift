@@ -18,7 +18,7 @@ class UploadingViewController: UIViewController {
         statusBar.backgroundColor = UIColor.orange
         view.addSubview(statusBar)
         
-        KRProgressHUD.showOn(self).show(withMessage: "Uploading...")
+        KRProgressHUD.showOn(self).show(withMessage: "processing...")
         let delay = DispatchTime.now() + 3
         DispatchQueue.main.asyncAfter(deadline: delay) {
             KRProgressHUD.dismiss() {
@@ -28,7 +28,7 @@ class UploadingViewController: UIViewController {
     }
     
     func success() {
-        KRProgressHUD.showSuccess(withMessage: "Successfully uploaded!")
+        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
     }
 
     override func didReceiveMemoryWarning() {

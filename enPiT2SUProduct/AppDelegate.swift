@@ -8,7 +8,7 @@
 //  追記(20170929 1702) Mikiya Abe 
 
 import UIKit
-import TouchVisualizer
+//import TouchVisualizer
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         UINavigationBar.appearance().isTranslucent = false
         
-        Visualizer.start()
+        //Visualizer.start()
         
         return true
     }
