@@ -8,6 +8,7 @@
 import UIKit
 import AVKit
 import DZNEmptyDataSet
+import AVFoundation
 
 
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
@@ -16,9 +17,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var videoURL: URL?
 	var window: UIWindow?
     
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
+    //動画の選択
     @IBAction func selectImage(_ sender: Any) {
         print("UIBarButtonItem。カメラロールから動画を選択")
         imagePickerController.sourceType = .photoLibrary
@@ -80,6 +83,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    //動画の再生
     @IBAction func playMovie(_ sender: Any) {
         
         if let videoURL = videoURL{
