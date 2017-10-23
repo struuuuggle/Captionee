@@ -87,6 +87,14 @@
                                     <segue destination="nZC-j1-wew" kind="show" id="DYb-cc-BJb"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzi-QN-BUz">
+                                <rect key="frame" x="118" y="581" width="104" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="play audio"/>
+                                <connections>
+                                    <action selector="playAudio:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="Rl1-gx-Ych"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -102,7 +110,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQG-q9-QwP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="590" y="17"/>
+            <point key="canvasLocation" x="589.60000000000002" y="16.641679160419791"/>
         </scene>
         <!--Uploading View Controller-->
         <scene sceneID="gI9-jf-u9U">
