@@ -8,17 +8,20 @@
 import UIKit
 import AVKit
 import DZNEmptyDataSet
-
+import AVFoundation
 
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 	
     let imagePickerController = UIImagePickerController()
-    var videoURL: URL?
 	var window: UIWindow?
-    
+	var videoURL: URL?
+	var audioURL: URL?
+	var player: AVAudioPlayer!
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
+    //動画の選択
     @IBAction func selectImage(_ sender: Any) {
         print("UIBarButtonItem。カメラロールから動画を選択")
         imagePickerController.sourceType = .photoLibrary
@@ -52,7 +55,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
 	
 	
-    
+    // 写真選択時に呼ばれるメソッド
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         videoURL = info["UIImagePickerControllerReferenceURL"] as? URL
@@ -60,13 +63,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		print(videoURL!)
         imageView.image = previewImageFromVideo(videoURL!)!
         imageView.contentMode = .scaleAspectFit
-        imagePickerController.dismiss(animated: true, completion: nil)
+        imagePickerController.dismiss(animated: true, completion: nil)	// 写真選択画面を閉じる
+		
+		extractAudioFromVideo(videoURL!)
     }
     
-    func previewImageFromVideo(_ url:URL) -> UIImage? {
+    func previewImageFromVideo(_ url: URL) -> UIImage? {
         
         print("動画からサムネイルを生成する")
-        let asset = AVAsset(url:url)
+        let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset:asset)
         imageGenerator.appliesPreferredTrackTransform = true
         var time = asset.duration
@@ -79,7 +84,46 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             return nil
         }
     }
-    
+	
+	/* 動画から音声を抽出 */
+	func extractAudioFromVideo(_ url: URL) {
+		print("動画から音声を抽出する")
+		let asset = AVAsset(url: url)
+		
+//		audioTrack = asset.tracks(withMediaType: AVMediaType.audio)[0] // アセットからトラックを取得
+		// AssetにInputとなるファイルのUrlをセット
+		// cafファイルとしてExportする
+		let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+		let exportPath: String = documentPath + "/" + "audioOutput.m4a"
+		let exportUrl: URL = URL(fileURLWithPath: exportPath)
+		
+		exporter?.outputFileType = AVFileType.caf
+		exporter?.outputURL = exportUrl
+		exporter?.shouldOptimizeForNetworkUse = true
+		
+		// ファイルが存在している場合は削除
+		if FileManager.default.fileExists(atPath: exportPath) {
+			try! FileManager.default.removeItem(atPath: exportPath)
+		}
+		
+		// Export
+		exporter!.exportAsynchronously(completionHandler: {
+			switch exporter!.status {
+			case .completed:
+				print("Success!")
+				self.audioURL = exportUrl
+				print("audioURL is")
+				print(self.audioURL!)
+			case .failed, .cancelled:
+				print("error = \(String(describing: exporter?.error))")
+			default:
+				print("error = \(String(describing: exporter?.error))")
+			}
+		})
+	}
+	
+    //動画の再生
     @IBAction func playMovie(_ sender: Any) {
         
         if let videoURL = videoURL{
@@ -92,26 +136,38 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
         }
     }
-    
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = "No Movies"
-        let font = UIFont.systemFont(ofSize: 30)
-        return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
-    }
-    
-    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
-        paragraph.alignment = NSTextAlignment.center
-        paragraph.lineSpacing = 6.0
-        return NSAttributedString(
-            string: "Upload your movies.",
-            attributes:  [
-                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
-                NSAttributedStringKey.paragraphStyle: paragraph
-            ]
-        )
-    }
+	
+	/* 音声の再生 */
+	@IBAction func playAudio(_ sender: Any) {
+		do {
+			player = try AVAudioPlayer(contentsOf: audioURL!)
+			print("音声再生")
+			player.play()
+		} catch {
+			print("error")
+		}
+	}
+	
+
+	func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+		let text = "No Movies"
+		let font = UIFont.systemFont(ofSize: 30)
+		return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
+	}
+	
+	func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+		let paragraph = NSMutableParagraphStyle()
+		paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
+		paragraph.alignment = NSTextAlignment.center
+		paragraph.lineSpacing = 6.0
+		return NSAttributedString(
+			string: "Upload your movies.",
+			attributes:  [
+				NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
+				NSAttributedStringKey.paragraphStyle: paragraph
+			]
+		)
+	}
     
 
     /*
