@@ -14,8 +14,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	
     let imagePickerController = UIImagePickerController()
 	var window: UIWindow?
-	var videoURL: URL?
-	var audioURL: URL?
+	var videoMp4URL: URL?
+	var videoMovURL: URL?
+	var audioM4aURL: URL?
+	var audioWavURL: URL?
 	var player: AVAudioPlayer!
 
     @IBOutlet weak var imageView: UIImageView!
@@ -58,14 +60,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     // 写真選択時に呼ばれるメソッド
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        videoURL = info["UIImagePickerControllerReferenceURL"] as? URL
-		print("=====videoURL is =====")
-		print(videoURL!)
-        imageView.image = previewImageFromVideo(videoURL!)!
+        videoMp4URL = info["UIImagePickerControllerReferenceURL"] as? URL
+		print("=====videoMp4URL is =====")
+		print(videoMp4URL!)
+        imageView.image = previewImageFromVideo(videoMp4URL!)!
         imageView.contentMode = .scaleAspectFit
         imagePickerController.dismiss(animated: true, completion: nil)	// 写真選択画面を閉じる
 		
-		extractAudioFromVideo(videoURL!)
+		// 動画から音声を抽出
+		audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
     }
     
     func previewImageFromVideo(_ url: URL) -> UIImage? {
@@ -85,24 +88,31 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
 	
-	/* 動画から音声を抽出 */
-	func extractAudioFromVideo(_ url: URL) {
+	/* --- TODO: wavファイルのPathとURLを生成メソッドを書く --- */
+
+	
+	/* mp4形式の動画から音声をm4a形式で抽出 */
+	func extractM4aFromMp4(_ url: URL) -> URL? {
 		print("動画から音声を抽出する")
-		let asset = AVAsset(url: url)
 		
-//		audioTrack = asset.tracks(withMediaType: AVMediaType.audio)[0] // アセットからトラックを取得
-		// AssetにInputとなるファイルのUrlをセット
-		// cafファイルとしてExportする
+		/* --- TODO: 引数がmp4以外だったときのエラー処理を書く --- */
+
+		// Exportするときに必要なもろもろのもの
+		let asset = AVAsset(url: url)
 		let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+		// DocumentDirectoryのPathをセット
 		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-		let exportPath: String = documentPath + "/" + "audioOutput.m4a"
+		// 出力する音声ファイルの名称とPathをセット
+		let exportPath: String = documentPath + "/" + "audioOutput.m4a"		//拡張子を".m4a"に指定
+		// 最終的に出力する音声ファイルのパスをexportUrlに代入
 		let exportUrl: URL = URL(fileURLWithPath: exportPath)
 		
-		exporter?.outputFileType = AVFileType.caf
+		// Exporterにもろもろのものをセットする
+		exporter?.outputFileType = AVFileType.m4a							//拡張子を".m4a"に指定
 		exporter?.outputURL = exportUrl
 		exporter?.shouldOptimizeForNetworkUse = true
 		
-		// ファイルが存在している場合は削除
+		// 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
 		if FileManager.default.fileExists(atPath: exportPath) {
 			try! FileManager.default.removeItem(atPath: exportPath)
 		}
@@ -111,23 +121,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		exporter!.exportAsynchronously(completionHandler: {
 			switch exporter!.status {
 			case .completed:
-				print("Success!")
-				self.audioURL = exportUrl
-				print("audioURL is")
-				print(self.audioURL!)
+				print("Exportation Success!")
 			case .failed, .cancelled:
-				print("error = \(String(describing: exporter?.error))")
+				print("Exportation error = \(String(describing: exporter?.error))")
 			default:
-				print("error = \(String(describing: exporter?.error))")
+				print("Exportation error = \(String(describing: exporter?.error))")
 			}
 		})
+		
+		return exportUrl
 	}
 	
     //動画の再生
     @IBAction func playMovie(_ sender: Any) {
-        
-        if let videoURL = videoURL{
-            let player = AVPlayer(url: videoURL as URL)
+        if let videoMp4URL = videoMp4URL {
+            let player = AVPlayer(url: videoMp4URL as URL)
             let playerViewController = AVPlayerViewController()
             playerViewController.player = player
             present(playerViewController, animated: true){
@@ -140,11 +148,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	/* 音声の再生 */
 	@IBAction func playAudio(_ sender: Any) {
 		do {
-			player = try AVAudioPlayer(contentsOf: audioURL!)
+			player = try AVAudioPlayer(contentsOf: audioM4aURL!)
 			print("音声再生")
 			player.play()
 		} catch {
-			print("error")
+			print("player initialization error")
 		}
 	}
 	
