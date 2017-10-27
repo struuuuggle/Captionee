@@ -1,6 +1,5 @@
 //
 //  UploadingViewController.swift
-//  DZNEmptyDataSet
 //
 //  Created by 池崎雄介 on 2017/10/20.
 //
