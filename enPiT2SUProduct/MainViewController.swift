@@ -71,7 +71,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
     }
     
-    //アップロードした動画をアプリ内に保存する
+    /*アップロードした動画をアプリ内に保存する*/
 
     
     func saveVideo(_ url: URL){
@@ -96,7 +96,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         if FileManager.default.fileExists(atPath: exportPath) {
             try! FileManager.default.removeItem(atPath: exportPath)
         }
-        
         // Export
         exporter!.exportAsynchronously(completionHandler: {
             switch exporter!.status {
@@ -108,11 +107,27 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print("Exportation error = \(String(describing: exporter?.error))")
             }
         })
-        //ここ
+        //ここにURL
         print(documentPath)
     }
-    func previewImageFromVideo(_ url: URL) -> UIImage? {
+    /* 動画を読み込む */
+    func loadVideo(_ url: URL) -> AVPlayer{
+        print("動画の読み込み")
+        let videoName = "videoOutput.mp4"
+        var video: AVPlayer?
         
+        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+            
+            let path_file_name = dir.appendingPathComponent(videoName)
+            
+            video = AVPlayer(url: path_file_name)
+        }
+        return video!
+    }
+    
+    /* video */
+    func previewImageFromVideo(_ url: URL) -> UIImage? {
+        /* do */
         print("動画からサムネイルを生成する")
         let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset:asset)
@@ -134,6 +149,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	
 	/* mp4形式の動画から音声をm4a形式で抽出 */
 	func extractM4aFromMp4(_ url: URL) -> URL? {
+        // extract
 		print("動画から音声を抽出する")
 		
 		/* --- TODO: 引数がmp4以外だったときのエラー処理を書く --- */
@@ -175,10 +191,24 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	
     //動画の再生
     @IBAction func playMovie(_ sender: Any) {
+        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        // 出力する音声ファイルの名称とPathをセット
+        let exportPath: String = documentPath + "/" + "videoOutput.mp4"
         if let videoMp4URL = videoMp4URL {
+            
             let player = AVPlayer(url: videoMp4URL as URL)
             let playerViewController = AVPlayerViewController()
             playerViewController.player = player
+            present(playerViewController, animated: true){
+                print("動画再生")
+                playerViewController.player!.play()
+            }
+        }
+        else {
+            
+            let video = loadVideo(URL(fileURLWithPath: exportPath))
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = video
             present(playerViewController, animated: true){
                 print("動画再生")
                 playerViewController.player!.play()
