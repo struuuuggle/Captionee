@@ -71,6 +71,46 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
     }
     
+    //アップロードした動画をアプリ内に保存する
+
+    
+    func saveVideo(_ url: URL){
+        print("動画を保存")
+
+        // Exportするときに必要なもろもろのもの
+        let asset = AVAsset(url: url)
+        let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+        // DocumentDirectoryのPathをセット
+        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        // 出力する音声ファイルの名称とPathをセット
+        let exportPath: String = documentPath + "/" + "videoOutput.mp4"        //拡張子を".mp4"に指定
+        // 最終的に出力する音声ファイルのパスをexportUrlに代入
+        let exportUrl: URL = URL(fileURLWithPath: exportPath)
+        
+        // Exporterにもろもろのものをセットする
+        exporter?.outputFileType = AVFileType.mp4                           //拡張子を".mp4"に指定
+        exporter?.outputURL = exportUrl
+        exporter?.shouldOptimizeForNetworkUse = true
+        
+        // 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
+        if FileManager.default.fileExists(atPath: exportPath) {
+            try! FileManager.default.removeItem(atPath: exportPath)
+        }
+        
+        // Export
+        exporter!.exportAsynchronously(completionHandler: {
+            switch exporter!.status {
+            case .completed:
+                print("Exportation Success!")
+            case .failed, .cancelled:
+                print("Exportation error = \(String(describing: exporter?.error))")
+            default:
+                print("Exportation error = \(String(describing: exporter?.error))")
+            }
+        })
+        //ここ
+        print(documentPath)
+    }
     func previewImageFromVideo(_ url: URL) -> UIImage? {
         
         print("動画からサムネイルを生成する")
@@ -80,6 +120,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         var time = asset.duration
         time.value = min(time.value, 2)
 		print(time)
+        saveVideo(videoMp4URL!)
         do {
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
             return UIImage(cgImage: imageRef)
