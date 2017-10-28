@@ -1,11 +1,9 @@
 //
 //  AppDelegate.swift
-//  enPiT2SUProduct
 //
-//  Created by Jun Ohkubo on 2017/09/15.
+//  Created by team-E on 2017/09/15.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
-//  追記(20170929 1702) Mikiya Abe 
 
 import UIKit
 
@@ -22,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         UINavigationBar.appearance().isTranslucent = false
         
-        //起動時間延長
+        // 起動時間延長
         sleep(2)
         
         return true

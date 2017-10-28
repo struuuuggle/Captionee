@@ -1,22 +1,27 @@
 //
 //  UploadingViewController.swift
 //
-//  Created by 池崎雄介 on 2017/10/20.
+//  Created by team-E on 2017/10/20.
+//  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
 import UIKit
+// インジゲータを表示させるライブラリ
 import KRProgressHUD
 
 class UploadingViewController: UIViewController {
 
+    /* Viewがロードされたとき */
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        
+        // StatusBarの設定
         let statusBar = UIView(frame:CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
         statusBar.backgroundColor = UIColor.orange
         view.addSubview(statusBar)
         
+        // KRProgressHUDの設定
         KRProgressHUD.showOn(self).show(withMessage: "processing...")
         let delay = DispatchTime.now() + 3
         DispatchQueue.main.asyncAfter(deadline: delay) {
@@ -25,14 +30,16 @@ class UploadingViewController: UIViewController {
             }
         }
     }
-	
-    func success() {
-        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
-    }
 
+    /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    /* 動画のアップロードに成功したとき */
+    func success() {
+        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
     }
     
 
