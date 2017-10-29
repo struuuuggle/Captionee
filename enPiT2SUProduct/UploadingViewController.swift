@@ -17,8 +17,7 @@ class UploadingViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         // StatusBarの設定
-        let statusBar = UIView(frame:CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
-        statusBar.backgroundColor = UIColor.orange
+        let statusBar = StatusBar(.orange)
         view.addSubview(statusBar)
         
         // KRProgressHUDの設定
