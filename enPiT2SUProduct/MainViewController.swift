@@ -58,61 +58,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         present(imagePickerController, animated: true, completion: nil)
     }
 	
-    /* 動画選択時に呼ばれるメソッド */
+    /* 動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        videoMp4URL = info["UIImagePickerControllerReferenceURL"] as? URL
+        let videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
 		print("===== videoMp4URL is =====")
-		print(videoMp4URL!)
+		print(videoMovURL!)
         
-        imageView.image = previewImageFromVideo(videoMp4URL!)!
+        imageView.image = previewImageFromVideo(videoMovURL!)!
         imageView.contentMode = .scaleAspectFit
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
 		
+        videoMp4URL = FileManager.save(videoMovURL!, "videoOutput", .mp4)
 		// 動画から音声を抽出
-		audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
-    }
-    
-    /* アップロードした動画をアプリ内に保存する */
-    func saveVideo(_ url: URL){
-        print("動画を保存")
-
-        // DocumentDirectoryのPathをセット
-        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        // 出力する音声ファイルの名称とPathをセット
-        let exportPath: String = documentPath + "/" + "videoOutput.mp4"        //拡張子を".mp4"に指定
-        // 最終的に出力する音声ファイルのパスをexportUrlに代入
-        let exportUrl: URL = URL(fileURLWithPath: exportPath)
-        
-        // Exportするときに必要なもろもろのもの
-        let asset = AVAsset(url: url)
-        
-        // Exporterにもろもろのものをセットする
-        let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
-        exporter?.outputFileType = AVFileType.mp4                           //拡張子を".mp4"に指定
-        exporter?.outputURL = exportUrl
-        exporter?.shouldOptimizeForNetworkUse = true
-        
-        // 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
-        if FileManager.default.fileExists(atPath: exportPath) {
-            try! FileManager.default.removeItem(atPath: exportPath)
-        }
-        
-        // Export
-        exporter!.exportAsynchronously(completionHandler: {
-            switch exporter!.status {
-            case .completed:
-                print("Exportation Success!")
-            case .failed, .cancelled:
-                print("Exportation error = \(String(describing: exporter?.error))")
-            default:
-                print("Exportation error = \(String(describing: exporter?.error))")
-            }
-        })
-        
-        // ここにURL
-        print(documentPath)
+		//audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
+        audioM4aURL = FileManager.save(videoMp4URL!, "audioOutput", .m4a)
     }
     
     /* 動画を読み込む */
@@ -122,7 +83,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let videoName = "videoOutput.mp4"
         var video: AVPlayer?
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let path_file_name = dir.appendingPathComponent(videoName)
             video = AVPlayer(url: path_file_name)
         }
@@ -136,13 +97,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         let asset = AVAsset(url: url)
         
-        let imageGenerator = AVAssetImageGenerator(asset:asset)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true
         
         var time = asset.duration
         time.value = min(time.value, 2)
-        
-        saveVideo(videoMp4URL!)
         
         do {
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
@@ -154,47 +113,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
 	
 	/* --- TODO: wavファイルのPathとURLを生成メソッドを書く --- */
-
-	/* mp4形式の動画から音声をm4a形式で抽出 */
-	func extractM4aFromMp4(_ url: URL) -> URL? {
-		print("動画から音声を抽出する")
-		
-		/* --- TODO: 引数がmp4以外だったときのエラー処理を書く --- */
-
-		// Exportするときに必要なもろもろのもの
-		let asset = AVAsset(url: url)
-		let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
-		// DocumentDirectoryのPathをセット
-		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-		// 出力する音声ファイルの名称とPathをセット
-		let exportPath: String = documentPath + "/" + "audioOutput.m4a"		//拡張子を".m4a"に指定
-		// 最終的に出力する音声ファイルのパスをexportUrlに代入
-		let exportUrl: URL = URL(fileURLWithPath: exportPath)
-		
-		// Exporterにもろもろのものをセットする
-		exporter?.outputFileType = AVFileType.m4a							//拡張子を".m4a"に指定
-		exporter?.outputURL = exportUrl
-		exporter?.shouldOptimizeForNetworkUse = true
-		
-		// 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
-		if FileManager.default.fileExists(atPath: exportPath) {
-			try! FileManager.default.removeItem(atPath: exportPath)
-		}
-		
-		// Export
-		exporter!.exportAsynchronously(completionHandler: {
-			switch exporter!.status {
-			case .completed:
-				print("Exportation Success!")
-			case .failed, .cancelled:
-				print("Exportation error = \(String(describing: exporter?.error))")
-			default:
-				print("Exportation error = \(String(describing: exporter?.error))")
-			}
-		})
-		
-		return exportUrl
-	}
 	
     /* 動画の再生 */
     @IBAction func playMovie(_ sender: Any) {
