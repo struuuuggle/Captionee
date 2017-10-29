@@ -6,12 +6,10 @@
 //
 
 import UIKit
-// 動画や音声を扱うライブラリ
 import AVKit
-import AVFoundation
-// TableViewが空のときの表示を決められるライブラリ
 import DZNEmptyDataSet
 
+/* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 	
 	var window: UIWindow?
@@ -70,25 +68,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
 		
+        // 動画から音声を抽出
         videoMp4URL = FileManager.save(videoMovURL!, "videoOutput", .mp4)
-		// 動画から音声を抽出
-		//audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
         audioM4aURL = FileManager.save(videoMp4URL!, "audioOutput", .m4a)
-    }
-    
-    /* 動画を読み込む */
-    func loadVideo(_ url: URL) -> AVPlayer{
-        print("動画の読み込み")
-        
-        let videoName = "videoOutput.mp4"
-        var video: AVPlayer?
-        
-        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let path_file_name = dir.appendingPathComponent(videoName)
-            video = AVPlayer(url: path_file_name)
-        }
-        
-        return video!
     }
     
     /* 動画からサムネイルを生成する */
@@ -112,7 +94,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
 	
-	/* --- TODO: wavファイルのPathとURLを生成メソッドを書く --- */
+	/* --- TODO: wavファイルのPathとURLを生成するメソッドを書く --- */
 	
     /* 動画の再生 */
     @IBAction func playMovie(_ sender: Any) {
@@ -153,6 +135,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 			print("player initialization error")
 		}
 	}
+    
+    /* 動画を読み込む */
+    func loadVideo(_ url: URL) -> AVPlayer{
+        print("動画の読み込み")
+        
+        let videoName = "videoOutput.mp4"
+        var video: AVPlayer?
+        
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let path_file_name = dir.appendingPathComponent(videoName)
+            video = AVPlayer(url: path_file_name)
+        }
+        
+        return video!
+    }
 	
     /* TableViewが空のときに表示する内容のタイトルを設定 */
 	func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {

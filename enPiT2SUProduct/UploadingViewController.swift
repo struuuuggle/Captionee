@@ -6,9 +6,9 @@
 //
 
 import UIKit
-// インジゲータを表示させるライブラリ
 import KRProgressHUD
 
+/* アップロード画面のController */
 class UploadingViewController: UIViewController {
 
     /* Viewがロードされたとき */
@@ -21,7 +21,7 @@ class UploadingViewController: UIViewController {
         view.addSubview(statusBar)
         
         // KRProgressHUDの設定
-        KRProgressHUD.showOn(self).show(withMessage: "processing...")
+        KRProgressHUD.showOn(self).show(withMessage: "Processing...")
         let delay = DispatchTime.now() + 3
         DispatchQueue.main.asyncAfter(deadline: delay) {
             KRProgressHUD.dismiss() {

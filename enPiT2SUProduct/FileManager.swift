@@ -38,6 +38,9 @@ extension FileManager {
         
         // Exportするときに必要なもろもろのもの
         let asset = AVAsset(url: url)
+        print("---> Asset")
+        print(asset)
+        print("<--- Asset")
         
         // Exporterにもろもろのものをセットする
         let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
