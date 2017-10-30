@@ -8,6 +8,7 @@
 import UIKit
 import AVKit
 import DZNEmptyDataSet
+import KRProgressHUD
 
 /* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
@@ -81,7 +82,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
         audioM4aURL = FileManager.save(videoMp4URL!, name, .m4a)
         
+        // KRProgressHUDの開始
+        KRProgressHUD.showOn(self).show(withMessage: "Processing...")
+        
+        generateCaption()
+        
+        // KRProgressHUDの終了
+        KRProgressHUD.dismiss() {
+            self.success()
+        }
+        
         tableView.reloadData()
+    }
+    
+    /* 動画のアップロードに成功したとき */
+    func success() {
+        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
     }
     
     /* 動画からサムネイルを生成する */
@@ -104,37 +120,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             return nil
         }
     }
+    
+    /* 字幕を生成する */
+    func generateCaption() {
+        // Watsonにwavファイルを投げる
+    }
 	
 	/* --- TODO: wavファイルのPathとURLを生成するメソッドを書く --- */
-	
-    /* 動画の再生 */
-    @IBAction func playMovie(_ sender: Any) {
-        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        // 出力する音声ファイルの名称とPathをセット
-        let exportPath: String = documentPath + "/" + "videoOutput.mp4"
-        
-        if let videoMp4URL = videoMp4URL {
-            let player = AVPlayer(url: videoMp4URL as URL)
-            
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = player
-            
-            present(playerViewController, animated: true){
-                print("動画再生")
-                playerViewController.player!.play()
-            }
-        } else {
-            let video = loadVideo(URL(fileURLWithPath: exportPath))
-            
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = video
-            
-            present(playerViewController, animated: true){
-                print("動画再生")
-                playerViewController.player!.play()
-            }
-        }
-    }
     
     /* 動画の再生 */
     func playVideo(_ name: String) {
