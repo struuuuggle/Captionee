@@ -10,7 +10,7 @@ import AVKit
 import DZNEmptyDataSet
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 	
 	var window: UIWindow?
 	var videoMp4URL: URL?
@@ -18,9 +18,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var audioM4aURL: URL?
 	var audioWavURL: URL?
 	var player: AVAudioPlayer!
+    var images = [UIImage]()
+    var labels = [String]()
     let imagePickerController = UIImagePickerController()
 
-    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */
@@ -35,7 +36,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
-        tableView.tableFooterView = UIView();
+        
+        // TableViewのSeparatorを消す
+        tableView.tableFooterView = UIView(frame: .zero);
     }
     
     /* メモリエラーが発生したとき */
@@ -62,8 +65,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		print("===== videoMp4URL is =====")
 		print(videoMovURL!)
         
-        imageView.image = previewImageFromVideo(videoMovURL!)!
-        imageView.contentMode = .scaleAspectFit
+        images.append(previewImageFromVideo(videoMovURL!)!)
+        labels.append("No.\(images.count)")
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
@@ -71,6 +74,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 動画から音声を抽出
         videoMp4URL = FileManager.save(videoMovURL!, "videoOutput", .mp4)
         audioM4aURL = FileManager.save(videoMp4URL!, "audioOutput", .m4a)
+        
+        tableView.reloadData()
     }
     
     /* 動画からサムネイルを生成する */
@@ -149,6 +154,34 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         
         return video!
+    }
+    
+    /* Cellの個数を指定 */
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return images.count
+    }
+    
+    /* Cellに値を設定する */
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath)
+        
+        let imageView = cell.viewWithTag(1) as! UIImageView
+        imageView.image = images[indexPath.row]
+        imageView.contentMode = .scaleAspectFit
+        
+        let label = cell.viewWithTag(2) as! UILabel
+        label.text = labels[indexPath.row]
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120.0
+    }
+    
+    /* Cellが選択されたとき */
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(labels[indexPath.row])
     }
 	
     /* TableViewが空のときに表示する内容のタイトルを設定 */
