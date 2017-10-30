@@ -18,8 +18,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var audioM4aURL: URL?
 	var audioWavURL: URL?
 	var player: AVAudioPlayer!
-    var images = [UIImage]()
-    var labels = [String]()
+    var videos = [VideoInfo]()
+    //var images = [UIImage]()
+    //var labels = [String]()
     let imagePickerController = UIImagePickerController()
 
     @IBOutlet weak var tableView: UITableView!
@@ -65,15 +66,20 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		print("===== videoMp4URL is =====")
 		print(videoMovURL!)
         
-        images.append(previewImageFromVideo(videoMovURL!)!)
-        labels.append("No.\(images.count)")
+        let name = getCurrentTime()
+        let image = previewImageFromVideo(videoMovURL!)!
+        let label = "No.\(videos.count + 1)"
+        
+        videos.append(VideoInfo(name, image, label))
+        //images.append(previewImageFromVideo(videoMovURL!)!)
+        //labels.append("No.\(images.count)")
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
 		
         // 動画から音声を抽出
-        videoMp4URL = FileManager.save(videoMovURL!, "videoOutput", .mp4)
-        audioM4aURL = FileManager.save(videoMp4URL!, "audioOutput", .m4a)
+        videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
+        audioM4aURL = FileManager.save(videoMp4URL!, name, .m4a)
         
         tableView.reloadData()
     }
@@ -129,6 +135,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
         }
     }
+    
+    /* 動画の再生 */
+    func playVideo(_ name: String) {
+        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+
+        let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
+        
+        let player = AVPlayer(url: url)
+        
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        
+        present(playerViewController, animated: true){
+            print("動画再生")
+            playerViewController.player!.play()
+        }
+    }
 	
 	/* 音声の再生 */
 	@IBAction func playAudio(_ sender: Any) {
@@ -158,7 +181,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellの個数を指定 */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return images.count
+        return videos.count
     }
     
     /* Cellに値を設定する */
@@ -166,11 +189,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath)
         
         let imageView = cell.viewWithTag(1) as! UIImageView
-        imageView.image = images[indexPath.row]
+        imageView.image = videos[indexPath.row].image
         imageView.contentMode = .scaleAspectFit
         
         let label = cell.viewWithTag(2) as! UILabel
-        label.text = labels[indexPath.row]
+        label.text = videos[indexPath.row].label
         
         return cell
     }
@@ -181,7 +204,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(labels[indexPath.row])
+        print("---> VideoName")
+        print(videos[indexPath.row].name)
+        print("<--- VideoName")
+        
+        playVideo(videos[indexPath.row].name)
     }
 	
     /* TableViewが空のときに表示する内容のタイトルを設定 */
@@ -207,6 +234,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 			]
 		)
 	}
+    
+    /* 現在時刻を文字列として取得 */
+    func getCurrentTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
+        let now = Date()
+        return formatter.string(from: now)
+    }
     
 
     /*
