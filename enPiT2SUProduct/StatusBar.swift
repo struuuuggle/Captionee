@@ -1,7 +1,7 @@
 //
 //  StatusBar.swift
 //  
-//  Created by 池崎雄介 on 2017/10/28.
+//  Created by team-E on 2017/10/28.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 

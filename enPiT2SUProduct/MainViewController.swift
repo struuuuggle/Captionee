@@ -14,14 +14,11 @@ import KRProgressHUD
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 	
 	var window: UIWindow?
+    var videoMovURL: URL?
 	var videoMp4URL: URL?
-	var videoMovURL: URL?
 	var audioM4aURL: URL?
 	var audioWavURL: URL?
-	var player: AVAudioPlayer!
     var videos = [VideoInfo]()
-    //var images = [UIImage]()
-    //var labels = [String]()
     let imagePickerController = UIImagePickerController()
 
     @IBOutlet weak var tableView: UITableView!
@@ -63,7 +60,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	
     /* 動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
+        videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
 		print("===== videoMp4URL is =====")
 		print(videoMovURL!)
         
@@ -72,8 +69,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let label = "No.\(videos.count + 1)"
         
         videos.append(VideoInfo(name, image, label))
-        //images.append(previewImageFromVideo(videoMovURL!)!)
-        //labels.append("No.\(images.count)")
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
@@ -149,7 +144,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	@IBAction func playAudio(_ sender: Any) {
 		do {
             print("音声再生")
-			player = try AVAudioPlayer(contentsOf: audioM4aURL!)
+			let player = try AVAudioPlayer(contentsOf: audioM4aURL!)
 			player.play()
 		} catch {
 			print("player initialization error")
