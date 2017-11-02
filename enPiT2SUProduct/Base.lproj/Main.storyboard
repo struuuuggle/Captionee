@@ -110,6 +110,22 @@
                                     <action selector="playAudio:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="Rl1-gx-Ych"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pv-UP-dl9">
+                                <rect key="frame" x="46" y="590" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="play"/>
+                                <connections>
+                                    <action selector="playButtonTapped:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="ZyE-FH-d8A"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kzx-t4-26m">
+                                <rect key="frame" x="176" y="522" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="transcribe"/>
+                                <connections>
+                                    <action selector="transcribeButtonTapped:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="aeA-7v-gKJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -124,6 +140,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="playButton" destination="0pv-UP-dl9" id="koM-Dj-uGs"/>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
                     </connections>
                 </viewController>

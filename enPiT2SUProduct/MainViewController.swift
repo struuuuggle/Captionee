@@ -9,9 +9,10 @@ import UIKit
 import AVKit
 import DZNEmptyDataSet
 import KRProgressHUD
+import SpeechToTextV1
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, AVAudioPlayerDelegate {
 	
 	var window: UIWindow?
     var videoMovURL: URL?
@@ -19,6 +20,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var audioM4aURL: URL?
 	var audioWavURL: URL?
     var videos = [VideoInfo]()
+    var speechToText: SpeechToText!
+    var player: AVAudioPlayer!
+    var speechUrl: URL!
+    @IBOutlet weak var playButton: UIButton!
     let imagePickerController = UIImagePickerController()
 
     @IBOutlet weak var tableView: UITableView!
@@ -38,12 +43,49 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
+        
+        // SpeechToTextの設定
+        speechUrl = Bundle.main.url(forResource: "SpeechSample", withExtension: "wav")
+        player = try! AVAudioPlayer(contentsOf: speechUrl)
+        speechToText = SpeechToText(
+            username: Credentials.SpeechToTextUsername,
+            password: Credentials.SpeechToTextPassword
+        )
+        player.delegate = self
     }
     
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    /* wavファイルの再生が終わったとき */
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        playButton.setTitle("Play Audio File", for: .normal)
+    }
+    
+    /* wavファイルの再生 */
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        if !player.isPlaying {
+            playButton.setTitle("Stop Audio File", for: .normal)
+            player.currentTime = 0
+            player.play()
+        } else {
+            playButton.setTitle("Play Audio File", for: .normal)
+            player.stop()
+        }
+    }
+    
+    /* 音声を文字に起こす */
+    @IBAction func transcribeButtonTapped(_ sender: UIButton) {
+        var settings = RecognitionSettings(contentType: .wav)
+        settings.interimResults = true
+        let failure = { (error: Error) in print(error) }
+        speechToText.recognize(audio: speechUrl, settings: settings, failure: failure) {
+            results in
+            print(results.bestTranscript)
+        }
     }
     
     /* 動画を選択する */
