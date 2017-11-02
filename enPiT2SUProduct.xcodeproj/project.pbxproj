@@ -25,7 +25,7 @@
 		0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		17DD6213011BDCB6850B0EB6 /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
 		700A1B001FA9D977004C7782 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
-		701FB1F31FA4C1CA00BBFCB0 /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatusBar.swift; path = "/Users/yusuke/Documents/swift/team-E/enPiT2SUProduct/StatusBar.swift"; sourceTree = "<absolute>"; };
+		701FB1F31FA4C1CA00BBFCB0 /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		701FB1F51FA5711700BBFCB0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
 		705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = SpeechSample.wav; path = "Carthage/Checkouts/swift-sdk/Tests/SpeechToTextV1Tests/Audio Files/SpeechSample.wav"; sourceTree = SOURCE_ROOT; };
