@@ -26,6 +26,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <textAttributes key="titleTextAttributes">
                                     <fontDescription key="fontDescription" type="italicSystem" pointSize="26"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -45,26 +46,8 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U">
-                                <rect key="frame" x="295" y="590" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.93400031328201294" green="0.80975854396820068" blue="0.15327078104019165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="50"/>
-                                <state key="normal" title="+">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="30"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="selectImage:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="j2B-Qw-VBB"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UgA-5K-BkH">
-                                <rect key="frame" x="16" y="64" width="343" height="380"/>
+                                <rect key="frame" x="16" y="64" width="343" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TableCell" id="lD4-lA-cDh">
@@ -102,45 +85,38 @@
                                     <outlet property="delegate" destination="Z6o-d9-NA3" id="9LF-z6-gNS"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzi-QN-BUz">
-                                <rect key="frame" x="118" y="581" width="104" height="49"/>
+                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U">
+                                <rect key="frame" x="295" y="590" width="60" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="play audio"/>
+                                <color key="backgroundColor" red="0.93400031328201294" green="0.80975854396820068" blue="0.15327078104019165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="50"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="playAudio:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="Rl1-gx-Ych"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0pv-UP-dl9">
-                                <rect key="frame" x="46" y="590" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="play"/>
-                                <connections>
-                                    <action selector="playButtonTapped:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="ZyE-FH-d8A"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kzx-t4-26m">
-                                <rect key="frame" x="176" y="522" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="transcribe"/>
-                                <connections>
-                                    <action selector="transcribeButtonTapped:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="aeA-7v-gKJ"/>
+                                    <action selector="selectImage:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="j2B-Qw-VBB"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="UgA-5K-BkH" secondAttribute="bottom" constant="223" id="3gn-ef-pfT"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="top" secondItem="FES-Wv-Yfz" secondAttribute="bottom" id="6V9-FT-FXw"/>
                             <constraint firstAttribute="trailing" secondItem="FES-Wv-Yfz" secondAttribute="trailing" id="BPI-AF-El7"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="leading" secondItem="FMJ-NX-m0Y" secondAttribute="leadingMargin" id="LAd-oM-80B"/>
                             <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="FES-Wv-Yfz" secondAttribute="bottom" constant="603" id="m9n-rj-d93"/>
                             <constraint firstItem="FES-Wv-Yfz" firstAttribute="leading" secondItem="FMJ-NX-m0Y" secondAttribute="leading" id="o1d-0b-aMj"/>
+                            <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="UgA-5K-BkH" secondAttribute="bottom" id="o6D-fc-4a1"/>
                             <constraint firstItem="FES-Wv-Yfz" firstAttribute="top" secondItem="YeP-2x-JQh" secondAttribute="bottom" id="vyV-rv-eI3"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="trailing" secondItem="FMJ-NX-m0Y" secondAttribute="trailingMargin" id="z4c-qb-OAy"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="playButton" destination="0pv-UP-dl9" id="koM-Dj-uGs"/>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
                     </connections>
                 </viewController>

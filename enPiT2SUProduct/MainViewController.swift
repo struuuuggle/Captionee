@@ -36,7 +36,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // StatusBarの設定
         let statusBar = StatusBar(.orange)
         view.addSubview(statusBar)
-        
+                
         // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
@@ -88,7 +88,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
-    /* 動画を選択する */
+    /* PhotoLibraryから動画を選択する */
     @IBAction func selectImage(_ sender: Any) {
         print("カメラロールから動画を選択")
         
@@ -100,7 +100,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         present(imagePickerController, animated: true, completion: nil)
     }
 	
-    /* 動画を選択したとき */
+    /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
 		print("===== videoMp4URL is =====")
@@ -114,10 +114,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
-		
+        
         // 動画から音声を抽出
         videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
+        print("---> MP4 URL")
+        print(videoMp4URL!)
+        print("<--- MP4 URL")
+        
         audioM4aURL = FileManager.save(videoMp4URL!, name, .m4a)
+        print("---> M4a URL")
+        print(audioM4aURL!)
+        print("<--- M4a URL")
         
         // KRProgressHUDの開始
         KRProgressHUD.showOn(self).show(withMessage: "Processing...")
@@ -213,7 +220,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return videos.count
     }
     
-    /* Cellに値を設定する */
+    /* Cellに値を設定 */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath)
         
@@ -227,17 +234,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return cell
     }
     
+    /* Cellの高さを設定 */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120.0
     }
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /*
         print("---> VideoName")
         print(videos[indexPath.row].name)
         print("<--- VideoName")
         
         playVideo(videos[indexPath.row].name)
+        */
+        
+        playVideo("MyMovie")
     }
 	
     /* TableViewが空のときに表示する内容のタイトルを設定 */

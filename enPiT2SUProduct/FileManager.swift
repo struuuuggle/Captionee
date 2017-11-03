@@ -25,6 +25,7 @@ extension FileManager {
         switch type {
         case .mp4: fileName += ".mp4"
         case .m4a: fileName += ".m4a"
+        case .wav: fileName += ".wav"
         default: print("Invalid extension")
         }
         print("---> FileName")
