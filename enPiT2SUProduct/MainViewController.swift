@@ -1,244 +1,260 @@
 //
 //  MainViewController.swift
-//  
 //
-//  Created by 池崎雄介 on 2017/10/19.
+//  Created by team-E on 2017/10/19.
+//  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
 import UIKit
 import AVKit
 import DZNEmptyDataSet
-import AVFoundation
+import KRProgressHUD
+import SpeechToTextV1
 
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+/* メイン画面のController */
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, AVAudioPlayerDelegate {
 	
-    let imagePickerController = UIImagePickerController()
 	var window: UIWindow?
+    var videoMovURL: URL?
 	var videoMp4URL: URL?
-	var videoMovURL: URL?
 	var audioM4aURL: URL?
 	var audioWavURL: URL?
-	var player: AVAudioPlayer!
+    var videos = [VideoInfo]()
+    var speechToText: SpeechToText!
+    var player: AVAudioPlayer!
+    var speechUrl: URL!
+    @IBOutlet weak var playButton: UIButton!
+    let imagePickerController = UIImagePickerController()
 
-    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
-    //動画の選択
-    @IBAction func selectImage(_ sender: Any) {
-        print("UIBarButtonItem。カメラロールから動画を選択")
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.delegate = self
-        //imagePickerController.mediaTypes = ["public.image", "public.movie"]
-        //動画だけ
-        imagePickerController.mediaTypes = ["public.movie"]
-        //画像だけ
-        //imagePickerController.mediaTypes = ["public.image"]
-        present(imagePickerController, animated: true, completion: nil)
-		
-    }
-
+    /* Viewがロードされたとき */
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
-        let statusBar = UIView(frame:CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 20.0))
-        statusBar.backgroundColor = UIColor.orange
+        
+        // StatusBarの設定
+        let statusBar = StatusBar(.orange)
         view.addSubview(statusBar)
         
+        // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
-        tableView.tableFooterView = UIView();
-		
+        
+        // TableViewのSeparatorを消す
+        tableView.tableFooterView = UIView(frame: .zero);
+        
+        // SpeechToTextの設定
+        speechUrl = Bundle.main.url(forResource: "SpeechSample", withExtension: "wav")
+        player = try! AVAudioPlayer(contentsOf: speechUrl)
+        speechToText = SpeechToText(
+            username: Credentials.SpeechToTextUsername,
+            password: Credentials.SpeechToTextPassword
+        )
+        player.delegate = self
     }
-	
+    
+    /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    /* wavファイルの再生が終わったとき */
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        playButton.setTitle("Play Audio File", for: .normal)
+    }
+    
+    /* wavファイルの再生 */
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        if !player.isPlaying {
+            playButton.setTitle("Stop Audio File", for: .normal)
+            player.currentTime = 0
+            player.play()
+        } else {
+            playButton.setTitle("Play Audio File", for: .normal)
+            player.stop()
+        }
+    }
+    
+    /* 音声を文字に起こす */
+    @IBAction func transcribeButtonTapped(_ sender: UIButton) {
+        var settings = RecognitionSettings(contentType: .wav)
+        settings.interimResults = true
+        let failure = { (error: Error) in print(error) }
+        speechToText.recognize(audio: speechUrl, settings: settings, failure: failure) {
+            results in
+            print(results.bestTranscript)
+        }
+    }
+    
+    /* 動画を選択する */
+    @IBAction func selectImage(_ sender: Any) {
+        print("カメラロールから動画を選択")
+        
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        // 動画だけ表示
+        imagePickerController.mediaTypes = ["public.movie"]
+
+        present(imagePickerController, animated: true, completion: nil)
+    }
 	
-	
-    // 写真選択時に呼ばれるメソッド
+    /* 動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
+		print("===== videoMp4URL is =====")
+		print(videoMovURL!)
         
-        videoMp4URL = info["UIImagePickerControllerReferenceURL"] as? URL
-		print("=====videoMp4URL is =====")
-		print(videoMp4URL!)
-        imageView.image = previewImageFromVideo(videoMp4URL!)!
-        imageView.contentMode = .scaleAspectFit
-        imagePickerController.dismiss(animated: true, completion: nil)	// 写真選択画面を閉じる
+        let name = getCurrentTime()
+        let image = previewImageFromVideo(videoMovURL!)!
+        let label = "No.\(videos.count + 1)"
+        
+        videos.append(VideoInfo(name, image, label))
+        
+        // 動画選択画面を閉じる
+        imagePickerController.dismiss(animated: true, completion: nil)
 		
-		// 動画から音声を抽出
-		audioM4aURL = extractM4aFromMp4(videoMp4URL!)!
-    }
-    
-    /*アップロードした動画をアプリ内に保存する*/
-
-    
-    func saveVideo(_ url: URL){
-        print("動画を保存")
-
-        // Exportするときに必要なもろもろのもの
-        let asset = AVAsset(url: url)
-        let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
-        // DocumentDirectoryのPathをセット
-        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        // 出力する音声ファイルの名称とPathをセット
-        let exportPath: String = documentPath + "/" + "videoOutput.mp4"        //拡張子を".mp4"に指定
-        // 最終的に出力する音声ファイルのパスをexportUrlに代入
-        let exportUrl: URL = URL(fileURLWithPath: exportPath)
+        // 動画から音声を抽出
+        videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
+        audioM4aURL = FileManager.save(videoMp4URL!, name, .m4a)
         
-        // Exporterにもろもろのものをセットする
-        exporter?.outputFileType = AVFileType.mp4                           //拡張子を".mp4"に指定
-        exporter?.outputURL = exportUrl
-        exporter?.shouldOptimizeForNetworkUse = true
+        // KRProgressHUDの開始
+        KRProgressHUD.showOn(self).show(withMessage: "Processing...")
         
-        // 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
-        if FileManager.default.fileExists(atPath: exportPath) {
-            try! FileManager.default.removeItem(atPath: exportPath)
+        generateCaption()
+        
+        // KRProgressHUDの終了
+        KRProgressHUD.dismiss() {
+            self.success()
         }
-        // Export
-        exporter!.exportAsynchronously(completionHandler: {
-            switch exporter!.status {
-            case .completed:
-                print("Exportation Success!")
-            case .failed, .cancelled:
-                print("Exportation error = \(String(describing: exporter?.error))")
-            default:
-                print("Exportation error = \(String(describing: exporter?.error))")
-            }
-        })
-        //ここにURL
-        print(documentPath)
-    }
-    /* 動画を読み込む */
-    func loadVideo(_ url: URL) -> AVPlayer{
-        print("動画の読み込み")
-        let videoName = "videoOutput.mp4"
-        var video: AVPlayer?
         
-        if let dir = FileManager.default.urls( for: .documentDirectory, in: .userDomainMask ).first {
-            
-            let path_file_name = dir.appendingPathComponent(videoName)
-            
-            video = AVPlayer(url: path_file_name)
-        }
-        return video!
+        tableView.reloadData()
     }
     
-    /* video */
+    /* 動画のアップロードに成功したとき */
+    func success() {
+        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
+    }
+    
+    /* 動画からサムネイルを生成する */
     func previewImageFromVideo(_ url: URL) -> UIImage? {
-        /* do */
         print("動画からサムネイルを生成する")
+        
         let asset = AVAsset(url: url)
-        let imageGenerator = AVAssetImageGenerator(asset:asset)
+        
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true
+        
         var time = asset.duration
         time.value = min(time.value, 2)
-		print(time)
-        saveVideo(videoMp4URL!)
+        
         do {
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
+            
             return UIImage(cgImage: imageRef)
         } catch {
             return nil
         }
     }
+    
+    /* 字幕を生成する */
+    func generateCaption() {
+        // Watsonにwavファイルを投げる
+    }
 	
-	/* --- TODO: wavファイルのPathとURLを生成メソッドを書く --- */
-
-	
-	/* mp4形式の動画から音声をm4a形式で抽出 */
-	func extractM4aFromMp4(_ url: URL) -> URL? {
-        // extract
-		print("動画から音声を抽出する")
-		
-		/* --- TODO: 引数がmp4以外だったときのエラー処理を書く --- */
-
-		// Exportするときに必要なもろもろのもの
-		let asset = AVAsset(url: url)
-		let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
-		// DocumentDirectoryのPathをセット
-		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-		// 出力する音声ファイルの名称とPathをセット
-		let exportPath: String = documentPath + "/" + "audioOutput.m4a"		//拡張子を".m4a"に指定
-		// 最終的に出力する音声ファイルのパスをexportUrlに代入
-		let exportUrl: URL = URL(fileURLWithPath: exportPath)
-		
-		// Exporterにもろもろのものをセットする
-		exporter?.outputFileType = AVFileType.m4a							//拡張子を".m4a"に指定
-		exporter?.outputURL = exportUrl
-		exporter?.shouldOptimizeForNetworkUse = true
-		
-		// 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
-		if FileManager.default.fileExists(atPath: exportPath) {
-			try! FileManager.default.removeItem(atPath: exportPath)
-		}
-		
-		// Export
-		exporter!.exportAsynchronously(completionHandler: {
-			switch exporter!.status {
-			case .completed:
-				print("Exportation Success!")
-			case .failed, .cancelled:
-				print("Exportation error = \(String(describing: exporter?.error))")
-			default:
-				print("Exportation error = \(String(describing: exporter?.error))")
-			}
-		})
-		
-		return exportUrl
-	}
-	
-    //動画の再生
-    @IBAction func playMovie(_ sender: Any) {
+	/* --- TODO: wavファイルのPathとURLを生成するメソッドを書く --- */
+    
+    /* 動画の再生 */
+    func playVideo(_ name: String) {
         let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        // 出力する音声ファイルの名称とPathをセット
-        let exportPath: String = documentPath + "/" + "videoOutput.mp4"
-        if let videoMp4URL = videoMp4URL {
-            
-            let player = AVPlayer(url: videoMp4URL as URL)
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = player
-            present(playerViewController, animated: true){
-                print("動画再生")
-                playerViewController.player!.play()
-            }
-        }
-        else {
-            
-            let video = loadVideo(URL(fileURLWithPath: exportPath))
-            let playerViewController = AVPlayerViewController()
-            playerViewController.player = video
-            present(playerViewController, animated: true){
-                print("動画再生")
-                playerViewController.player!.play()
-            }
+
+        let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
+        
+        let player = AVPlayer(url: url)
+        
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        
+        present(playerViewController, animated: true){
+            print("動画再生")
+            playerViewController.player!.play()
         }
     }
 	
 	/* 音声の再生 */
 	@IBAction func playAudio(_ sender: Any) {
 		do {
-			player = try AVAudioPlayer(contentsOf: audioM4aURL!)
-			print("音声再生")
+            print("音声再生")
+			let player = try AVAudioPlayer(contentsOf: audioM4aURL!)
 			player.play()
 		} catch {
 			print("player initialization error")
 		}
 	}
+    
+    /* 動画を読み込む */
+    func loadVideo(_ url: URL) -> AVPlayer{
+        print("動画の読み込み")
+        
+        let videoName = "videoOutput.mp4"
+        var video: AVPlayer?
+        
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let path_file_name = dir.appendingPathComponent(videoName)
+            video = AVPlayer(url: path_file_name)
+        }
+        
+        return video!
+    }
+    
+    /* Cellの個数を指定 */
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return videos.count
+    }
+    
+    /* Cellに値を設定する */
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath)
+        
+        let imageView = cell.viewWithTag(1) as! UIImageView
+        imageView.image = videos[indexPath.row].image
+        imageView.contentMode = .scaleAspectFit
+        
+        let label = cell.viewWithTag(2) as! UILabel
+        label.text = videos[indexPath.row].label
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120.0
+    }
+    
+    /* Cellが選択されたとき */
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("---> VideoName")
+        print(videos[indexPath.row].name)
+        print("<--- VideoName")
+        
+        playVideo(videos[indexPath.row].name)
+    }
 	
-
+    /* TableViewが空のときに表示する内容のタイトルを設定 */
 	func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
 		let text = "No Movies"
 		let font = UIFont.systemFont(ofSize: 30)
+        
 		return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
 	}
 	
+    /* TableViewが空のときに表示する内容の詳細を設定 */
 	func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
 		paragraph.alignment = NSTextAlignment.center
 		paragraph.lineSpacing = 6.0
+        
 		return NSAttributedString(
 			string: "Upload your movies.",
 			attributes:  [
@@ -247,6 +263,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 			]
 		)
 	}
+    
+    /* 現在時刻を文字列として取得 */
+    func getCurrentTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
+        let now = Date()
+        return formatter.string(from: now)
+    }
     
 
     /*
