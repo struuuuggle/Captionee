@@ -2,24 +2,49 @@
 //  SubViewController.swift
 //  enPiT2SUProduct
 //
-//  Created by Mikiya Abe on 2017/11/05.
+//  Created by team-E on 2017/11/05.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
 import Foundation
 import UIKit
+import AVKit
 
 class SubViewController: UIViewController{
+	
+	var receivedImage: UIImage!
+	var receivedVideoName: String!
 
 	@IBOutlet weak var imageView: UIImageView!
-	var selectedImg: UIImage!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		imageView.image = selectedImg
+		imageView.image = receivedImage
 		// 画像のアスペクト比を維持しUIImageViewサイズに収まるように表示
 		imageView.contentMode = UIViewContentMode.scaleAspectFit
+	}
+	
+	/* 動画の再生 */
+	func playVideo(_ name: String) {
+		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+		
+		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
+		
+		let player = AVPlayer(url: url)
+		
+		let playerViewController = AVPlayerViewController()
+		playerViewController.player = player
+		
+		present(playerViewController, animated: true){
+			print("動画再生")
+			playerViewController.player!.play()
+		}
+	}
+	
+	/* サムネイルをタップしたときの動作 */
+	@IBAction func imageTapped(_ sender: AnyObject) {
+		playVideo(receivedVideoName)
 	}
 	
 	override func didReceiveMemoryWarning() {

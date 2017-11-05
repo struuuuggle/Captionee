@@ -24,6 +24,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var audioPlayer: AVAudioPlayer!
     var speechUrl: URL!
 	var selectedImage: UIImage?
+	var selectedVideoName: String?
 	
 	let imagePickerController = UIImagePickerController()
 
@@ -234,14 +235,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		print("Cellが選択されました")
+		
         print("---> VideoName")
         print(videos[indexPath.row].name)
         print("<--- VideoName")
         
-		// [indexPath.row] から動画名を探し、UImage を設定
+		// Sub View Controllerに渡す値を設定
 		selectedImage = videos[indexPath.row].image
+		selectedVideoName = videos[indexPath.row].name
 		
-		if selectedImage != nil {
+		if let _ = selectedImage, let _ = selectedVideoName {
 			
 			// SubViewController へ遷移するために Segue を呼び出す
 			performSegue(withIdentifier: "toSubViewController",sender: nil)
@@ -253,8 +257,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		if (segue.identifier == "toSubViewController") {
 			let subVC: SubViewController = (segue.destination as? SubViewController)!
 			
-			// SubViewController のselectedImgに選択された画像を設定する
-			subVC.selectedImg = selectedImage
+			// SubViewControllerに値を渡す
+			subVC.receivedImage = selectedImage
+			subVC.receivedVideoName = selectedVideoName
 		}
 	}
 	
@@ -289,7 +294,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let now = Date()
         return formatter.string(from: now)
     }
-    
 
     /*
     // MARK: - Navigation
