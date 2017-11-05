@@ -5,7 +5,8 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -141,11 +142,39 @@
                     <connections>
                         <outlet property="playButton" destination="0pv-UP-dl9" id="koM-Dj-uGs"/>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
+                        <segue destination="tI5-RB-fPo" kind="presentation" identifier="toSubViewController" id="yHa-kc-afl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQG-q9-QwP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="589.60000000000002" y="16.641679160419791"/>
+        </scene>
+        <!--Sub View Controller-->
+        <scene sceneID="URg-cU-qep">
+            <objects>
+                <viewController id="tI5-RB-fPo" customClass="SubViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D0M-Bx-ef8"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ccu-9G-Qg2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="c5f-MH-R5h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="irQ-HM-JBQ">
+                                <rect key="frame" x="54" y="206" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="irQ-HM-JBQ" id="cBG-kJ-dx8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B5o-aQ-1Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1490" y="17"/>
         </scene>
     </scenes>
     <resources>

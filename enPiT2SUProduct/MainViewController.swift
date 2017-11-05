@@ -21,11 +21,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var audioWavURL: URL?
     var videos = [VideoInfo]()
     var speechToText: SpeechToText!
-    var player: AVAudioPlayer!
+    var audioPlayer: AVAudioPlayer!
     var speechUrl: URL!
-    @IBOutlet weak var playButton: UIButton!
-    let imagePickerController = UIImagePickerController()
+	var selectedImage: UIImage?
+	
+	let imagePickerController = UIImagePickerController()
 
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */
@@ -46,12 +48,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // SpeechToTextの設定
         speechUrl = Bundle.main.url(forResource: "SpeechSample", withExtension: "wav")
-        player = try! AVAudioPlayer(contentsOf: speechUrl)
+        audioPlayer = try! AVAudioPlayer(contentsOf: speechUrl)
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        player.delegate = self
+        audioPlayer.delegate = self
     }
     
     /* メモリエラーが発生したとき */
@@ -67,13 +69,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* wavファイルの再生 */
     @IBAction func playButtonTapped(_ sender: UIButton) {
-        if !player.isPlaying {
+        if !audioPlayer.isPlaying {
             playButton.setTitle("Stop Audio File", for: .normal)
-            player.currentTime = 0
-            player.play()
+            audioPlayer.currentTime = 0
+            audioPlayer.play()
         } else {
             playButton.setTitle("Play Audio File", for: .normal)
-            player.stop()
+            audioPlayer.stop()
         }
     }
     
@@ -163,8 +165,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Watsonにwavファイルを投げる
     }
 	
-	/* --- TODO: wavファイルのPathとURLを生成するメソッドを書く --- */
-    
+	
     /* 動画の再生 */
     func playVideo(_ name: String) {
         let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
@@ -237,8 +238,25 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(videos[indexPath.row].name)
         print("<--- VideoName")
         
-        playVideo(videos[indexPath.row].name)
+		// [indexPath.row] から動画名を探し、UImage を設定
+		selectedImage = videos[indexPath.row].image
+		
+		if selectedImage != nil {
+			
+			// SubViewController へ遷移するために Segue を呼び出す
+			performSegue(withIdentifier: "toSubViewController",sender: nil)
+		}
     }
+	
+	/* Segue 準備 */
+	override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+		if (segue.identifier == "toSubViewController") {
+			let subVC: SubViewController = (segue.destination as? SubViewController)!
+			
+			// SubViewController のselectedImgに選択された画像を設定する
+			subVC.selectedImg = selectedImage
+		}
+	}
 	
     /* TableViewが空のときに表示する内容のタイトルを設定 */
 	func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
