@@ -12,15 +12,15 @@ import AVKit
 
 class SubViewController: UIViewController{
 	
-	var receivedImage: UIImage!
-	var receivedVideoName: String!
-
+	var receivedVideoInfo: VideoInfo!
+	
 	@IBOutlet weak var imageView: UIImageView!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		imageView.image = receivedImage
+		// 選択された動画のサムネイルを表示
+		imageView.image = receivedVideoInfo.image
 		// 画像のアスペクト比を維持しUIImageViewサイズに収まるように表示
 		imageView.contentMode = UIViewContentMode.scaleAspectFit
 	}
@@ -28,12 +28,10 @@ class SubViewController: UIViewController{
 	/* 動画の再生 */
 	func playVideo(_ name: String) {
 		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-		
 		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
-		
 		let player = AVPlayer(url: url)
-		
 		let playerViewController = AVPlayerViewController()
+		
 		playerViewController.player = player
 		
 		present(playerViewController, animated: true){
@@ -44,7 +42,7 @@ class SubViewController: UIViewController{
 	
 	/* サムネイルをタップしたときの動作 */
 	@IBAction func imageTapped(_ sender: AnyObject) {
-		playVideo(receivedVideoName)
+		playVideo(receivedVideoInfo.name)
 	}
 	
 	override func didReceiveMemoryWarning() {

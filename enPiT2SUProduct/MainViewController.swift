@@ -23,8 +23,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var audioPlayer: AVAudioPlayer!
     var speechUrl: URL!
-	var selectedImage: UIImage?
-	var selectedVideoName: String?
+	var selectedVideoInfo: VideoInfo?
 	
 	let imagePickerController = UIImagePickerController()
 
@@ -240,26 +239,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("---> VideoName")
         print(videos[indexPath.row].name)
         print("<--- VideoName")
-        
-		// Sub View Controllerに渡す値を設定
-		selectedImage = videos[indexPath.row].image
-		selectedVideoName = videos[indexPath.row].name
 		
-		if let _ = selectedImage, let _ = selectedVideoName {
-			
-			// SubViewController へ遷移するために Segue を呼び出す
-			performSegue(withIdentifier: "toSubViewController",sender: nil)
-		}
+		// 選択されたセルの動画情報をprepareメソッドに渡すためにselectedVideoInfoに一時保管
+		selectedVideoInfo = videos[indexPath.row]
+		
+		// SubViewController へ遷移するために Segue を呼び出す
+		performSegue(withIdentifier: "toSubViewController",sender: nil)
     }
 	
-	/* Segue 準備 */
+	/* Segueの準備 */
 	override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
 		if (segue.identifier == "toSubViewController") {
 			let subVC: SubViewController = (segue.destination as? SubViewController)!
 			
-			// SubViewControllerに値を渡す
-			subVC.receivedImage = selectedImage
-			subVC.receivedVideoName = selectedVideoName
+			// 選択されたセルの動画情報をSubViewControllerに渡す
+			subVC.receivedVideoInfo = selectedVideoInfo
 		}
 	}
 	
