@@ -13,19 +13,21 @@ import SpeechToTextV1
 
 /* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, AVAudioPlayerDelegate {
-	
-	var window: UIWindow?
+    
+    var window: UIWindow?
     var videoMovURL: URL?
-	var videoMp4URL: URL?
-	var audioM4aURL: URL?
-	var audioWavURL: URL?
+    var videoMp4URL: URL?
+    var audioM4aURL: URL?
+    var audioWavURL: URL?
     var videos = [VideoInfo]()
     var speechToText: SpeechToText!
-    var player: AVAudioPlayer!
+    var audioPlayer: AVAudioPlayer!
     var speechUrl: URL!
-    @IBOutlet weak var playButton: UIButton!
+    var selectedVideoInfo: VideoInfo?
+    
     let imagePickerController = UIImagePickerController()
 
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */
@@ -46,12 +48,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // SpeechToTextの設定
         speechUrl = Bundle.main.url(forResource: "SpeechSample", withExtension: "wav")
-        player = try! AVAudioPlayer(contentsOf: speechUrl)
+        audioPlayer = try! AVAudioPlayer(contentsOf: speechUrl)
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        player.delegate = self
+        audioPlayer.delegate = self
     }
     
     /* メモリエラーが発生したとき */
@@ -67,13 +69,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* wavファイルの再生 */
     @IBAction func playButtonTapped(_ sender: UIButton) {
-        if !player.isPlaying {
+        if !audioPlayer.isPlaying {
             playButton.setTitle("Stop Audio File", for: .normal)
-            player.currentTime = 0
-            player.play()
+            audioPlayer.currentTime = 0
+            audioPlayer.play()
         } else {
             playButton.setTitle("Play Audio File", for: .normal)
-            player.stop()
+            audioPlayer.stop()
         }
     }
     
@@ -99,12 +101,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 
         present(imagePickerController, animated: true, completion: nil)
     }
-	
+    
     /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
-		print("===== videoMp4URL is =====")
-		print(videoMovURL!)
+        print("===== videoMp4URL is =====")
+        print(videoMovURL!)
         
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
@@ -169,36 +171,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     func generateCaption() {
         // Watsonにwavファイルを投げる
     }
-	
-	/* --- TODO: wavファイルのPathとURLを生成するメソッドを書く --- */
     
-    /* 動画の再生 */
-    func playVideo(_ name: String) {
-        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-
-        let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
-        
-        let player = AVPlayer(url: url)
-        
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        
-        present(playerViewController, animated: true){
-            print("動画再生")
-            playerViewController.player!.play()
+    /* 音声の再生 */
+    @IBAction func playAudio(_ sender: Any) {
+        do {
+            print("音声再生")
+            let player = try AVAudioPlayer(contentsOf: audioM4aURL!)
+            player.play()
+        } catch {
+            print("player initialization error")
         }
     }
-	
-	/* 音声の再生 */
-	@IBAction func playAudio(_ sender: Any) {
-		do {
-            print("音声再生")
-			let player = try AVAudioPlayer(contentsOf: audioM4aURL!)
-			player.play()
-		} catch {
-			print("player initialization error")
-		}
-	}
     
     /* 動画を読み込む */
     func loadVideo(_ url: URL) -> AVPlayer{
@@ -241,40 +224,52 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*
+        print("Cellが選択されました")
+        
         print("---> VideoName")
         print(videos[indexPath.row].name)
         print("<--- VideoName")
         
-        playVideo(videos[indexPath.row].name)
-        */
+        // 選択されたセルの動画情報をprepareメソッドに渡すためにselectedVideoInfoに一時保管
+        selectedVideoInfo = videos[indexPath.row]
         
-        playVideo("MyMovie")
+        // SubViewController へ遷移するために Segue を呼び出す
+        performSegue(withIdentifier: "toSubViewController",sender: nil)
     }
-	
+    
+    /* Segueの準備 */
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+        if (segue.identifier == "toSubViewController") {
+            let subVC: SubViewController = (segue.destination as? SubViewController)!
+            
+            // 選択されたセルの動画情報をSubViewControllerに渡す
+            subVC.receivedVideoInfo = selectedVideoInfo
+        }
+    }
+    
     /* TableViewが空のときに表示する内容のタイトルを設定 */
-	func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-		let text = "No Movies"
-		let font = UIFont.systemFont(ofSize: 30)
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = "No Movies"
+        let font = UIFont.systemFont(ofSize: 30)
         
-		return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
-	}
-	
+        return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
+    }
+    
     /* TableViewが空のときに表示する内容の詳細を設定 */
-	func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-		let paragraph = NSMutableParagraphStyle()
-		paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
-		paragraph.alignment = NSTextAlignment.center
-		paragraph.lineSpacing = 6.0
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
+        paragraph.alignment = NSTextAlignment.center
+        paragraph.lineSpacing = 6.0
         
-		return NSAttributedString(
-			string: "Upload your movies.",
-			attributes:  [
-				NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
-				NSAttributedStringKey.paragraphStyle: paragraph
-			]
-		)
-	}
+        return NSAttributedString(
+            string: "Upload your movies.",
+            attributes:  [
+                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
+                NSAttributedStringKey.paragraphStyle: paragraph
+            ]
+        )
+    }
     
     /* 現在時刻を文字列として取得 */
     func getCurrentTime() -> String {
@@ -283,7 +278,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let now = Date()
         return formatter.string(from: now)
     }
-    
 
     /*
     // MARK: - Navigation

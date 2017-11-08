@@ -61,7 +61,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="163" height="43.5"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQm-4C-sXy">
-                                                    <rect key="frame" x="183" y="8" width="152" height="27"/>
+                                                    <rect key="frame" x="183" y="8" width="152" height="27.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -109,7 +109,6 @@
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="top" secondItem="FES-Wv-Yfz" secondAttribute="bottom" id="6V9-FT-FXw"/>
                             <constraint firstAttribute="trailing" secondItem="FES-Wv-Yfz" secondAttribute="trailing" id="BPI-AF-El7"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="leading" secondItem="FMJ-NX-m0Y" secondAttribute="leadingMargin" id="LAd-oM-80B"/>
-                            <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="FES-Wv-Yfz" secondAttribute="bottom" constant="603" id="m9n-rj-d93"/>
                             <constraint firstItem="FES-Wv-Yfz" firstAttribute="leading" secondItem="FMJ-NX-m0Y" secondAttribute="leading" id="o1d-0b-aMj"/>
                             <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="UgA-5K-BkH" secondAttribute="bottom" id="o6D-fc-4a1"/>
                             <constraint firstItem="FES-Wv-Yfz" firstAttribute="top" secondItem="YeP-2x-JQh" secondAttribute="bottom" id="vyV-rv-eI3"/>
@@ -118,14 +117,59 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
+                        <segue destination="tI5-RB-fPo" kind="presentation" identifier="toSubViewController" id="yHa-kc-afl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQG-q9-QwP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="589.60000000000002" y="16.641679160419791"/>
         </scene>
+        <!--Title-->
+        <scene sceneID="URg-cU-qep">
+            <objects>
+                <viewController id="tI5-RB-fPo" customClass="SubViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D0M-Bx-ef8"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ccu-9G-Qg2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="c5f-MH-R5h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="irQ-HM-JBQ">
+                                <rect key="frame" x="16" y="20" width="343" height="647"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="T1T-gk-u30" appends="YES" id="KuE-Ra-ERF"/>
+                                </connections>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leadingMargin" id="0Ps-Ov-4dt"/>
+                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="trailing" secondItem="c5f-MH-R5h" secondAttribute="trailingMargin" id="Fk4-v2-A35"/>
+                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="top" secondItem="c5f-MH-R5h" secondAttribute="topMargin" id="SKT-pA-eXx"/>
+                            <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="irQ-HM-JBQ" secondAttribute="bottom" id="Wdx-ey-EW6"/>
+                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="bottom" secondItem="c5f-MH-R5h" secondAttribute="bottomMargin" id="jvL-eT-dyM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="gzp-0F-O7M"/>
+                    <connections>
+                        <outlet property="imageView" destination="irQ-HM-JBQ" id="cBG-kJ-dx8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B5o-aQ-1Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="T1T-gk-u30">
+                    <connections>
+                        <action selector="imageTapped:" destination="tI5-RB-fPo" id="vv1-gs-04V"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="1486.875" y="14.788732394366198"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Setting" width="24" height="24"/>
     </resources>
+    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
