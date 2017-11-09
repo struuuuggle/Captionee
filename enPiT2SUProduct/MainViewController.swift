@@ -7,6 +7,7 @@
 
 import UIKit
 import AVKit
+import Photos
 import DZNEmptyDataSet
 import KRProgressHUD
 import SpeechToTextV1
@@ -94,12 +95,29 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBAction func selectImage(_ sender: Any) {
         print("カメラロールから動画を選択")
         
-        imagePickerController.sourceType = .photoLibrary
-        imagePickerController.delegate = self
-        // 動画だけ表示
-        imagePickerController.mediaTypes = ["public.movie"]
-
-        present(imagePickerController, animated: true, completion: nil)
+        // ユーザーに許可を促す
+        PHPhotoLibrary.requestAuthorization { (status) -> Void in
+            switch(status){
+            case .authorized:
+                print("Authorized")
+                
+                // PhotoLibraryの設定
+                self.imagePickerController.sourceType = .photoLibrary
+                self.imagePickerController.delegate = self
+                self.imagePickerController.mediaTypes = ["public.movie"]
+                
+                // PhotoLibraryの表示
+                self.present(self.imagePickerController, animated: true, completion: nil)
+            case .denied:
+                print("Denied")
+                
+                self.failure()
+            case .notDetermined:
+                print("NotDetermined")
+            case .restricted:
+                print("Restricted")
+            }
+        }
     }
     
     /* PhotoLibraryで動画を選択したとき */
@@ -144,6 +162,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* 動画のアップロードに成功したとき */
     func success() {
         KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
+    }
+    
+    /* 動画のアップロードに失敗したとき */
+    func failure() {
+        KRProgressHUD.showError(withMessage: "Processing failed")
     }
     
     /* 動画からサムネイルを生成する */
