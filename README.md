@@ -11,3 +11,4 @@
 
 # 「Captionee」
 公式ホームページは[こちら](https://struuuuggle.github.io/Captionee/)
+ホームページを管理するリポジトリは[こちら](https://github.com/struuuuggle/Captionee)
