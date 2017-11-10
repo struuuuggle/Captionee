@@ -19,6 +19,10 @@ class SubViewController: UIViewController{
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+        // StatusBarの設定
+        //let statusBar = StatusBar(.orange)
+        //view.addSubview(statusBar)
+        
 		// 選択された動画のサムネイルを表示
 		imageView.image = receivedVideoInfo.image
 		// 画像のアスペクト比を維持しUIImageViewサイズに収まるように表示

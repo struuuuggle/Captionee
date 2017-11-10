@@ -37,8 +37,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Do any additional setup after loading the view.
         
         // StatusBarの設定
-        let statusBar = StatusBar(.orange)
-        view.addSubview(statusBar)
+        //let statusBar = StatusBar(.orange)
+        //view.addSubview(statusBar)
                 
         // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
@@ -257,15 +257,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         selectedVideoInfo = videos[indexPath.row]
         
         // SubViewController へ遷移するために Segue を呼び出す
-        performSegue(withIdentifier: "toSubViewController",sender: nil)
+        performSegue(withIdentifier: "toSubViewController", sender: nil)
     }
     
     /* Segueの準備 */
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         if (segue.identifier == "toSubViewController") {
-            let subVC: SubViewController = (segue.destination as? SubViewController)!
+            /*
+            if let cell = sender as? UITableViewCell {
+                print("prepare")
+                let indexPath = self.tableView.indexPath(for: cell)!
+                let subVC = segue.destination as! SubViewController
+                subVC.receivedVideoInfo = self.videos[indexPath.row]
+            }
+            */
             
-            // 選択されたセルの動画情報をSubViewControllerに渡す
+            let subVC = segue.destination as! SubViewController
             subVC.receivedVideoInfo = selectedVideoInfo
         }
     }
