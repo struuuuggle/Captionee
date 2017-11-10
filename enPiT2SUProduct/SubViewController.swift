@@ -31,16 +31,21 @@ class SubViewController: UIViewController{
 	
 	/* 動画の再生 */
 	func playVideo(_ name: String) {
-		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        
+        
+        
+        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
 		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
 		let player = AVPlayer(url: url)
-		let playerViewController = AVPlayerViewController()
-		
-		playerViewController.player = player
-		
-		present(playerViewController, animated: true){
+        let playerViewController = AVPlayerViewController()
+        
+        playerViewController.player = player
+        
+        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 200)
+        
+        present(playerViewController, animated: true){
 			print("動画再生")
-			playerViewController.player!.play()
+			player.play()
 		}
 	}
 	
