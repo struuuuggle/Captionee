@@ -22,16 +22,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoWithFont" translatesAutoresizingMaskIntoConstraints="NO" id="RE4-vv-JR5">
-                                <rect key="frame" x="66" y="220" width="243" height="247"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="j8Z-cC-p4s">
+                                <rect key="frame" x="16" y="20" width="343" height="647"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="RE4-vv-JR5" secondAttribute="trailing" constant="50" id="PWA-hZ-lyr"/>
-                            <constraint firstItem="RE4-vv-JR5" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="200" id="QnJ-lv-txm"/>
-                            <constraint firstItem="RE4-vv-JR5" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="50" id="kDO-Zt-Bwm"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="RE4-vv-JR5" secondAttribute="bottom" constant="200" id="v3T-AL-8U2"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="j8Z-cC-p4s" secondAttribute="bottom" id="AfA-0x-LRG"/>
+                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="Nti-IE-OtF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="j8Z-cC-p4s" secondAttribute="trailing" id="SgG-Xc-hep"/>
+                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="UOX-kk-Txv"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,6 +41,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LogoWithFont" width="2000" height="2000"/>
+        <image name="LunchImage" width="640" height="1136"/>
     </resources>
 </document>

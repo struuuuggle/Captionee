@@ -13,11 +13,13 @@ struct VideoInfo {
     var name: String
     var image: UIImage
     var label: String
+    var caption: String
     
-    init(_ name: String, _ image: UIImage, _ label: String) {
+    init(_ name: String, _ image: UIImage, _ label: String, _ caption: String) {
         self.name = name
         self.image = image
         self.label = label
+        self.caption = caption
     }
     
 }
