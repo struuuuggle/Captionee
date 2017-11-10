@@ -15,7 +15,8 @@ class SubViewController: UIViewController{
 	var receivedVideoInfo: VideoInfo!
 	
 	@IBOutlet weak var imageView: UIImageView!
-	
+    @IBOutlet weak var caption: UILabel!
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -27,6 +28,8 @@ class SubViewController: UIViewController{
 		imageView.image = receivedVideoInfo.image
 		// 画像のアスペクト比を維持しUIImageViewサイズに収まるように表示
 		imageView.contentMode = UIViewContentMode.scaleAspectFit
+        
+        caption.text = receivedVideoInfo.caption
 	}
 	
 	/* 動画の再生 */

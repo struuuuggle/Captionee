@@ -13,7 +13,7 @@ import KRProgressHUD
 import SpeechToTextV1
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, AVAudioPlayerDelegate {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     var window: UIWindow?
     var videoMovURL: URL?
@@ -22,13 +22,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var audioWavURL: URL?
     var videos = [VideoInfo]()
     var speechToText: SpeechToText!
-    var audioPlayer: AVAudioPlayer!
     var speechUrl: URL!
     var selectedVideoInfo: VideoInfo?
+    var caption: String = ""
     
     let imagePickerController = UIImagePickerController()
 
-    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */
@@ -48,47 +47,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.tableFooterView = UIView(frame: .zero);
         
         // SpeechToTextの設定
-        speechUrl = Bundle.main.url(forResource: "SpeechSample", withExtension: "wav")
-        audioPlayer = try! AVAudioPlayer(contentsOf: speechUrl)
+        speechUrl = Bundle.main.url(forResource: "simple", withExtension: "wav")
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        audioPlayer.delegate = self
     }
     
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    /* wavファイルの再生が終わったとき */
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        playButton.setTitle("Play Audio File", for: .normal)
-    }
-    
-    /* wavファイルの再生 */
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        if !audioPlayer.isPlaying {
-            playButton.setTitle("Stop Audio File", for: .normal)
-            audioPlayer.currentTime = 0
-            audioPlayer.play()
-        } else {
-            playButton.setTitle("Play Audio File", for: .normal)
-            audioPlayer.stop()
-        }
-    }
-    
-    /* 音声を文字に起こす */
-    @IBAction func transcribeButtonTapped(_ sender: UIButton) {
-        var settings = RecognitionSettings(contentType: .wav)
-        settings.interimResults = true
-        let failure = { (error: Error) in print(error) }
-        speechToText.recognize(audio: speechUrl, settings: settings, failure: failure) {
-            results in
-            print(results.bestTranscript)
-        }
     }
     
     /* PhotoLibraryから動画を選択する */
@@ -126,14 +95,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("===== videoMp4URL is =====")
         print(videoMovURL!)
         
+        // 動画選択画面を閉じる
+        imagePickerController.dismiss(animated: true, completion: nil)
+        
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
         let label = "No.\(videos.count + 1)"
-        
-        videos.append(VideoInfo(name, image, label))
-        
-        // 動画選択画面を閉じる
-        imagePickerController.dismiss(animated: true, completion: nil)
         
         // 動画から音声を抽出
         videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
@@ -156,17 +123,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.success()
         }
         
+        videos.append(VideoInfo(name, image, label, caption))
+        
         tableView.reloadData()
-    }
-    
-    /* 動画のアップロードに成功したとき */
-    func success() {
-        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
-    }
-    
-    /* 動画のアップロードに失敗したとき */
-    func failure() {
-        KRProgressHUD.showError(withMessage: "Processing failed")
     }
     
     /* 動画からサムネイルを生成する */
@@ -193,32 +152,27 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* 字幕を生成する */
     func generateCaption() {
         // Watsonにwavファイルを投げる
-    }
-    
-    /* 音声の再生 */
-    @IBAction func playAudio(_ sender: Any) {
-        do {
-            print("音声再生")
-            let player = try AVAudioPlayer(contentsOf: audioM4aURL!)
-            player.play()
-        } catch {
-            print("player initialization error")
+        var settings = RecognitionSettings(contentType: .wav)
+        //settings.interimResults = true
+        settings.timestamps = true
+        settings.wordConfidence = true
+        let failure = { (error: Error) in print(error) }
+
+        speechToText.recognize(audio: speechUrl, settings: settings, failure: failure) {
+            results in
+            print(results.bestTranscript)
+            print(results.results)
         }
     }
     
-    /* 動画を読み込む */
-    func loadVideo(_ url: URL) -> AVPlayer{
-        print("動画の読み込み")
-        
-        let videoName = "videoOutput.mp4"
-        var video: AVPlayer?
-        
-        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let path_file_name = dir.appendingPathComponent(videoName)
-            video = AVPlayer(url: path_file_name)
-        }
-        
-        return video!
+    /* 動画のアップロードに成功したとき */
+    func success() {
+        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
+    }
+    
+    /* 動画のアップロードに失敗したとき */
+    func failure() {
+        KRProgressHUD.showError(withMessage: "Processing failed")
     }
     
     /* Cellの個数を指定 */
