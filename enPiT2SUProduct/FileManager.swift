@@ -10,12 +10,17 @@ import AVFoundation
 /* FileManagerの拡張 */
 extension FileManager {
     
+    /* DocumentDirectoryへのPath */
+    static var documentDir: String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+    }
+    
     /* DocumentDirectoryにファイルを保存する */
     static func save(_ url: URL, _ name: String, _ type: AVFileType) -> URL{
         print("---> Save File")
         
         // DocumentDirectoryのPathをセット
-        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let documentPath: String = FileManager.documentDir
         print("---> DocumentPath")
         print(documentPath)
         print("<--- DocumentPath")

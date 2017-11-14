@@ -10,7 +10,6 @@
 		15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4D5951FAF04FD006BC466 /* SubViewController.swift */; };
 		5EB3DAFEB5E5841CB7917BBF /* Pods_enPiT2SUProduct.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */; };
 		700A1B011FA9D977004C7782 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A1B001FA9D977004C7782 /* Credentials.swift */; };
-		701FB1F41FA4C1CA00BBFCB0 /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1F31FA4C1CA00BBFCB0 /* StatusBar.swift */; };
 		701FB1F61FA5711700BBFCB0 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1F51FA5711700BBFCB0 /* FileManager.swift */; };
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
 		705DE6BC1FAAAF7E001EBBE4 /* SpeechSample.wav in Resources */ = {isa = PBXBuildFile; fileRef = 705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */; };
@@ -28,7 +27,6 @@
 		15D4D5951FAF04FD006BC466 /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
 		17DD6213011BDCB6850B0EB6 /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
 		700A1B001FA9D977004C7782 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
-		701FB1F31FA4C1CA00BBFCB0 /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		701FB1F51FA5711700BBFCB0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
 		705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = SpeechSample.wav; path = "Carthage/Checkouts/swift-sdk/Tests/SpeechToTextV1Tests/Audio Files/SpeechSample.wav"; sourceTree = SOURCE_ROOT; };
@@ -102,7 +100,6 @@
 				15D4D5951FAF04FD006BC466 /* SubViewController.swift */,
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
 				701FB1F51FA5711700BBFCB0 /* FileManager.swift */,
-				701FB1F31FA4C1CA00BBFCB0 /* StatusBar.swift */,
 				C0F7E2681F6B7FC90038357B /* Main.storyboard */,
 				C0F7E26B1F6B7FC90038357B /* Assets.xcassets */,
 				705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */,
@@ -273,7 +270,6 @@
 				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */,
 				C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */,
-				701FB1F41FA4C1CA00BBFCB0 /* StatusBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
