@@ -6,7 +6,7 @@
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
-import Foundation
+import AVFoundation
 import UIKit
 import AVKit
 
@@ -44,12 +44,14 @@ class SubViewController: UIViewController{
         
         playerViewController.player = player
         
-        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 200)
+        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 400)
+        playerViewController.showsPlaybackControls = true
+        playerViewController.videoGravity = AVLayerVideoGravity.resizeAspect.rawValue
+        addChildViewController(playerViewController)
+        // 最大画面になった時、これが使用される感じ
+        view.addSubview(playerViewController.view)
         
-        present(playerViewController, animated: true){
-			print("動画再生")
-			player.play()
-		}
+        player.play()
 	}
 	
 	/* サムネイルをタップしたときの動作 */
