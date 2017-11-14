@@ -22,7 +22,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var audioWavURL: URL?
     var videos = [VideoInfo]()
     var speechToText: SpeechToText!
-    var speechUrl: URL!
     var selectedVideoInfo: VideoInfo?
     var caption: String = ""
     
@@ -35,10 +34,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        // StatusBarの設定
-        //let statusBar = StatusBar(.orange)
-        //view.addSubview(statusBar)
-                
         // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
@@ -47,7 +42,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.tableFooterView = UIView(frame: .zero);
         
         // SpeechToTextの設定
-        speechUrl = Bundle.main.url(forResource: "simple", withExtension: "wav")
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
@@ -152,13 +146,18 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* 字幕を生成する */
     func generateCaption() {
-        // Watsonにwavファイルを投げる
+        // wavファイルのURL
+        let speechUrl = Bundle.main.url(forResource: "simple", withExtension: "wav")!
+        
+        // 音声認識の設定
         var settings = RecognitionSettings(contentType: .wav)
-        //settings.interimResults = true
         settings.timestamps = true
         settings.wordConfidence = true
+        
+        // 音声認識に失敗したときの処理
         let failure = { (error: Error) in print(error) }
 
+        // 音声認識の実行
         speechToText.recognize(audio: speechUrl, settings: settings, failure: failure) {
             results in
             print(results.bestTranscript)

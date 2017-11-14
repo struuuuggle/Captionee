@@ -19,10 +19,6 @@ class SubViewController: UIViewController{
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-        // StatusBarの設定
-        //let statusBar = StatusBar(.orange)
-        //view.addSubview(statusBar)
         
 		// 選択された動画のサムネイルを表示
 		imageView.image = receivedVideoInfo.image
@@ -35,9 +31,7 @@ class SubViewController: UIViewController{
 	/* 動画の再生 */
 	func playVideo(_ name: String) {
         
-        
-        
-        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let documentPath: String = FileManager.documentDir
 		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
 		let player = AVPlayer(url: url)
         let playerViewController = AVPlayerViewController()
