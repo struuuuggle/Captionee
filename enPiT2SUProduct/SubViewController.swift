@@ -6,7 +6,7 @@
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
-import Foundation
+import AVFoundation
 import UIKit
 import AVKit
 
@@ -34,17 +34,24 @@ class SubViewController: UIViewController{
 	
 	/* 動画の再生 */
 	func playVideo(_ name: String) {
-		let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        
+        
+        
+        let documentPath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
 		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
 		let player = AVPlayer(url: url)
-		let playerViewController = AVPlayerViewController()
-		
-		playerViewController.player = player
-		
-		present(playerViewController, animated: true){
-			print("動画再生")
-			playerViewController.player!.play()
-		}
+        let playerViewController = AVPlayerViewController()
+        
+        playerViewController.player = player
+        
+        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 400)
+        playerViewController.showsPlaybackControls = true
+        playerViewController.videoGravity = AVLayerVideoGravity.resizeAspect.rawValue
+        addChildViewController(playerViewController)
+        // 最大画面になった時、これが使用される感じ
+        view.addSubview(playerViewController.view)
+        
+        player.play()
 	}
 	
 	/* サムネイルをタップしたときの動作 */
