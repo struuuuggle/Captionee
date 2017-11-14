@@ -86,8 +86,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
-        print("===== videoMp4URL is =====")
+        print("--->videoMovURL")
         print(videoMovURL!)
+        print("<---videoMovURL")
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)

@@ -42,7 +42,6 @@ extension FileManager {
         // 最終的に出力するファイルのパスをexportUrlに代入
         let exportURL: URL = URL(fileURLWithPath: exportPath)
 	
-        
         // Exportするときに必要なソースアセット
         let asset = AVAsset(url: sourceURL)
         print("---> Asset")
@@ -76,5 +75,5 @@ extension FileManager {
         
         return exportURL
     }
-    
+	
 }
