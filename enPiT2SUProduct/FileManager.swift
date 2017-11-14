@@ -16,8 +16,8 @@ extension FileManager {
     }
     
     /* DocumentDirectoryにファイルを保存する */
-    static func save(_ url: URL, _ name: String, _ type: AVFileType) -> URL{
-        print("---> Save File")
+    static func save(_ sourceURL: URL, _ name: String, _ type: AVFileType) -> URL{
+        print("------> Save File \(type)")
         
         // DocumentDirectoryのPathをセット
         let documentPath: String = FileManager.documentDir
@@ -40,10 +40,11 @@ extension FileManager {
         // 出力するファイルのPathを設定
         let exportPath: String = documentPath + "/" + fileName
         // 最終的に出力するファイルのパスをexportUrlに代入
-        let exportUrl: URL = URL(fileURLWithPath: exportPath)
+        let exportURL: URL = URL(fileURLWithPath: exportPath)
+	
         
-        // Exportするときに必要なもろもろのもの
-        let asset = AVAsset(url: url)
+        // Exportするときに必要なソースアセット
+        let asset = AVAsset(url: sourceURL)
         print("---> Asset")
         print(asset)
         print("<--- Asset")
@@ -51,7 +52,7 @@ extension FileManager {
         // Exporterにもろもろのものをセットする
         let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
         exporter?.outputFileType = type
-        exporter?.outputURL = exportUrl
+        exporter?.outputURL = exportURL
         exporter?.shouldOptimizeForNetworkUse = true
         
         // 出力したいパスに既にファイルが存在している場合は、既存のファイルを削除する
@@ -70,10 +71,10 @@ extension FileManager {
                 print("Exportation error = \(String(describing: exporter?.error))")
             }
         })
+		
+        print("<--- Save File \(type)")
         
-        print("<--- Save File")
-        
-        return exportUrl
+        return exportURL
     }
     
 }
