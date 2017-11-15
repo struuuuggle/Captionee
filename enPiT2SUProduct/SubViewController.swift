@@ -30,6 +30,7 @@ class SubViewController: UIViewController{
 	
 	/* 動画の再生 */
 	func playVideo(_ name: String) {
+        print("動画の再生")
         
         let documentPath: String = FileManager.documentDir
 		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")

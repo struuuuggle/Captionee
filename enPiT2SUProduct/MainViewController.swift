@@ -58,7 +58,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBAction func selectImage(_ sender: Any) {
         print("カメラロールから動画を選択")
         
-        // ユーザーに許可を促す
+        // 初回のみ実行
+        requestAuth()
+    }
+    
+    /* PhotoLibraryの利用許可 */
+    func requestAuth() {
         PHPhotoLibrary.requestAuthorization { (status) -> Void in
             switch(status){
             case .authorized:
@@ -86,12 +91,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
-        print("===== videoMp4URL is =====")
+        print("---> MOV URL")
         print(videoMovURL!)
+        print("<--- MOV URL")
         
         // 動画選択画面を閉じる
         imagePickerController.dismiss(animated: true, completion: nil)
         
+        // VideoInfoの設定
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
         let label = "No.\(videos.count + 1)"
@@ -117,8 +124,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.success()
         }
         
+        // TableViewにCellを追加
         videos.append(VideoInfo(name, image, label, caption))
         
+        // TableViewの更新
         tableView.reloadData()
     }
     
@@ -126,6 +135,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     func previewImageFromVideo(_ url: URL) -> UIImage? {
         print("動画からサムネイルを生成する")
         
+        // Assetの取得
         let asset = AVAsset(url: url)
         
         let imageGenerator = AVAssetImageGenerator(asset: asset)
@@ -145,7 +155,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* 字幕を生成する */
     func generateCaption() {
-        // wavファイルのURL
+        // 対象ファイルのURL
         let speechUrl = Bundle.main.url(forResource: "simple", withExtension: "wav")!
         
         // 音声認識の設定
@@ -181,12 +191,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellに値を設定 */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Cellの指定
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath)
         
+        // Cellのサムネイル画像を設定
         let imageView = cell.viewWithTag(1) as! UIImageView
         imageView.image = videos[indexPath.row].image
         imageView.contentMode = .scaleAspectFit
         
+        // Cellの説明を設定
         let label = cell.viewWithTag(2) as! UILabel
         label.text = videos[indexPath.row].label
         
@@ -225,14 +238,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             }
             */
             
+            // 遷移先のViewControllerを設定
             let subVC = segue.destination as! SubViewController
+            
+            // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
         }
     }
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = "No Movies"
+        let text = "No movie uploaded yet."
         let font = UIFont.systemFont(ofSize: 30)
         
         return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
@@ -246,7 +262,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         paragraph.lineSpacing = 6.0
         
         return NSAttributedString(
-            string: "Upload your movies.",
+            string: "Let's upload your movies and watch movies with caption!",
             attributes:  [
                 NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
                 NSAttributedStringKey.paragraphStyle: paragraph
