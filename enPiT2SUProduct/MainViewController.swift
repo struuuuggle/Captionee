@@ -98,12 +98,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let label = "No.\(videos.count + 1)"
         
         // 動画から音声を抽出
+		/*
         videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
         print("---> MP4 URL")
         print(videoMp4URL!)
         print("<--- MP4 URL")
-        
-        audioM4aURL = FileManager.save(videoMp4URL!, name, .m4a)
+		*/
+
+		audioM4aURL = FileManager.save(videoMovURL!, name, .m4a)
         print("---> M4a URL")
         print(audioM4aURL!)
         print("<--- M4a URL")
