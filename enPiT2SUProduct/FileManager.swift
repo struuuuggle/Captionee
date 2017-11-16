@@ -43,25 +43,26 @@ extension FileManager {
         let exportPath: String = documentPath + "/" + fileName
         // 最終的に出力するファイルのパスをexportUrlに代入
         let exportURL: URL = URL(fileURLWithPath: exportPath)
-		
-		// Exportするときに必要なソースアセット
-		var asset = AVAsset(url: sourceURL)
-		if type == .m4a {
-			asset = prepareForM4a(asset)!
-		}
-		print("---> Asset")
-		print(asset)
-		print("<--- Asset")
-		
-	
+        
+        // Exportするときに必要なソースアセット
+        var asset = AVAsset(url: sourceURL)
+        if type == .m4a {
+            asset = prepareForM4a(asset)!
+        }
+        print("---> Asset")
+        print(asset)
+        print("<--- Asset")
+        
+    
         // Exportの準備
-		var exporter: AVAssetExportSession?
-		switch type {
-		case .mp4: exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
-		case .m4a: exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        var exporter: AVAssetExportSession?
+        switch type {
+        case .mp4: exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+        case .m4a: exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        case .wav: exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
         default: print("Invalid extension")
-		}
-		exporter?.outputFileType = type
+        }
+        exporter?.outputFileType = type
         exporter?.outputURL = exportURL
         exporter?.shouldOptimizeForNetworkUse = true
         
@@ -81,24 +82,24 @@ extension FileManager {
                 print("Exportation error = \(String(describing: exporter?.error))")
             }
         })
-		
+        
         print("<--------- Save File \(type)")
         return exportURL
     }
-	
-	/* 動画から音声の抽出 */
-	static func prepareForM4a(_ asset: AVAsset) -> AVAsset? {
-		print("---> prepareForM4a")
-		// Create a composition
-		let composition = AVMutableComposition()
-		do {
-			guard let audioAssetTrack = asset.tracks(withMediaType: AVMediaType.audio).first else { return nil }
-			let audioCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-			try audioCompositionTrack?.insertTimeRange(audioAssetTrack.timeRange, of: audioAssetTrack, at: kCMTimeZero)
-		} catch {
-			print(error)
-		}
-		print("<--- prepareForM4a")
-		return composition
-	}
+    
+    /* 動画から音声の抽出 */
+    static func prepareForM4a(_ asset: AVAsset) -> AVAsset? {
+        print("---> prepareForM4a")
+        // Create a composition
+        let composition = AVMutableComposition()
+        do {
+            guard let audioAssetTrack = asset.tracks(withMediaType: AVMediaType.audio).first else { return nil }
+            let audioCompositionTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid)
+            try audioCompositionTrack?.insertTimeRange(audioAssetTrack.timeRange, of: audioAssetTrack, at: kCMTimeZero)
+        } catch {
+            print(error)
+        }
+        print("<--- prepareForM4a")
+        return composition
+    }
 }

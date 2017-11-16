@@ -100,6 +100,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let image = previewImageFromVideo(videoMovURL!)!
         let label = "No.\(videos.count + 1)"
         
+        /*
         // サブスレッドで処理
         let queue = DispatchQueue(label: "lockQueue")
         queue.async {
@@ -115,14 +116,20 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("---> M4a URL")
             print(self.audioM4aURL!)
             print("<--- M4a URL")
-            
-            sleep(1)
-        
-            self.audioWavURL = FileManager.save(self.audioM4aURL!, name, .wav)
-            print("---> WAV URL")
-            print(self.audioWavURL!)
-            print("<--- WAV URL")
         }
+        */
+        
+        // MOVからMP4に変換
+        videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
+        print("---> MP4 URL")
+        print(self.videoMp4URL!)
+        print("<--- MP4 URL")
+        
+        // MOVからM4Aに変換
+        audioM4aURL = FileManager.save(videoMovURL!, name, .m4a)
+        print("---> M4a URL")
+        print(audioM4aURL!)
+        print("<--- M4a URL")
         
         // メインスレッドで処理
         let lockQueue = DispatchQueue.main
