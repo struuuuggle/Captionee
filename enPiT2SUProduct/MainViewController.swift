@@ -95,34 +95,46 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(videoMovURL!)
         print("<--- MOV URL")
         
-        // 動画選択画面を閉じる
-        imagePickerController.dismiss(animated: true, completion: nil)
-        
         // VideoInfoの設定
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
         let label = "No.\(videos.count + 1)"
         
-        // 動画から音声を抽出
-        videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
-        print("---> MP4 URL")
-        print(videoMp4URL!)
-        print("<--- MP4 URL")
+        // サブスレッドで処理
+        let queue = DispatchQueue(label: "lockQueue")
+        queue.async {
+            // 動画から音声を抽出
+            self.videoMp4URL = FileManager.save(self.videoMovURL!, name, .mp4)
+            print("---> MP4 URL")
+            print(self.videoMp4URL!)
+            print("<--- MP4 URL")
+            
+            sleep(1)
         
-        audioM4aURL = FileManager.save(videoMp4URL!, name, .m4a)
-        print("---> M4a URL")
-        print(audioM4aURL!)
-        print("<--- M4a URL")
+            self.audioM4aURL = FileManager.save(self.videoMp4URL!, name, .m4a)
+            print("---> M4a URL")
+            print(self.audioM4aURL!)
+            print("<--- M4a URL")
+            
+            sleep(1)
+        
+            self.audioWavURL = FileManager.save(self.audioM4aURL!, name, .wav)
+            print("---> WAV URL")
+            print(self.audioWavURL!)
+            print("<--- WAV URL")
+        }
+        
+        // メインスレッドで処理
+        let lockQueue = DispatchQueue.main
+        lockQueue.async {
+            // 動画選択画面を閉じる
+            self.imagePickerController.dismiss(animated: true, completion: nil)
+        }
         
         // KRProgressHUDの開始
-        KRProgressHUD.showOn(self).show(withMessage: "Processing...")
+        KRProgressHUD.show(withMessage: "Uploading...")
         
         generateCaption()
-        
-        // KRProgressHUDの終了
-        KRProgressHUD.dismiss() {
-            self.success()
-        }
         
         // TableViewにCellを追加
         videos.append(VideoInfo(name, image, label, caption))
@@ -133,7 +145,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* 動画からサムネイルを生成する */
     func previewImageFromVideo(_ url: URL) -> UIImage? {
-        print("動画からサムネイルを生成する")
+        print("動画からサムネイルを生成")
         
         // Assetの取得
         let asset = AVAsset(url: url)
@@ -155,6 +167,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* 字幕を生成する */
     func generateCaption() {
+        print("字幕を生成")
+        
         // 対象ファイルのURL
         let speechUrl = Bundle.main.url(forResource: "simple", withExtension: "wav")!
         
@@ -164,24 +178,43 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         settings.wordConfidence = true
         
         // 音声認識に失敗したときの処理
-        let failure = { (error: Error) in print(error) }
-
-        // 音声認識の実行
-        speechToText.recognize(audio: speechUrl, settings: settings, failure: failure) {
-            results in
-            print(results.bestTranscript)
-            print(results.results)
+        let failure = { (error: Error) in
+            print(error)
+            
+            self.failure()
         }
+        
+        // 音声認識に成功したときの処理
+        let success = { (results: SpeechRecognitionResults) in
+            print(results.results)
+            
+            // 認識結果を字幕に設定
+            self.caption = results.bestTranscript
+        
+            print("---> Caption")
+            print(self.caption)
+            print("<--- Caption")
+            
+            self.success()
+        }
+        
+        // 音声認識の実行
+        speechToText.recognize(audio: speechUrl, settings: settings, model: "ja-JP_BroadbandModel",
+                               customizationID: nil, learningOptOut: true, failure: failure, success: success)
     }
     
     /* 動画のアップロードに成功したとき */
     func success() {
-        KRProgressHUD.showSuccess(withMessage: "Successfully processed!")
+        KRProgressHUD.dismiss() {
+            KRProgressHUD.showSuccess(withMessage: "Successfully uploaded!")
+        }
     }
     
     /* 動画のアップロードに失敗したとき */
     func failure() {
-        KRProgressHUD.showError(withMessage: "Processing failed")
+        KRProgressHUD.dismiss() {
+            KRProgressHUD.showError(withMessage: "Uploading failed.")
+        }
     }
     
     /* Cellの個数を指定 */
@@ -243,12 +276,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
+            subVC.receivedCaption = caption
         }
     }
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = "No movie uploaded yet."
+        let text = "No movie uploaded."
         let font = UIFont.systemFont(ofSize: 30)
         
         return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
@@ -262,7 +296,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         paragraph.lineSpacing = 6.0
         
         return NSAttributedString(
-            string: "Let's upload your movies and watch movies with caption!",
+            string: "Let's upload your movies and\n watch them with caption!",
             attributes:  [
                 NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
                 NSAttributedStringKey.paragraphStyle: paragraph

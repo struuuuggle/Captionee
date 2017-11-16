@@ -12,7 +12,6 @@
 		700A1B011FA9D977004C7782 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A1B001FA9D977004C7782 /* Credentials.swift */; };
 		701FB1F61FA5711700BBFCB0 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1F51FA5711700BBFCB0 /* FileManager.swift */; };
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
-		705DE6BC1FAAAF7E001EBBE4 /* SpeechSample.wav in Resources */ = {isa = PBXBuildFile; fileRef = 705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */; };
 		705DE6BE1FAAB913001EBBE4 /* SpeechToTextV1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */; };
 		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
 		70E23B0C1FB560C3009D900C /* simple.wav in Resources */ = {isa = PBXBuildFile; fileRef = 70E23B0B1FB560C3009D900C /* simple.wav */; };
@@ -29,7 +28,6 @@
 		700A1B001FA9D977004C7782 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		701FB1F51FA5711700BBFCB0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
-		705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = SpeechSample.wav; path = "Carthage/Checkouts/swift-sdk/Tests/SpeechToTextV1Tests/Audio Files/SpeechSample.wav"; sourceTree = SOURCE_ROOT; };
 		705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechToTextV1.framework; path = Carthage/Build/iOS/SpeechToTextV1.framework; sourceTree = "<group>"; };
 		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		70E23B0B1FB560C3009D900C /* simple.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = simple.wav; sourceTree = "<group>"; };
@@ -94,15 +92,14 @@
 		C0F7E2631F6B7FC90038357B /* enPiT2SUProduct */ = {
 			isa = PBXGroup;
 			children = (
-				700A1B001FA9D977004C7782 /* Credentials.swift */,
 				C0F7E2641F6B7FC90038357B /* AppDelegate.swift */,
 				7068FE0E1F98BD1F00C814FA /* MainViewController.swift */,
 				15D4D5951FAF04FD006BC466 /* SubViewController.swift */,
+				700A1B001FA9D977004C7782 /* Credentials.swift */,
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
 				701FB1F51FA5711700BBFCB0 /* FileManager.swift */,
 				C0F7E2681F6B7FC90038357B /* Main.storyboard */,
 				C0F7E26B1F6B7FC90038357B /* Assets.xcassets */,
-				705DE6BB1FAAAF7E001EBBE4 /* SpeechSample.wav */,
 				70E23B0B1FB560C3009D900C /* simple.wav */,
 				C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */,
 				C0F7E2701F6B7FC90038357B /* Info.plist */,
@@ -177,7 +174,6 @@
 			files = (
 				C0F7E26F1F6B7FC90038357B /* LaunchScreen.storyboard in Resources */,
 				C0F7E26C1F6B7FC90038357B /* Assets.xcassets in Resources */,
-				705DE6BC1FAAAF7E001EBBE4 /* SpeechSample.wav in Resources */,
 				70E23B0C1FB560C3009D900C /* simple.wav in Resources */,
 				C0F7E26A1F6B7FC90038357B /* Main.storyboard in Resources */,
 			);
