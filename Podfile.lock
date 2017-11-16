@@ -1,7 +1,7 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
   - KRActivityIndicatorView (2.1.1)
-  - KRProgressHUD (3.1.1):
+  - KRProgressHUD (3.1.2):
     - KRActivityIndicatorView (= 2.1.1)
   - TouchVisualizer (3.0.0)
 
@@ -13,7 +13,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   KRActivityIndicatorView: fa5df9f4cf039651ad8b0f9c11c3159d1e19299f
-  KRProgressHUD: 0e380cf5386365e6821c43ef51388d3a680a1cc6
+  KRProgressHUD: 6e23870531f8e854c8cba430b0f5a61074865250
   TouchVisualizer: 5cb21ff505c4e60166fe0c8e84a82e5d9ee9e64c
 
 PODFILE CHECKSUM: 25005fb245d0bf830a33d364df9889277834cc25
