@@ -10,6 +10,7 @@ import AVKit
 import Photos
 import DZNEmptyDataSet
 import KRProgressHUD
+import MaterialComponents
 import SpeechToTextV1
 
 /* メイン画面のController */

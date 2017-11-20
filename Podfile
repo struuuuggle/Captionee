@@ -6,8 +6,8 @@ target 'enPiT2SUProduct' do
   use_frameworks!
 
   # Pods for enPiT2SUProduct
-  pod 'TouchVisualizer'
   pod 'KRProgressHUD'
   pod 'DZNEmptyDataSet'
+  pod 'MaterialComponents'
 
 end
