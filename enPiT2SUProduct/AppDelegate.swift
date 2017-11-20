@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MaterialComponents
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,10 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // NavigationBarの設定
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barTintColor = UIColor.orange
+        UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
         UINavigationBar.appearance().titleTextAttributes = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont.italicSystemFont(ofSize: 26.0),
+            NSAttributedStringKey.foregroundColor: MDCPalette.orange.tint50,
+            NSAttributedStringKey.font: MDCTypography.titleFont()
         ]
         UINavigationBar.appearance().isTranslucent = false
         

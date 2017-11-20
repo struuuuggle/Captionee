@@ -291,7 +291,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* TableViewが空のときに表示する内容のタイトルを設定 */
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let text = "No movie uploaded."
-        let font = UIFont.systemFont(ofSize: 30)
+        let font = MDCTypography.titleFont()
         
         return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
     }
@@ -306,7 +306,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return NSAttributedString(
             string: "Let's upload your movies and\n watch them with caption!",
             attributes:  [
-                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0),
+                NSAttributedStringKey.font: MDCTypography.body1Font(),
                 NSAttributedStringKey.paragraphStyle: paragraph
             ]
         )
