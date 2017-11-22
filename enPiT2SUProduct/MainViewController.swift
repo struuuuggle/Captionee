@@ -249,7 +249,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellの高さを設定 */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120.0
+        // 画面の縦サイズ
+        let screenHeight = UIScreen.main.bounds.size.height
+        
+        // StatusBarの縦サイズ
+        let statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+        
+        // NavigationBarの縦サイズ
+        let navBarHeight = navigationController!.navigationBar.frame.size.height
+        
+        // 表示するCellの個数
+        let cellNumber: CGFloat = 5
+        
+        // Cellの高さ
+        let cellHeight = (screenHeight - statusBarHeight - navBarHeight) / cellNumber
+
+        return cellHeight
+        //return 120.0
     }
     
     /* Cellが選択されたとき */
@@ -265,6 +281,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // SubViewController へ遷移するために Segue を呼び出す
         performSegue(withIdentifier: "toSubViewController", sender: nil)
+        
+        // Cellの選択状態を解除
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     /* Segueの準備 */

@@ -6,8 +6,6 @@
 //
 
 import AVFoundation
-import Foundation
-import CoreMedia
 
 /* FileManagerの拡張 */
 extension FileManager {
