@@ -158,13 +158,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Assetの取得
         let asset = AVAsset(url: url)
         
+        // ImageGeneratorを生成
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true
         
+        // 動画中のサムネイルにする場面の時間を設定
         var time = asset.duration
         time.value = min(time.value, 2)
         
         do {
+            // サムネイルを生成
             let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
             
             return UIImage(cgImage: imageRef)
@@ -265,7 +268,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let cellHeight = (screenHeight - statusBarHeight - navBarHeight) / cellNumber
 
         return cellHeight
-        //return 120.0
     }
     
     /* Cellが選択されたとき */
@@ -309,7 +311,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        // テキストを設定
         let text = "No movie uploaded."
+        
+        // フォントを設定
         let font = MDCTypography.titleFont()
         
         return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
@@ -317,15 +322,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* TableViewが空のときに表示する内容の詳細を設定 */
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        // テキストを設定
+        let text = "Let's upload your movies and\n watch them with caption!"
+        
+        // フォントを設定
+        let font = MDCTypography.body1Font()
+        
+        // パラグラフを設定
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = NSLineBreakMode.byWordWrapping
         paragraph.alignment = NSTextAlignment.center
         paragraph.lineSpacing = 6.0
         
         return NSAttributedString(
-            string: "Let's upload your movies and\n watch them with caption!",
+            string: text,
             attributes:  [
-                NSAttributedStringKey.font: MDCTypography.body1Font(),
+                NSAttributedStringKey.font: font,
                 NSAttributedStringKey.paragraphStyle: paragraph
             ]
         )
