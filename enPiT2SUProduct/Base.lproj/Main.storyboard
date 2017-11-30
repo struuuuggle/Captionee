@@ -10,6 +10,42 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Setting-->
+        <scene sceneID="FXX-or-jCW">
+            <objects>
+                <viewController title="Setting" id="R3h-QI-D0b" customClass="SettingViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nlt-nt-ZyM"/>
+                        <viewControllerLayoutGuide type="bottom" id="IWh-kH-ILL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ch9-0J-ErS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xW3-1d-H2a">
+                                <rect key="frame" x="137.5" y="318" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="ufa-va-FXx"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xW3-1d-H2a" firstAttribute="centerY" secondItem="Ch9-0J-ErS" secondAttribute="centerY" id="OeS-Bf-Etn"/>
+                            <constraint firstItem="xW3-1d-H2a" firstAttribute="centerX" secondItem="Ch9-0J-ErS" secondAttribute="centerX" id="XMu-Ab-Ju9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="textField" destination="xW3-1d-H2a" id="RWg-x0-gPJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="928.79999999999995" y="-690.40479760119945"/>
+        </scene>
         <!--Captionee-->
         <scene sceneID="7ht-LL-fkl">
             <objects>
@@ -61,15 +97,14 @@
                                     <outlet property="delegate" destination="Z6o-d9-NA3" id="9LF-z6-gNS"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
+                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
                                 <rect key="frame" x="295" y="590" width="60" height="60"/>
                                 <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="2jk-F4-cQX"/>
                                     <constraint firstAttribute="width" constant="60" id="yS9-ae-ROb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                <state key="normal" title="+">
+                                <state key="normal" image="Add">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -93,7 +128,21 @@
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="trailing" secondItem="FMJ-NX-m0Y" secondAttribute="trailingMargin" id="z4c-qb-OAy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK"/>
+                    <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK">
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="done" id="HIh-ll-lBg">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZIn-3p-4Qh">
+                                <rect key="frame" x="335" y="10" width="24" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Setting"/>
+                                <connections>
+                                    <segue destination="R3h-QI-D0b" kind="show" id="mnc-dW-uQv"/>
+                                </connections>
+                            </button>
+                            <connections>
+                                <action selector="settingButtonTapped:" destination="Z6o-d9-NA3" id="0p1-Ma-kPN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
                         <segue destination="tI5-RB-fPo" kind="show" identifier="toSubViewController" id="e8m-EU-3v6"/>
@@ -174,5 +223,9 @@
             <point key="canvasLocation" x="-76" y="17"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Add" width="24" height="24"/>
+        <image name="Setting" width="24" height="24"/>
+    </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

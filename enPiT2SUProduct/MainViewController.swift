@@ -30,15 +30,29 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBAction func settingButtonTapped(_ sender: UIBarButtonItem) {
+    }
+    
     /* Viewがロードされたとき */
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         // NavigationBarの左側にMenuButtonを設置
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu"), style: .plain, target: self, action: #selector(menuButtonTapped))
+        let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(menuButtonTapped))
+        navigationItem.leftBarButtonItem = menuButton
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Setting"), style: .plain, target: self, action: #selector(settingButtonTapped))
+        /*
+        // NavigationBarの右側にSettingButtonを設置
+        let settingButton = UIBarButtonItem(image: UIImage(named: "Setting"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(settingButtonTapped))
+        navigationItem.rightBarButtonItem = settingButton
+        */
         
         // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
@@ -58,9 +72,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("Menu button tapped.")
     }
     
+    /*
     @objc func settingButtonTapped(_ sender: UIBarButtonItem) {
         print("Setting button tapped.")
     }
+    */
     
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {

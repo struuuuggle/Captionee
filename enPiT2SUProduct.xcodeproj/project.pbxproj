@@ -14,6 +14,7 @@
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
 		705DE6BE1FAAB913001EBBE4 /* SpeechToTextV1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */; };
 		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
+		70A5660D1FCFDBE600694683 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A5660C1FCFDBE600694683 /* SettingViewController.swift */; };
 		70E23B0C1FB560C3009D900C /* simple.wav in Resources */ = {isa = PBXBuildFile; fileRef = 70E23B0B1FB560C3009D900C /* simple.wav */; };
 		C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7E2641F6B7FC90038357B /* AppDelegate.swift */; };
 		C0F7E26A1F6B7FC90038357B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E2681F6B7FC90038357B /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
 		705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechToTextV1.framework; path = Carthage/Build/iOS/SpeechToTextV1.framework; sourceTree = "<group>"; };
 		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		70A5660C1FCFDBE600694683 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		70E23B0B1FB560C3009D900C /* simple.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = simple.wav; sourceTree = "<group>"; };
 		C0F7E2611F6B7FC90038357B /* enPiT2SUProduct.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enPiT2SUProduct.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F7E2641F6B7FC90038357B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			children = (
 				C0F7E2641F6B7FC90038357B /* AppDelegate.swift */,
 				7068FE0E1F98BD1F00C814FA /* MainViewController.swift */,
+				70A5660C1FCFDBE600694683 /* SettingViewController.swift */,
 				15D4D5951FAF04FD006BC466 /* SubViewController.swift */,
 				700A1B001FA9D977004C7782 /* Credentials.swift */,
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
@@ -275,6 +278,7 @@
 				15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */,
 				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */,
+				70A5660D1FCFDBE600694683 /* SettingViewController.swift in Sources */,
 				C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
