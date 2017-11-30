@@ -74,9 +74,24 @@ class SettingViewController: UIViewController, UITextFieldDelegate, UIPickerView
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         //コンポーネントごとに現在選択されているデータを取得する。
-        let color = self.pickerView(pickerView, titleForRow: pickerView.selectedRow(inComponent: 0), forComponent: 0)
+        let color = self.pickerView(pickerView, titleForRow: pickerView.selectedRow(inComponent: 0), forComponent: 0)!
         
         textField.text = color
+        
+        switch color {
+        case "Red":
+            navigationController?.navigationBar.backgroundColor = MDCPalette.red.tint700
+        case "Orange":
+            navigationController?.navigationBar.backgroundColor = MDCPalette.orange.tint500
+        case "Yellow":
+            navigationController?.navigationBar.backgroundColor = MDCPalette.yellow.tint500
+        case "Green":
+            navigationController?.navigationBar.backgroundColor = MDCPalette.green.tint500
+        case "Blue":
+            navigationController?.navigationBar.backgroundColor = MDCPalette.blue.tint500
+        default:
+            print("Invalid color.")
+        }
     }
 
     /*
