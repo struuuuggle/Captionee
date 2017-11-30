@@ -30,9 +30,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     @IBOutlet weak var tableView: UITableView!
     
-    @IBAction func settingButtonTapped(_ sender: UIBarButtonItem) {
-    }
-    
     /* Viewがロードされたとき */
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,23 +42,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                          action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
-        /*
-        // NavigationBarの右側にSettingButtonを設置
-        let settingButton = UIBarButtonItem(image: UIImage(named: "Setting"),
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(settingButtonTapped))
-        navigationItem.rightBarButtonItem = settingButton
-        */
+        // Viewの背景色を設定
+        view.backgroundColor = MDCPalette.grey.tint100
         
-        // DZNEmptyDataSetの設定
+        // DZNEmptyDataSetのSourceとDelegateを設定
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
         
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
         
-        // SpeechToTextの設定
+        // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
@@ -71,12 +62,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
     }
-    
-    /*
-    @objc func settingButtonTapped(_ sender: UIBarButtonItem) {
-        print("Setting button tapped.")
-    }
-    */
     
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
@@ -340,6 +325,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        // TableViewの背景色を設定
+        scrollView.backgroundColor = MDCPalette.grey.tint100
+        
         // テキストを設定
         let text = "No movie uploaded."
         
