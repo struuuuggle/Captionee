@@ -11,9 +11,16 @@ import MaterialComponents
 
 class SettingViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
+    // AppDelegateの変数にアクセスする用
+    var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    // テーマカラーを設定するためのPickerView
     var colorPicker: UIPickerView!
-    let dataList = ["Red", "Orange", "Yellow", "Green", "Blue"]
+    // テーマカラーのリスト
+    var colorList: [String]!
     
+    // テーマカラーを表示するためのTextField
     @IBOutlet weak var textField: UITextField!
     
     override func viewDidLoad() {
@@ -27,20 +34,30 @@ class SettingViewController: UIViewController, UITextFieldDelegate, UIPickerView
         // DataSourceを設定する.
         colorPicker.dataSource = self
         
-        // testTextFieldのdelegateを設定する。
+        // テーマカラーのリストを設定
+        colorList = [String](appDelegate.color.keys)
+        
+        // testTextFieldのdelegateを設定
         textField.delegate = self
+        
+        // TextFieldに現在のテーマカラーを設定
+        textField.text = appDelegate.themeColor
         
         // 閉じるボタンのツールバー生成
         let kbToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 40))
-        kbToolBar.barStyle = UIBarStyle.default  // スタイルを設定
-        kbToolBar.sizeToFit()  // 画面幅に合わせてサイズを変更
+        kbToolBar.barStyle = UIBarStyle.default
+        kbToolBar.sizeToFit()
+        
         // スペーサー
         let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+        
         // 閉じるボタン
         let commitButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(commitButtonTapped))
         
+        // ツールバーのアイテムを設定
         kbToolBar.items = [spacer, commitButton]
         
+        // TextFieldの入力方法を設定
         textField.inputView = colorPicker
         textField.inputAccessoryView = kbToolBar
     }
@@ -62,12 +79,12 @@ class SettingViewController: UIViewController, UITextFieldDelegate, UIPickerView
     
     //コンポーネントに含まれるデータの個数を返すメソッド
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return dataList.count
+        return colorList.count
     }
     
     //データを返すメソッド
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return dataList[row]
+        return colorList[row]
     }
     
     //データ選択時の呼び出しメソッド
@@ -76,22 +93,16 @@ class SettingViewController: UIViewController, UITextFieldDelegate, UIPickerView
         //コンポーネントごとに現在選択されているデータを取得する。
         let color = self.pickerView(pickerView, titleForRow: pickerView.selectedRow(inComponent: 0), forComponent: 0)!
         
+        // TextFieldに変更後のテーマカラーを設定
         textField.text = color
         
-        switch color {
-        case "Red":
-            navigationController?.navigationBar.backgroundColor = MDCPalette.red.tint700
-        case "Orange":
-            navigationController?.navigationBar.backgroundColor = MDCPalette.orange.tint500
-        case "Yellow":
-            navigationController?.navigationBar.backgroundColor = MDCPalette.yellow.tint500
-        case "Green":
-            navigationController?.navigationBar.backgroundColor = MDCPalette.green.tint500
-        case "Blue":
-            navigationController?.navigationBar.backgroundColor = MDCPalette.blue.tint500
-        default:
-            print("Invalid color.")
-        }
+        // AppDelegateのテーマカラーを設定
+        appDelegate.themeColor = color
+        
+        // NavigationBarの背景色のテーマカラーを設定
+        navigationController?.navigationBar.backgroundColor = appDelegate.color[color]
+        
+        print("Theme color is \(appDelegate.themeColor)")
     }
 
     /*

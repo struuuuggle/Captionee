@@ -12,7 +12,10 @@ import MaterialComponents
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var themeColor = "Orange"
+    let color = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
+                 "Yellow": MDCPalette.yellow.tint500, "Green": MDCPalette.green.tint500,
+                 "Blue": MDCPalette.blue.tint500]
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
