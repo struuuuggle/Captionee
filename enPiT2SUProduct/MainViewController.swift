@@ -187,7 +187,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             // cropするサイズを設定
             let size = min(image.width, image.height)
             
-            // サムネイルをcropする
+            // サムネイルを正方形にcropする
             let croppedImage = image.cropping(to: CGRect(x: 0, y: 0, width: size, height: size))!
             
             return UIImage(cgImage: croppedImage)

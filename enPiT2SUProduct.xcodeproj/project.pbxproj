@@ -96,8 +96,8 @@
 			children = (
 				C0F7E2641F6B7FC90038357B /* AppDelegate.swift */,
 				7068FE0E1F98BD1F00C814FA /* MainViewController.swift */,
-				70A5660C1FCFDBE600694683 /* SettingViewController.swift */,
 				15D4D5951FAF04FD006BC466 /* SubViewController.swift */,
+				70A5660C1FCFDBE600694683 /* SettingViewController.swift */,
 				700A1B001FA9D977004C7782 /* Credentials.swift */,
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
 				701FB1F51FA5711700BBFCB0 /* FileManager.swift */,
