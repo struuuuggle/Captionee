@@ -35,7 +35,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(menuButtonTapped))
+        // NavigationBarの左側にMenuButtonを設置
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu"), style: .plain, target: self, action: #selector(menuButtonTapped))
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Setting"), style: .plain, target: self, action: #selector(settingButtonTapped))
         
         // DZNEmptyDataSetの設定
         tableView.emptyDataSetSource = self;
@@ -51,9 +54,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         )
     }
     
-    @objc
-    func menuButtonTapped(_ sender: UIBarButtonItem) {
+    @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
+    }
+    
+    @objc func settingButtonTapped(_ sender: UIBarButtonItem) {
+        print("Setting button tapped.")
     }
     
     /* メモリエラーが発生したとき */
