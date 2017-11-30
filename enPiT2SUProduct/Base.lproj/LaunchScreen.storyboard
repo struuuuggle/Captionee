@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,21 +22,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="j8Z-cC-p4s">
-                                <rect key="frame" x="56" y="100" width="263" height="487"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoWithFont" translatesAutoresizingMaskIntoConstraints="NO" id="j8Z-cC-p4s">
+                                <rect key="frame" x="75" y="208.5" width="225" height="250"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="504" id="0AN-Yd-pOd"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="L3h-UN-U0W"/>
-                                    <constraint firstAttribute="width" secondItem="j8Z-cC-p4s" secondAttribute="height" multiplier="263:487" id="mdJ-q4-yqZ"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="250" id="0AN-Yd-pOd"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="225" id="L3h-UN-U0W"/>
+                                    <constraint firstAttribute="width" secondItem="j8Z-cC-p4s" secondAttribute="height" multiplier="9:10" id="hPQ-9n-6M5"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="40" id="GBj-cK-fhc"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" relation="greaterThanOrEqual" secondItem="j8Z-cC-p4s" secondAttribute="bottom" constant="80" id="ISV-OP-qWa"/>
-                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="80" id="lby-2h-6lB"/>
-                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="j8Z-cC-p4s" secondAttribute="trailing" constant="40" id="rhb-8J-3nQ"/>
+                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YtN-Ro-1bp"/>
+                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ZXW-nV-ZvA"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -47,6 +44,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LunchImage" width="640" height="1136"/>
+        <image name="LogoWithFont" width="2000" height="2000"/>
     </resources>
 </document>
