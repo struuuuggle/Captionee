@@ -182,9 +182,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         do {
             // サムネイルを生成
-            let imageRef = try imageGenerator.copyCGImage(at: time, actualTime: nil)
+            let image = try imageGenerator.copyCGImage(at: time, actualTime: nil)
             
-            return UIImage(cgImage: imageRef)
+            // cropするサイズを設定
+            let size = min(image.width, image.height)
+            
+            // サムネイルをcropする
+            let croppedImage = image.cropping(to: CGRect(x: 0, y: 0, width: size, height: size))!
+            
+            return UIImage(cgImage: croppedImage)
         } catch {
             return nil
         }
