@@ -13,7 +13,7 @@ class SubViewController: UIViewController{
 	
 	var receivedVideoInfo: VideoInfo!
     var receivedCaption: String!
-    var receivedCaptions: Caption!
+    //var receivedCaptions: Caption!
 	
 	@IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var caption: UILabel!
@@ -27,8 +27,8 @@ class SubViewController: UIViewController{
 		imageView.contentMode = UIViewContentMode.scaleAspectFit
         
         // 字幕を表示
-        //caption.text = receivedCaption
-        caption.text = ""
+        caption.text = receivedCaption
+        //caption.text = ""
         /*
         for i in 0..<receivedCaptions.words.count {
             for j in 0..<receivedCaptions.words[i].count {

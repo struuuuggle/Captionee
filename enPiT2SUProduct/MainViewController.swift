@@ -25,7 +25,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
     var caption: String = ""
-    var captions: Caption!
+    //var captions: Caption!
     
     let imagePickerController = UIImagePickerController()
 
@@ -138,7 +138,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // MOVからMP4に変換
         videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)
         print("---> MP4 URL")
-        print(self.videoMp4URL!)
+        print(videoMp4URL!)
         print("<--- MP4 URL")
         
         // MOVからM4Aに変換
@@ -225,6 +225,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("Word: \(times.word), Start: \(times.startTime), End: \(times.endTime)")
             print("<--- Times")
             
+            /*
             var words = [[String]]()
             var startTimes = [[Double]]()
             var endTimes = [[Double]]()
@@ -242,6 +243,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print(words)
             
             self.captions = Caption(words, startTimes, endTimes)
+            */
             
             // 認識結果を字幕に設定
             self.caption = results.bestTranscript
@@ -350,7 +352,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
             subVC.receivedCaption = caption
-            subVC.receivedCaptions = captions
+            //subVC.receivedCaptions = captions
         }
     }
     
