@@ -66,12 +66,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
     }
-    
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        
-        tableView.setEditing(editing, animated: animated)
-    }
 
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
@@ -123,7 +117,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // VideoInfoの設定
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
-        let label = "No.\(videos.count + 1)"
+        let label = name
         
         /*
         // サブスレッドで処理
@@ -283,9 +277,19 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    /* 編集モードの変更 */
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        tableView.setEditing(editing, animated: animated)
+    }
+    
+    /* 編集可能なCellを設定 */
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+    
+    /* Cellの削除 */
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         // 先にデータを更新する
@@ -295,8 +299,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         //tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
     }
+    
+    /* 移動可能なCellを設定 */
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    
+    /* Cellの移動 */
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let sourceIndex = sourceIndexPath.row
+        let destinationIndex = destinationIndexPath.row
+        
+        if sourceIndex >= 0 && sourceIndex < videos.count && destinationIndex >= 0 && destinationIndex < videos.count {
+            let video = videos[sourceIndex]
+            
+            videos.remove(at: sourceIndex)
+            videos.insert(video, at: destinationIndex)
+        }
     }
     
     /* Cellの個数を指定 */
