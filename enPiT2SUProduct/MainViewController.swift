@@ -141,7 +141,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(videoMp4URL!)
         print("<--- MP4 URL")
         
-        // MOVからM4Aに変換
+        
         audioM4aURL = FileManager.save(videoMovURL!, name, .m4a)
         print("---> M4a URL")
         print(audioM4aURL!)
