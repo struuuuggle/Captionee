@@ -15,34 +15,10 @@ class SubViewController: UIViewController{
     var receivedCaption: String!
     //var receivedCaptions: Caption!
 	
-
     @IBOutlet weak var caption: UILabel!
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
-        
-		// 選択された動画のサムネイルを表示
-		imageView.image = receivedVideoInfo.image
-		// 画像のアスペクト比を維持しUIImageViewサイズに収まるように表示
-		imageView.contentMode = UIViewContentMode.scaleAspectFit
-        
-        // 字幕を表示
-        caption.text = receivedCaption
-        //caption.text = ""
-        /*
-        for i in 0..<receivedCaptions.words.count {
-            for j in 0..<receivedCaptions.words[i].count {
-                caption.text?.append(receivedCaptions.words[i][j])
-                //let interval = receivedCaptions.endTimes[index] - receivedCaptions.startTimes[index]
-                //sleep(UInt32(interval))
-            }
-        }
-        */
-	}
-	
-	/* 動画の再生 */
-	func playVideo(_ name: String) {
-        print("動画の再生")
         
         let documentPath: String = FileManager.documentDir
         
@@ -59,21 +35,23 @@ class SubViewController: UIViewController{
         // 最大画面になった時、これが使用される感じ
         view.addSubview(playerViewController.view)
         
+        caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+        
+        
         // 字幕を表示
         caption.text = receivedCaption
+        //caption.text = ""
+        /*
+        for i in 0..<receivedCaptions.words.count {
+            for j in 0..<receivedCaptions.words[i].count {
+                caption.text?.append(receivedCaptions.words[i][j])
+                //let interval = receivedCaptions.endTimes[index] - receivedCaptions.startTimes[index]
+                //sleep(UInt32(interval))
+            }
+        }
+        */
 	}
 	
-	/* 動画の再生
-    func playVideo(_ name: String) {
-        
-    }
-    
-    /* サムネイルをタップしたときの動作 */
-	@IBAction func imageTapped(_ sender: AnyObject) {
-		playVideo()
-        
-    }
-	*/
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}

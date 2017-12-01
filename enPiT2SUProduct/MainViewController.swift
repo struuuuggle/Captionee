@@ -58,8 +58,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        navigationItem.rightBarButtonItem = editButtonItem
         
+        navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
+    }
+    
+    @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
+        print("Menu button tapped.")
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -67,11 +72,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         tableView.setEditing(editing, animated: animated)
     }
-    
-    @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
-        print("Menu button tapped.")
-    }
-    
+
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
