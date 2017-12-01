@@ -164,15 +164,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="irQ-HM-JBQ">
-                                <rect key="frame" x="16" y="64" width="343" height="303"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="T1T-gk-u30" appends="YES" id="KuE-Ra-ERF"/>
-                                </connections>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="字幕を表示" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTv-ER-9my">
-                                <rect key="frame" x="26" y="417" width="323" height="200"/>
+                                <rect key="frame" x="26" y="596.5" width="323" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -180,19 +173,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leadingMargin" id="0Ps-Ov-4dt"/>
-                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="trailing" secondItem="c5f-MH-R5h" secondAttribute="trailingMargin" id="Fk4-v2-A35"/>
                             <constraint firstAttribute="trailingMargin" secondItem="KTv-ER-9my" secondAttribute="trailing" constant="10" id="K3N-YT-WCs"/>
-                            <constraint firstItem="irQ-HM-JBQ" firstAttribute="top" secondItem="D0M-Bx-ef8" secondAttribute="bottom" id="KZO-eb-Aku"/>
-                            <constraint firstItem="KTv-ER-9my" firstAttribute="top" secondItem="irQ-HM-JBQ" secondAttribute="bottom" constant="50" id="PCK-fJ-2d6"/>
                             <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="KTv-ER-9my" secondAttribute="bottom" constant="50" id="VMW-gN-bMf"/>
                             <constraint firstItem="KTv-ER-9my" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leadingMargin" constant="10" id="dUn-Gt-RoI"/>
-                            <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="irQ-HM-JBQ" secondAttribute="bottom" constant="300" id="okV-Gz-Ckw"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
-                        <outlet property="imageView" destination="irQ-HM-JBQ" id="cBG-kJ-dx8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5o-aQ-1Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>

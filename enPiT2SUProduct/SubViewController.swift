@@ -15,7 +15,7 @@ class SubViewController: UIViewController{
     var receivedCaption: String!
     //var receivedCaptions: Caption!
 	
-	@IBOutlet weak var imageView: UIImageView!
+
     @IBOutlet weak var caption: UILabel!
     
 	override func viewDidLoad() {
@@ -46,29 +46,34 @@ class SubViewController: UIViewController{
         
         let documentPath: String = FileManager.documentDir
         
-		let url = URL(fileURLWithPath: documentPath + "/" + name + ".mp4")
+        let url = URL(fileURLWithPath: documentPath + "/" + receivedVideoInfo.name + ".mp4")
         
-		let player = AVPlayer(url: url)
+        let player = AVPlayer(url: url)
         
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
-        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 300)
-        playerViewController.showsPlaybackControls = true
-        playerViewController.videoGravity = AVLayerVideoGravity.resizeAspect.rawValue
         
+        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height/2)
         addChildViewController(playerViewController)
-        
+        playerViewController.showsPlaybackControls = true
         // 最大画面になった時、これが使用される感じ
         view.addSubview(playerViewController.view)
         
-        player.play()
+        // 字幕を表示
+        caption.text = receivedCaption
 	}
 	
-	/* サムネイルをタップしたときの動作 */
+	/* 動画の再生
+    func playVideo(_ name: String) {
+        
+    }
+    
+    /* サムネイルをタップしたときの動作 */
 	@IBAction func imageTapped(_ sender: AnyObject) {
-		playVideo(receivedVideoInfo.name)
-	}
-	
+		playVideo()
+        
+    }
+	*/
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 	}
