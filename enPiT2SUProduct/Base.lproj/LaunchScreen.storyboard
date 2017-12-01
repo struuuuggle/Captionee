@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,15 +24,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="j8Z-cC-p4s">
-                                <rect key="frame" x="16" y="20" width="343" height="647"/>
+                                <rect key="frame" x="56" y="100" width="263" height="487"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="504" id="0AN-Yd-pOd"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="L3h-UN-U0W"/>
+                                    <constraint firstAttribute="width" secondItem="j8Z-cC-p4s" secondAttribute="height" multiplier="263:487" id="mdJ-q4-yqZ"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="j8Z-cC-p4s" secondAttribute="bottom" id="AfA-0x-LRG"/>
-                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="Nti-IE-OtF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="j8Z-cC-p4s" secondAttribute="trailing" id="SgG-Xc-hep"/>
-                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="UOX-kk-Txv"/>
+                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="40" id="GBj-cK-fhc"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" relation="greaterThanOrEqual" secondItem="j8Z-cC-p4s" secondAttribute="bottom" constant="80" id="ISV-OP-qWa"/>
+                            <constraint firstItem="j8Z-cC-p4s" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="80" id="lby-2h-6lB"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="j8Z-cC-p4s" secondAttribute="trailing" constant="40" id="rhb-8J-3nQ"/>
                         </constraints>
                     </view>
                 </viewController>
