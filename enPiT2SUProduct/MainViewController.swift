@@ -47,8 +47,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
+        navigationItem.rightBarButtonItem = editButtonItem
+        
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        tableView.setEditing(editing, animated: animated)
+    }
+    
+
     /* メモリエラーが発生したとき */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -223,6 +232,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         KRProgressHUD.dismiss() {
             KRProgressHUD.showError(withMessage: "Uploading failed.")
         }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // 先にデータを更新する
+        videos.remove(at: indexPath.row)
+        
+        // それからテーブルの更新
+        //tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        tableView.reloadData()
+    }
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
     /* Cellの個数を指定 */
