@@ -1,26 +1,36 @@
 //
 //  AppDelegate.swift
-//  enPiT2SUProduct
 //
-//  Created by Jun Ohkubo on 2017/09/15.
+//  Created by team-E on 2017/09/15.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
-//  追記(20170929 1702) Mikiya Abe 
 
 import UIKit
+import MaterialComponents
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var themeColor = "Orange"
+    let color = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
+                 "Yellow": MDCPalette.yellow.tint500, "Green": MDCPalette.green.tint500,
+                 "Blue": MDCPalette.blue.tint500]
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // NavigationBarの設定
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barTintColor = UIColor.orange
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: MDCTypography.titleFont()
+        ]
         UINavigationBar.appearance().isTranslucent = false
+        
+        // 起動時間延長
+        sleep(2)
         
         return true
     }
