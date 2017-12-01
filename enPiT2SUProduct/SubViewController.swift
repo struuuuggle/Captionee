@@ -13,6 +13,7 @@ class SubViewController: UIViewController{
 	
 	var receivedVideoInfo: VideoInfo!
     var receivedCaption: String!
+    var receivedCaptions: Caption!
 	
 	@IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var caption: UILabel!
@@ -26,7 +27,17 @@ class SubViewController: UIViewController{
 		imageView.contentMode = UIViewContentMode.scaleAspectFit
         
         // 字幕を表示
-        caption.text = receivedCaption
+        //caption.text = receivedCaption
+        caption.text = ""
+        /*
+        for i in 0..<receivedCaptions.words.count {
+            for j in 0..<receivedCaptions.words[i].count {
+                caption.text?.append(receivedCaptions.words[i][j])
+                //let interval = receivedCaptions.endTimes[index] - receivedCaptions.startTimes[index]
+                //sleep(UInt32(interval))
+            }
+        }
+        */
 	}
 	
 	/* 動画の再生 */

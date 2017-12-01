@@ -25,6 +25,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
     var caption: String = ""
+    var captions: Caption!
     
     let imagePickerController = UIImagePickerController()
 
@@ -219,6 +220,29 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let success = { (results: SpeechRecognitionResults) in
             print(results.results)
             
+            let times = results.results[1].alternatives[0].timestamps![0]
+            print("---> Times")
+            print("Word: \(times.word), Start: \(times.startTime), End: \(times.endTime)")
+            print("<--- Times")
+            
+            var words = [[String]]()
+            var startTimes = [[Double]]()
+            var endTimes = [[Double]]()
+            
+            var index = 0
+            for result in results.results {
+                for timestamp in result.alternatives[0].timestamps! {
+                    words[index].append(timestamp.word)
+                    startTimes[index].append(timestamp.startTime)
+                    endTimes[index].append(timestamp.endTime)
+                }
+                index += 1
+            }
+            
+            print(words)
+            
+            self.captions = Caption(words, startTimes, endTimes)
+            
             // 認識結果を字幕に設定
             self.caption = results.bestTranscript
         
@@ -326,6 +350,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
             subVC.receivedCaption = caption
+            subVC.receivedCaptions = captions
         }
     }
     
