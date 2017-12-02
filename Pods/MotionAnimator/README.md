@@ -6,7 +6,6 @@
 [![codecov](https://codecov.io/gh/material-motion/motion-animator-objc/branch/develop/graph/badge.svg)](https://codecov.io/gh/material-motion/motion-animator-objc)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/MotionAnimator.svg)](https://cocoapods.org/pods/MotionAnimator)
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
-[![Docs](https://img.shields.io/cocoapods/metrics/doc-percent/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
 ---
 
@@ -74,8 +73,8 @@ struct CalendarChipMotionSpec CalendarChipSpec = {
 ```
 
 Our spec defines two different transition states: expansion and collapse. At runtime, we determine
-which of these two specs we intend to use and then use the timings to animate our views with an
-instance of `MDMMotionAnimator`:
+which of these two specs we need and then use the timings to animate our views with an instance of
+`MDMMotionAnimator`:
 
 ```objc
 CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
@@ -171,8 +170,8 @@ view.center = before;
 Now let's say we wrote the same code with a motion spec and animator:
 
 ```objc
-static const MDMMotionTiming kMotionSpec = {
-  .duration = 0.5, .curve = _MDMSpring(1, 100, 1),
+MDMMotionTiming motionSpec = {
+  .duration = 0.5, .curve = MDMMotionCurveMakeSpring(1, 100, 1),
 };
 
 MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
@@ -180,14 +179,14 @@ animator.shouldReverseValues = dismissing;
 view.center = offscreen;
 [_animator animateWithTiming:kMotionSpec animations:^{
   view.center = onscreen;
-}]
+}];
 ```
 
 Now if we want to change our motion back to an easing curve, we only have to change the spec:
 
 ```objc
-static const MDMMotionTiming kMotionSpec = {
-  .duration = 0.5, .curve = _MDMBezier(0.4f, 0.0f, 0.2f, 1.0f),
+MDMMotionTiming motionSpec = {
+  .duration = 0.5, .curve = MDMMotionCurveMakeBezier(0.4f, 0.0f, 0.2f, 1.0f),
 };
 ```
 
@@ -270,6 +269,11 @@ and a key path:
 `MDMMotionAnimator` is configured by default to generate interruptible animations using Core
 Animation's additive animation APIs. You can simply re-execute the `animate` calls when your
 transition's direction changes and the animator will add new animations for the updated direction.
+
+## Helpful literature
+
+- [Additive animations: animateWithDuration in iOS 8](http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/)
+- [WWDC 2014 video on additive animations](https://developer.apple.com/videos/play/wwdc2014/236/)
 
 ## Contributing
 
