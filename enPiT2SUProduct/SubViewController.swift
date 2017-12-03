@@ -13,10 +13,12 @@ class SubViewController: UIViewController{
 	
 	var receivedVideoInfo: VideoInfo!
     var receivedCaption: String!
+	var receivedTranslation: String!
     //var receivedCaptions: Caption!
 	
     @IBOutlet weak var caption: UILabel!
-    
+    @IBOutlet weak var translation: UILabel!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
@@ -36,6 +38,7 @@ class SubViewController: UIViewController{
         view.addSubview(playerViewController.view)
         
         caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+        //translation.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
         
         
         // 字幕を表示
@@ -50,6 +53,9 @@ class SubViewController: UIViewController{
             }
         }
         */
+		
+		// 翻訳結果を表示
+		translation.text = receivedTranslation
 	}
 	
 	override func didReceiveMemoryWarning() {

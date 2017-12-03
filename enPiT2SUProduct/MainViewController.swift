@@ -25,6 +25,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
     var caption: String = ""
+	var translation: String = ""
     //var captions: Caption!
     
     let imagePickerController = UIImagePickerController()
@@ -159,9 +160,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // KRProgressHUDの開始
         KRProgressHUD.show(withMessage: "Uploading...")
-        
+		
         generateCaption()
-        
+		
         // TableViewにCellを追加
         videos.append(VideoInfo(name, image, label, caption))
         
@@ -254,6 +255,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("---> Caption")
             print(self.caption)
             print("<--- Caption")
+			
+			self.translateCaption()
             
             self.success()
         }
@@ -396,6 +399,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
             subVC.receivedCaption = caption
+			subVC.receivedTranslation = translation
             //subVC.receivedCaptions = captions
         }
     }
@@ -444,6 +448,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let now = Date()
         return formatter.string(from: now)
     }
+	
+	/* 字幕の翻訳 */
+	func translateCaption() {
+		let translator = GoogleTranslate()
+		
+		let params = GoogleTranslateParams(sourceLanguage: "ja", targetLanguage: "en", text: caption)
+		
+		translator.translate(params: params) { (result) in
+			self.translation = "\(result)"
+			print("---> Translation")
+			print(result)
+			print("<--- Translation")
+		}
+		
+	}
 
     /*
     // MARK: - Navigation

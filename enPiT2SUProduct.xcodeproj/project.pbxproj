@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		154368D71FD3D479007E7618 /* GoogleTranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154368D61FD3D479007E7618 /* GoogleTranslate.swift */; };
 		15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4D5951FAF04FD006BC466 /* SubViewController.swift */; };
 		5EB3DAFEB5E5841CB7917BBF /* Pods_enPiT2SUProduct.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */; };
 		700A1B011FA9D977004C7782 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A1B001FA9D977004C7782 /* Credentials.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		0DA3F6B2A6D215B517B664BD /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		154368D61FD3D479007E7618 /* GoogleTranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleTranslate.swift; sourceTree = "<group>"; };
 		15D4D5951FAF04FD006BC466 /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
 		17DD6213011BDCB6850B0EB6 /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
 		700A1B001FA9D977004C7782 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				70E23B0B1FB560C3009D900C /* simple.wav */,
 				C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */,
 				C0F7E2701F6B7FC90038357B /* Info.plist */,
+				154368D61FD3D479007E7618 /* GoogleTranslate.swift */,
 			);
 			path = enPiT2SUProduct;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				700A1B011FA9D977004C7782 /* Credentials.swift in Sources */,
 				701FB1F61FA5711700BBFCB0 /* FileManager.swift in Sources */,
 				15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */,
+				154368D71FD3D479007E7618 /* GoogleTranslate.swift in Sources */,
 				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */,
 				70A5660D1FCFDBE600694683 /* SettingViewController.swift in Sources */,
