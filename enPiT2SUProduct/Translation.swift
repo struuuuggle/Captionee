@@ -28,7 +28,7 @@ class Translation {
 	
 	public init() {
 		//API_KEY = "AIzaSyBy25ZpPXYkIDHYfUAzBnbk2GUAfRSD4Ko"
-		API_KEY = "AIzaSyC_Pr-LZAncvufc7wN_VHDY2FGgevyx4ZQ"
+		self.API_KEY = "AIzaSyC_Pr-LZAncvufc7wN_VHDY2FGgevyx4ZQ"
 	}
 	
 	
