@@ -451,17 +451,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	
 	/* 字幕の翻訳 */
 	func translateCaption() {
-		let translator = GoogleTranslate()
 		
-		let params = GoogleTranslateParams(sourceLanguage: "ja", targetLanguage: "en", text: caption)
+		let translator = Translation()
 		
-		translator.translate(params: params) { (result) in
+		let translationInfo = TranslationInfo(sourceLanguage: "ja", targetLanguage: "en", text: caption)
+		
+		translator.translate(params: translationInfo) { (result) in
 			self.translation = "\(result)"
 			print("---> Translation")
 			print(result)
 			print("<--- Translation")
 		}
-		
 	}
 
     /*
