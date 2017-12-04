@@ -38,7 +38,7 @@ class SubViewController: UIViewController{
         view.addSubview(playerViewController.view)
         
         caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
-        //translation.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
         
         
         // 字幕を表示
