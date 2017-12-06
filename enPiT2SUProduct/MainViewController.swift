@@ -26,7 +26,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var selectedVideoInfo: VideoInfo?
     var caption: String = ""
 	var translation: String = ""
-    //var captions: Caption!
+    var captions: Caption!
     
     let imagePickerController = UIImagePickerController()
 
@@ -222,32 +222,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // 音声認識に成功したときの処理
         let success = { (results: SpeechRecognitionResults) in
-            print(results.results)
+            self.captions = Caption(results)
             
-            let times = results.results[1].alternatives[0].timestamps![0]
             print("---> Times")
-            print("Word: \(times.word), Start: \(times.startTime), End: \(times.endTime)")
+            print("Sentence: \(self.captions.sentences[0].sentence!), Start: \(self.captions.sentences[0].startTime!), End: \(self.captions.sentences[0].endTime!)")
+            let count = self.captions.sentences.count
+            print("Sentence: \(self.captions.sentences[count-1].sentence!), Start: \(self.captions.sentences[count-1].startTime!), End: \(self.captions.sentences[count-1].endTime!)")
             print("<--- Times")
-            
-            /*
-            var words = [[String]]()
-            var startTimes = [[Double]]()
-            var endTimes = [[Double]]()
-            
-            var index = 0
-            for result in results.results {
-                for timestamp in result.alternatives[0].timestamps! {
-                    words[index].append(timestamp.word)
-                    startTimes[index].append(timestamp.startTime)
-                    endTimes[index].append(timestamp.endTime)
-                }
-                index += 1
-            }
-            
-            print(words)
-            
-            self.captions = Caption(words, startTimes, endTimes)
-            */
             
             // 認識結果を字幕に設定
             self.caption = results.bestTranscript
