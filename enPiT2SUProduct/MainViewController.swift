@@ -26,8 +26,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var selectedVideoInfo: VideoInfo?
 	var translation: String = ""
     var captions: Caption!
-    
-    let imagePickerController = UIImagePickerController()
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -89,13 +87,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             case .authorized:
                 print("Authorized")
                 
-                // PhotoLibraryの設定
-                self.imagePickerController.sourceType = .photoLibrary
-                self.imagePickerController.delegate = self
-                self.imagePickerController.mediaTypes = ["public.movie"]
+                // ImagePickerControllerの設定
+                let imagePickerController = UIImagePickerController()
+                imagePickerController.sourceType = .photoLibrary
+                imagePickerController.delegate = self
+                imagePickerController.mediaTypes = ["public.movie"]
                 
                 // PhotoLibraryの表示
-                self.present(self.imagePickerController, animated: true, completion: nil)
+                self.present(imagePickerController, animated: true, completion: nil)
             case .denied:
                 print("Denied")
                 
@@ -155,7 +154,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let lockQueue = DispatchQueue.main
         lockQueue.async {
             // 動画選択画面を閉じる
-            self.imagePickerController.dismiss(animated: true, completion: nil)
+            picker.dismiss(animated: true, completion: nil)
         }
         
         // KRProgressHUDの開始
