@@ -26,12 +26,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var selectedVideoInfo: VideoInfo?
 	var translation: String = ""
     var captions: Caption!
+    
+    let userDefault = UserDefaults.standard
 
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         // Do any additional setup after loading the view.
         
         // NavigationBarの左側にMenuButtonを設置
@@ -47,6 +50,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
+        
+        if let loadedVideos = userDefault.object(forKey: "VideoInfo") {
+            videos = loadedVideos as! [VideoInfo]
+        }
         
         // DZNEmptyDataSetのSourceとDelegateを設定
         tableView.emptyDataSetSource = self;
@@ -64,12 +71,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
-    }
-
-    /* メモリエラーが発生したとき */
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     /* PhotoLibraryから動画を選択する */
@@ -165,6 +166,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		
         // TableViewにCellを追加
         videos.append(VideoInfo(name, image, label))
+        
+        //userDefault.set(5, forKey: "Number")
+        //userDefault.synchronize()
         
         // TableViewの更新
         tableView.reloadData()
@@ -466,6 +470,31 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let splittedDate = date.split(separator: "-")
         let convertedDate = String(splittedDate[0]) + "/" + String(splittedDate[1]) + "/" + String(splittedDate[2]) + "/" + String(splittedDate[3]) + ":" + String(splittedDate[4]) + ":" + String(splittedDate[5])
         return convertedDate
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("ViewController/viewWillAppear/画面が表示される直前")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("ViewController/viewDidAppear/画面が表示された直後")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("ViewController/viewWillDisappear/別の画面に遷移する直前")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("ViewController/viewDidDisappear/別の画面に遷移した直後")
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        print("ViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
 
     /*

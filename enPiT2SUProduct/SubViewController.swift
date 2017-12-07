@@ -85,8 +85,35 @@ class SubViewController: UIViewController{
             }
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("ViewController/viewWillAppear/画面が表示される直前")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("ViewController/viewDidAppear/画面が表示された直後")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("ViewController/viewWillDisappear/別の画面に遷移する直前")
+        
+        // 動画の再生を止める
+        player.pause()
+        
+        // TimeObserverを廃棄
+        timeObserverToken = nil
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("ViewController/viewDidDisappear/別の画面に遷移した直後")
+    }
 	
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
+        print("ViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
 	}
 }
