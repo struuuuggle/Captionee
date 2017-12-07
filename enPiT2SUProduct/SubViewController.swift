@@ -12,7 +12,11 @@ import AVKit
 class SubViewController: UIViewController{
 	
 	var receivedVideoInfo: VideoInfo!
+    var receivedCaption: Caption!
 	var receivedTranslation: String!
+    
+    var player: AVPlayer!
+    var timeObserverToken: Any!
 	
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var translation: UILabel!
@@ -20,43 +24,67 @@ class SubViewController: UIViewController{
 	override func viewDidLoad() {
 		super.viewDidLoad()
         
+        // DocumentDirectoryのPass
         let documentPath: String = FileManager.documentDir
         
+        // 動画のURL
         let url = URL(fileURLWithPath: documentPath + "/" + receivedVideoInfo.name + ".mp4")
         
-        let player = AVPlayer(url: url)
+        // AVPlayerを生成
+        player = AVPlayer(url: url)
         
+        // AVPlayerViewControllerの設定
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height/2)
         playerViewController.showsPlaybackControls = true
         
+        // TimeObserverを設定
+        addPeriodicTimeObserver()
+        
+        // AVPlayerViewControllerをViewControllerに追加
         addChildViewController(playerViewController)
         
         // 最大画面になった時、これが使用される感じ
         view.addSubview(playerViewController.view)
         
+        // 字幕のLabelのサイズを設定
         caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
         
+        // 翻訳のLabelのサイズを設定
 		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
         
         
         // 字幕を表示
-        caption.text = receivedVideoInfo.caption
-        //caption.text = ""
-        /*
-        for i in 0..<receivedCaptions.words.count {
-            for j in 0..<receivedCaptions.words[i].count {
-                caption.text?.append(receivedCaptions.words[i][j])
-                //let interval = receivedCaptions.endTimes[index] - receivedCaptions.startTimes[index]
-                //sleep(UInt32(interval))
-            }
-        }
-        */
+        caption.text = ""
 		
 		// 翻訳結果を表示
 		translation.text = receivedTranslation
 	}
+    
+    /* 一定時間ごとに動画の再生状態を監視する */
+    func addPeriodicTimeObserver() {
+        // 監視の時間間隔
+        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        
+        // メインスレッド
+        let mainQueue = DispatchQueue.main
+        
+        // TimeObserverを生成
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) { [weak self] time in
+            // 現在の動画の再生時間を取得
+            let currentTime = time.seconds
+            print(currentTime)
+            
+            // 適切なタイミングで字幕を表示する
+            for caption in (self?.receivedCaption.sentences)! {
+                if currentTime >= caption.startTime && currentTime <= caption.endTime {
+                    self?.caption.text = caption.sentence + "。"
+                    break
+                }
+            }
+        }
+    }
 	
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()

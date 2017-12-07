@@ -286,7 +286,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         videos.remove(at: indexPath.row)
         
         // それからテーブルの更新
-        //tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
     }
     
@@ -352,8 +352,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Cellが選択されました")
-        
         print("---> VideoName")
         print(videos[indexPath.row].name)
         print("<--- VideoName")
@@ -385,6 +383,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
+            subVC.receivedCaption = captions
 			subVC.receivedTranslation = translation
         }
     }
