@@ -295,7 +295,20 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* Cellの削除 */
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        // DocumentDirectoryのPathを設定
+        let documentPath = FileManager.documentDir
+        
+        // 削除するファイル名を設定
+        let fileName = videos[indexPath.row].name
+        
+        // ファイルのPathを設定
+        let filePath: String = documentPath + "/" + fileName
+        
+        // MP4とM4aのファイルを削除
+        try! FileManager.default.removeItem(atPath: filePath + ".mp4")
+        try! FileManager.default.removeItem(atPath: filePath + ".m4a")
         
         // 先にデータを更新する
         videos.remove(at: indexPath.row)
