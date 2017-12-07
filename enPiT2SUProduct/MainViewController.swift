@@ -117,7 +117,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // VideoInfoの設定
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
-        let label = name
+        let label = convertFormat(name)
         
         /*
         // サブスレッドで処理
@@ -251,6 +251,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 音声認識の実行
         speechToText.recognize(audio: speechUrl, settings: settings, model: "ja-JP_BroadbandModel",
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
+    }
+    
+    /* 字幕の翻訳 */
+    func translateCaption(_ caption: String) {
+        
+        let translator = Translation()
+        
+        let translationInfo = TranslationInfo(sourceLanguage: "ja", targetLanguage: "en", text: caption)
+        
+        translator.translate(params: translationInfo) { (result) in
+            self.translation = "\(result)"
+            print("---> Translation")
+            print(result)
+            print("<--- Translation")
+        }
     }
     
     /* 動画のアップロードに成功したとき */
@@ -432,21 +447,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let now = Date()
         return formatter.string(from: now)
     }
-	
-	/* 字幕の翻訳 */
-    func translateCaption(_ caption: String) {
-		
-		let translator = Translation()
-		
-		let translationInfo = TranslationInfo(sourceLanguage: "ja", targetLanguage: "en", text: caption)
-		
-		translator.translate(params: translationInfo) { (result) in
-			self.translation = "\(result)"
-			print("---> Translation")
-			print(result)
-			print("<--- Translation")
-		}
-	}
+    
+    /* 時刻表示の形式をいい感じに変更 */
+    func convertFormat(_ date: String) -> String {
+        let splittedDate = date.split(separator: "-")
+        let convertedDate = String(splittedDate[0]) + "/" + String(splittedDate[1]) + "/" + String(splittedDate[2]) + "/" + String(splittedDate[3]) + ":" + String(splittedDate[4]) + ":" + String(splittedDate[5])
+        return convertedDate
+    }
 
     /*
     // MARK: - Navigation
