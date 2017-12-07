@@ -24,7 +24,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var videos = [VideoInfo]()
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
-    var caption: String = ""
 	var translation: String = ""
     var captions: Caption!
     
@@ -44,6 +43,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                          action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
+        // NavigationBarの右側にEditButtonを設置
+        navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
+        
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
         
@@ -59,9 +62,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
@@ -145,7 +145,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(videoMp4URL!)
         print("<--- MP4 URL")
         
-        
+        // MOVからM4aに変換
         audioM4aURL = FileManager.save(videoMovURL!, name, .m4a)
         print("---> M4a URL")
         print(audioM4aURL!)
@@ -161,10 +161,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // KRProgressHUDの開始
         KRProgressHUD.show(withMessage: "Uploading...")
 		
+        // 字幕を生成
         generateCaption()
 		
         // TableViewにCellを追加
-        videos.append(VideoInfo(name, image, label, caption))
+        videos.append(VideoInfo(name, image, label))
         
         // TableViewの更新
         tableView.reloadData()
@@ -212,6 +213,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         var settings = RecognitionSettings(contentType: .wav)
         settings.timestamps = true
         settings.wordConfidence = true
+        settings.smartFormatting = true
         
         // 音声認識に失敗したときの処理
         let failure = { (error: Error) in
@@ -231,13 +233,18 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("<--- Times")
             
             // 認識結果を字幕に設定
-            self.caption = results.bestTranscript
+            var caption = ""
+            for sentence in self.captions.sentences {
+                caption += sentence.sentence! + "。"
+            }
         
             print("---> Caption")
-            print(self.caption)
+            print(caption)
             print("<--- Caption")
+            
+            self.videos[self.videos.count-1].caption = caption
 			
-			self.translateCaption()
+			self.translateCaption(caption)
             
             self.success()
         }
@@ -379,9 +386,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
-            subVC.receivedCaption = caption
 			subVC.receivedTranslation = translation
-            //subVC.receivedCaptions = captions
         }
     }
     
@@ -431,7 +436,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
 	
 	/* 字幕の翻訳 */
-	func translateCaption() {
+    func translateCaption(_ caption: String) {
 		
 		let translator = Translation()
 		

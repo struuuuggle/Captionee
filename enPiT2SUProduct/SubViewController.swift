@@ -12,9 +12,7 @@ import AVKit
 class SubViewController: UIViewController{
 	
 	var receivedVideoInfo: VideoInfo!
-    var receivedCaption: String!
 	var receivedTranslation: String!
-    //var receivedCaptions: Caption!
 	
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var translation: UILabel!
@@ -30,19 +28,21 @@ class SubViewController: UIViewController{
         
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
-        
         playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height/2)
-        addChildViewController(playerViewController)
         playerViewController.showsPlaybackControls = true
+        
+        addChildViewController(playerViewController)
+        
         // 最大画面になった時、これが使用される感じ
         view.addSubview(playerViewController.view)
         
         caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+        
 		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
         
         
         // 字幕を表示
-        caption.text = receivedCaption
+        caption.text = receivedVideoInfo.caption
         //caption.text = ""
         /*
         for i in 0..<receivedCaptions.words.count {

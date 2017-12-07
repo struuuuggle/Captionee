@@ -15,11 +15,11 @@ struct VideoInfo {
     var label: String
     var caption: String
     
-    init(_ name: String, _ image: UIImage, _ label: String, _ caption: String) {
+    init(_ name: String, _ image: UIImage, _ label: String) {
         self.name = name
         self.image = image
         self.label = label
-        self.caption = caption
+        self.caption = ""
     }
     
 }
