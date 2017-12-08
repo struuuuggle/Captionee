@@ -25,7 +25,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
 	var translation: String = ""
-    var captions: Caption!
     
     let userDefault = UserDefaults.standard
 
@@ -51,16 +50,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
         
-        if let loadedVideos = userDefault.object(forKey: "VideoInfo") {
-            videos = loadedVideos as! [VideoInfo]
-        }
-        
         // DZNEmptyDataSetのSourceとDelegateを設定
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
         
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
+        
+        // UserDefaultに保存されたデータを読み込む
+        if let storedData = userDefault.object(forKey: "Videos") as? Data {
+            if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
+                print("動画をロード")
+                
+                videos = unarchivedData
+            }
+        }
         
         // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
@@ -120,6 +124,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let image = previewImageFromVideo(videoMovURL!)!
         let label = convertFormat(name)
         
+        // TableViewにCellを追加
+        videos.append(VideoInfo(name, image, label))
+        
         /*
         // サブスレッドで処理
         let queue = DispatchQueue(label: "lockQueue")
@@ -163,12 +170,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 		
         // 字幕を生成
         generateCaption()
-		
-        // TableViewにCellを追加
-        videos.append(VideoInfo(name, image, label))
-        
-        //userDefault.set(5, forKey: "Number")
-        //userDefault.synchronize()
         
         // TableViewの更新
         tableView.reloadData()
@@ -227,27 +228,28 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // 音声認識に成功したときの処理
         let success = { (results: SpeechRecognitionResults) in
-            self.captions = Caption(results)
+            let captions = Caption(results)
             
-            print("---> Times")
-            print("Sentence: \(self.captions.sentences[0].sentence!), Start: \(self.captions.sentences[0].startTime!), End: \(self.captions.sentences[0].endTime!)")
-            let count = self.captions.sentences.count
-            print("Sentence: \(self.captions.sentences[count-1].sentence!), Start: \(self.captions.sentences[count-1].startTime!), End: \(self.captions.sentences[count-1].endTime!)")
-            print("<--- Times")
+            print("---> Caption")
+            for sentence in captions.sentences {
+                print("Sentence: \(sentence.sentence!), Start: \(sentence.startTime!), End: \(sentence.endTime!)")
+            }
+            print("<--- Caption")
             
             // 認識結果を字幕に設定
             var caption = ""
-            for sentence in self.captions.sentences {
+            for sentence in captions.sentences {
                 caption += sentence.sentence! + "。"
             }
-        
-            print("---> Caption")
-            print(caption)
-            print("<--- Caption")
             
-            self.videos[self.videos.count-1].caption = caption
+            self.videos[self.videos.count-1].caption = captions
 			
 			self.translateCaption(caption)
+            
+            // UserDefaultにデータを保存
+            let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.videos)
+            self.userDefault.set(archiveData, forKey: "Videos")
+            self.userDefault.synchronize()
             
             self.success()
         }
@@ -320,6 +322,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // それからテーブルの更新
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
+        
+        if videos.count == 0 {
+            // UserDefaultからも削除
+            userDefault.removeObject(forKey: "Videos")
+        } else {
+            // UserDefaultのデータを更新
+            let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
+            userDefault.set(archiveData, forKey: "Videos")
+            userDefault.synchronize()
+        }
     }
     
     /* 移動可能なCellを設定 */
@@ -415,7 +427,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
-            subVC.receivedCaption = captions
 			subVC.receivedTranslation = translation
         }
     }

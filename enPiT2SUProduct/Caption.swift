@@ -8,17 +8,15 @@
 
 import SpeechToTextV1
 
-class Caption {
+/* 字幕の情報を管理するクラス */
+class Caption: NSObject, NSCoding {
     
-    var sentences: [Sentence]!
+    var sentences: [Sentence]
     
     init(_ results: SpeechRecognitionResults) {
         sentences = [Sentence]()
         
-        let result = results.results[0]
-        
         print("Results count = \(results.results.count)")
-        print("Alternatives count = \(result.alternatives.count)")
         
         for result in results.results {
             let sentence = result.alternatives[0].transcript
@@ -29,7 +27,17 @@ class Caption {
         }
     }
     
-    class Sentence {
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(sentences, forKey: "Sentences")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        sentences = aDecoder.decodeObject(forKey: "Sentences") as! [Sentence]
+    }
+    
+    /* 字幕の一文を管理するクラス */
+    @objc(_TtCC15enPiT2SUProduct7Caption8Sentence)class Sentence: NSObject, NSCoding {
+        
         var sentence: String!
         var startTime: Double!
         var endTime: Double!
@@ -39,6 +47,19 @@ class Caption {
             self.startTime = startTime
             self.endTime = endTime
         }
+        
+        func encode(with aCoder: NSCoder) {
+            aCoder.encode(sentence, forKey: "Sentence")
+            aCoder.encode(startTime, forKey: "StartTime")
+            aCoder.encode(endTime, forKey: "EndTime")
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            sentence = aDecoder.decodeObject(forKey: "Sentence") as! String
+            startTime = aDecoder.decodeObject(forKey: "StartTime") as! Double
+            endTime = aDecoder.decodeObject(forKey: "EndTime") as! Double
+        }
+        
     }
     
 }

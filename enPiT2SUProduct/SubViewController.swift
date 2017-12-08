@@ -12,7 +12,6 @@ import AVKit
 class SubViewController: UIViewController{
 	
 	var receivedVideoInfo: VideoInfo!
-    var receivedCaption: Caption!
 	var receivedTranslation: String!
     
     var player: AVPlayer!
@@ -23,8 +22,9 @@ class SubViewController: UIViewController{
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
-        // DocumentDirectoryのPass
+        // DocumentDirectoryのPath
         let documentPath: String = FileManager.documentDir
         
         // 動画のURL
@@ -54,7 +54,6 @@ class SubViewController: UIViewController{
         // 翻訳のLabelのサイズを設定
 		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
         
-        
         // 字幕を表示
         caption.text = ""
 		
@@ -76,12 +75,16 @@ class SubViewController: UIViewController{
             let currentTime = time.seconds
             print(currentTime)
             
-            // 適切なタイミングで字幕を表示する
-            for caption in (self?.receivedCaption.sentences)! {
-                if currentTime >= caption.startTime && currentTime <= caption.endTime {
-                    self?.caption.text = caption.sentence + "。"
-                    break
+            // 字幕を適切なタイミングで表示
+            if let captions = self?.receivedVideoInfo.caption {
+                for caption in captions.sentences {
+                    if currentTime >= caption.startTime && currentTime <= caption.endTime {
+                        self?.caption.text = caption.sentence + "。"
+                        break
+                    }
                 }
+            } else {
+                self?.caption.text = "Caption is nil."
             }
         }
     }
