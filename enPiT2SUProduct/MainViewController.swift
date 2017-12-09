@@ -24,16 +24,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var videos = [VideoInfo]()
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
-    var caption: String = ""
-    //var captions: Caption!
+	var translation: String = ""
     
-    let imagePickerController = UIImagePickerController()
+    let userDefault = UserDefaults.standard
 
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         // Do any additional setup after loading the view.
         
         // NavigationBarの左側にMenuButtonを設置
@@ -42,6 +42,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                          target: self,
                                          action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
+        
+        // NavigationBarの右側にEditButtonを設置
+        navigationItem.rightBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
         
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
@@ -53,30 +57,24 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
         
+        // UserDefaultに保存されたデータを読み込む
+        if let storedData = userDefault.object(forKey: "Videos") as? Data {
+            if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
+                print("動画をロード")
+                
+                videos = unarchivedData
+            }
+        }
+        
         // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
-    }
-    
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        
-        tableView.setEditing(editing, animated: animated)
-    }
-
-    /* メモリエラーが発生したとき */
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     /* PhotoLibraryから動画を選択する */
@@ -94,13 +92,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             case .authorized:
                 print("Authorized")
                 
-                // PhotoLibraryの設定
-                self.imagePickerController.sourceType = .photoLibrary
-                self.imagePickerController.delegate = self
-                self.imagePickerController.mediaTypes = ["public.movie"]
+                // ImagePickerControllerの設定
+                let imagePickerController = UIImagePickerController()
+                imagePickerController.sourceType = .photoLibrary
+                imagePickerController.delegate = self
+                imagePickerController.mediaTypes = ["public.movie"]
                 
                 // PhotoLibraryの表示
-                self.present(self.imagePickerController, animated: true, completion: nil)
+                self.present(imagePickerController, animated: true, completion: nil)
             case .denied:
                 print("Denied")
                 
@@ -123,7 +122,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // VideoInfoの設定
         let name = getCurrentTime()
         let image = previewImageFromVideo(videoMovURL!)!
-        let label = "No.\(videos.count + 1)"
+        let label = convertFormat(name)
+        
+        // TableViewにCellを追加
+        videos.append(VideoInfo(name, image, label))
         
         /*
         // サブスレッドで処理
@@ -150,7 +152,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(videoMp4URL!)
         print("<--- MP4 URL")
         
-        
+        // MOVからM4aに変換
         audioM4aURL = FileManager.save(videoMovURL!, name, .m4a)
         print("---> M4a URL")
         print(audioM4aURL!)
@@ -160,16 +162,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let lockQueue = DispatchQueue.main
         lockQueue.async {
             // 動画選択画面を閉じる
-            self.imagePickerController.dismiss(animated: true, completion: nil)
+            picker.dismiss(animated: true, completion: nil)
         }
         
         // KRProgressHUDの開始
         KRProgressHUD.show(withMessage: "Uploading...")
-        
+		
+        // 字幕を生成
         generateCaption()
-        
-        // TableViewにCellを追加
-        videos.append(VideoInfo(name, image, label, caption))
         
         // TableViewの更新
         tableView.reloadData()
@@ -217,6 +217,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         var settings = RecognitionSettings(contentType: .wav)
         settings.timestamps = true
         settings.wordConfidence = true
+        settings.smartFormatting = true
         
         // 音声認識に失敗したときの処理
         let failure = { (error: Error) in
@@ -227,39 +228,28 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // 音声認識に成功したときの処理
         let success = { (results: SpeechRecognitionResults) in
-            print(results.results)
+            let captions = Caption(results)
             
-            let times = results.results[1].alternatives[0].timestamps![0]
-            print("---> Times")
-            print("Word: \(times.word), Start: \(times.startTime), End: \(times.endTime)")
-            print("<--- Times")
-            
-            /*
-            var words = [[String]]()
-            var startTimes = [[Double]]()
-            var endTimes = [[Double]]()
-            
-            var index = 0
-            for result in results.results {
-                for timestamp in result.alternatives[0].timestamps! {
-                    words[index].append(timestamp.word)
-                    startTimes[index].append(timestamp.startTime)
-                    endTimes[index].append(timestamp.endTime)
-                }
-                index += 1
+            print("---> Caption")
+            for sentence in captions.sentences {
+                print("Sentence: \(sentence.sentence!), Start: \(sentence.startTime!), End: \(sentence.endTime!)")
             }
-            
-            print(words)
-            
-            self.captions = Caption(words, startTimes, endTimes)
-            */
+            print("<--- Caption")
             
             // 認識結果を字幕に設定
-            self.caption = results.bestTranscript
-        
-            print("---> Caption")
-            print(self.caption)
-            print("<--- Caption")
+            var caption = ""
+            for sentence in captions.sentences {
+                caption += sentence.sentence! + "。"
+            }
+            
+            self.videos[self.videos.count-1].caption = captions
+			
+			self.translateCaption(caption)
+            
+            // UserDefaultにデータを保存
+            let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.videos)
+            self.userDefault.set(archiveData, forKey: "Videos")
+            self.userDefault.synchronize()
             
             self.success()
         }
@@ -267,6 +257,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 音声認識の実行
         speechToText.recognize(audio: speechUrl, settings: settings, model: "ja-JP_BroadbandModel",
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
+    }
+    
+    /* 字幕の翻訳 */
+    func translateCaption(_ caption: String) {
+        
+        let translator = Translation()
+        
+        let translationInfo = TranslationInfo(sourceLanguage: "ja", targetLanguage: "en", text: caption)
+        
+        translator.translate(params: translationInfo) { (result) in
+            self.translation = "\(result)"
+            print("---> Translation")
+            print(result)
+            print("<--- Translation")
+        }
     }
     
     /* 動画のアップロードに成功したとき */
@@ -283,20 +288,68 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    /* 編集モードの変更 */
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        tableView.setEditing(editing, animated: animated)
+    }
+    
+    /* 編集可能なCellを設定 */
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    
+    /* Cellの削除 */
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        // DocumentDirectoryのPathを設定
+        let documentPath = FileManager.documentDir
+        
+        // 削除するファイル名を設定
+        let fileName = videos[indexPath.row].name
+        
+        // ファイルのPathを設定
+        let filePath: String = documentPath + "/" + fileName
+        
+        // MP4とM4aのファイルを削除
+        try! FileManager.default.removeItem(atPath: filePath + ".mp4")
+        try! FileManager.default.removeItem(atPath: filePath + ".m4a")
         
         // 先にデータを更新する
         videos.remove(at: indexPath.row)
         
         // それからテーブルの更新
-        //tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
+        
+        if videos.count == 0 {
+            // UserDefaultからも削除
+            userDefault.removeObject(forKey: "Videos")
+        } else {
+            // UserDefaultのデータを更新
+            let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
+            userDefault.set(archiveData, forKey: "Videos")
+            userDefault.synchronize()
+        }
     }
+    
+    /* 移動可能なCellを設定 */
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    
+    /* Cellの移動 */
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let sourceIndex = sourceIndexPath.row
+        let destinationIndex = destinationIndexPath.row
+        
+        if sourceIndex >= 0 && sourceIndex < videos.count && destinationIndex >= 0 && destinationIndex < videos.count {
+            let video = videos[sourceIndex]
+            
+            videos.remove(at: sourceIndex)
+            videos.insert(video, at: destinationIndex)
+        }
     }
     
     /* Cellの個数を指定 */
@@ -343,8 +396,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Cellが選択されました")
-        
         print("---> VideoName")
         print(videos[indexPath.row].name)
         print("<--- VideoName")
@@ -376,8 +427,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
-            subVC.receivedCaption = caption
-            //subVC.receivedCaptions = captions
+			subVC.receivedTranslation = translation
         }
     }
     
@@ -424,6 +474,38 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         formatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
         let now = Date()
         return formatter.string(from: now)
+    }
+    
+    /* 時刻表示の形式をいい感じに変更 */
+    func convertFormat(_ date: String) -> String {
+        let splittedDate = date.split(separator: "-")
+        let convertedDate = String(splittedDate[0]) + "/" + String(splittedDate[1]) + "/" + String(splittedDate[2]) + "/" + String(splittedDate[3]) + ":" + String(splittedDate[4]) + ":" + String(splittedDate[5])
+        return convertedDate
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("ViewController/viewWillAppear/画面が表示される直前")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("ViewController/viewDidAppear/画面が表示された直後")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("ViewController/viewWillDisappear/別の画面に遷移する直前")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("ViewController/viewDidDisappear/別の画面に遷移した直後")
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        print("ViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
 
     /*
