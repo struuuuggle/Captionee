@@ -33,23 +33,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 起動時間延長
         sleep(2)
         
-        // "firstLaunch"をキーに、Bool型の値を保持する
         let dict = ["firstLaunch": true]
-        // デフォルト値登録
-        // ※すでに値が更新されていた場合は、更新後の値のままになる
-        userDefault.register(defaults: dict)
-        
-        // "firstLaunch"に紐づく値がtrueなら(=初回起動)、値をfalseに更新して処理を行う
+        self.userDefault.register(defaults: dict)
+		
+		// 初回起動時のみに実行する処理
         if userDefault.bool(forKey: "firstLaunch") {
             userDefault.set(false, forKey: "firstLaunch")
             print("Captioneeが初めて起動されました")
-        
-            print("起動時に毎回呼び出される処理")
-            if true {
-				self.playWalkthrough()
-                return true
-            }
+			// ウォークスルーを表示
+			self.playWalkthrough()
 		}
+		
+        //起動時に毎回呼び出される処理
 		
         return true
     }
