@@ -27,7 +27,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var translation: String = ""
     
     let userDefault = UserDefaults.standard
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     /* Viewがロードされたとき */

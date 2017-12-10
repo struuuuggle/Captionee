@@ -66,20 +66,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     title: "Title3",
                     body: "Body3",
                     image: nil,
-                    buttonText: "ログイン",
+                    buttonText: "始める",
                     action: {
-                        let alert = UIAlertController(
-                            title: "ログイン",
-                            message: "ログインしました",
-                            preferredStyle: .alert
-                        )
-                        let ok = UIAlertAction(
-                            title: "OK",
-                            style: .default,
-                            handler: nil
-                        )
-                        alert.addAction(ok)
-                        application.keyWindow?.rootViewController?.present(alert,animated: true, completion: nil)
+                        //Storyboardを指定
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        //Viewcontrollerを指定
+                        let initialViewController = storyboard.instantiateInitialViewController()
+                        //rootViewControllerに入れる
+                        self.window?.rootViewController = initialViewController
+                        //表示
+                        self.window?.makeKeyAndVisible()
                 }
                 )
                 
@@ -89,7 +85,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     contents: [content1, content2, content3]
                 )
                 vc?.allowSkipping = true
-                vc?.skipHandler = {  print("skip")
+                vc?.skipHandler = {
+                    //Storyboardを指定
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    //Viewcontrollerを指定
+                    let initialViewController = storyboard.instantiateInitialViewController()
+                    //rootViewControllerに入れる
+                    self.window?.rootViewController = initialViewController
+                    //表示
+                    self.window?.makeKeyAndVisible()
                 }
                 
                 window?.rootViewController = vc
