@@ -71,6 +71,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
+        
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: Selector(("rowButtonAction:")))
+        longPressRecognizer.allowableMovement = 30
+        longPressRecognizer.minimumPressDuration = 3.0
+        self.tableView .addGestureRecognizer(longPressRecognizer)
+        
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
@@ -112,6 +118,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+
     /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         videoMovURL = info["UIImagePickerControllerReferenceURL"] as? URL
@@ -408,6 +415,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // Cellの選択状態を解除
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func rowButtonAction(sender : UILongPressGestureRecognizer) {
+        
+        let point: CGPoint = sender.location(in: tableView)
+        let indexPath = tableView.indexPathForRow(at: point)
+        
+        if let indexPath = indexPath {
+            if sender.state == UIGestureRecognizerState.began {
+                
+                // セルが長押しされたときの処理
+                print("long pressed \(indexPath.row)")
+            }
+        }else{
+            print("long press on table view")
+        }
     }
     
     /* Segueの準備 */

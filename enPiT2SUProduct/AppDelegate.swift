@@ -7,6 +7,7 @@
 
 import UIKit
 import MaterialComponents
+import Onboard
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
         // NavigationBarの設定
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
@@ -31,6 +31,75 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // 起動時間延長
         sleep(2)
+        
+        //ウォークスルー
+        // UserDefaultsを使ってフラグを保持する
+        let userDefault = UserDefaults.standard
+        // "firstLaunch"をキーに、Bool型の値を保持する
+        let dict = ["firstLaunch": true]
+        // デフォルト値登録
+        // ※すでに値が更新されていた場合は、更新後の値のままになる
+        userDefault.register(defaults: dict)
+        
+        // "firstLaunch"に紐づく値がtrueなら(=初回起動)、値をfalseに更新して処理を行う
+        if userDefault.bool(forKey: "firstLaunch") {
+            userDefault.set(false, forKey: "firstLaunch")
+            print("初回起動の時だけ呼ばれるよ")
+        
+            print("初回起動じゃなくても呼ばれるアプリ起動時の処理だよ")
+            if true {
+                let content1 = OnboardingContentViewController(
+                    title: "Title1",
+                    body: "Body1",
+                    image: nil,
+                    buttonText: "",
+                    action: nil
+                )
+                let content2 = OnboardingContentViewController(
+                    title: "Title2",
+                    body: "Body2",
+                    image: nil,
+                    buttonText: "",
+                    action: nil
+                )
+                let content3 = OnboardingContentViewController(
+                    title: "Title3",
+                    body: "Body3",
+                    image: nil,
+                    buttonText: "ログイン",
+                    action: {
+                        let alert = UIAlertController(
+                            title: "ログイン",
+                            message: "ログインしました",
+                            preferredStyle: .alert
+                        )
+                        let ok = UIAlertAction(
+                            title: "OK",
+                            style: .default,
+                            handler: nil
+                        )
+                        alert.addAction(ok)
+                        application.keyWindow?.rootViewController?.present(alert,animated: true, completion: nil)
+                }
+                )
+                
+                let bgImage = UIImage(named: "AppIcon")
+                let vc = OnboardingViewController(
+                    backgroundImage: bgImage,
+                    contents: [content1, content2, content3]
+                )
+                vc?.allowSkipping = true
+                vc?.skipHandler = {  print("skip")
+                }
+                
+                window?.rootViewController = vc
+                
+                return true
+            }
+        }
+        //ウォークスルー終
+        
+        
         
         return true
     }
