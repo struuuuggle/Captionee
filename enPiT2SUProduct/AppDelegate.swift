@@ -14,10 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var themeColor = "Orange"
-    let color = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
-                 "Yellow": MDCPalette.yellow.tint500, "Green": MDCPalette.green.tint500,
-                 "Blue": MDCPalette.blue.tint500]
 	let userDefault = UserDefaults.standard
+    let color = [
+		"Red": MDCPalette.red.tint700,
+		"Orange": MDCPalette.orange.tint500,
+        "Yellow": MDCPalette.yellow.tint500,
+		"Green": MDCPalette.green.tint500,
+        "Blue": MDCPalette.blue.tint500
+	]
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -44,63 +48,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			self.playWalkthrough()
 		}
 		
-        //起動時に毎回呼び出される処理
+        /* 起動時に毎回呼び出される処理 */
 		
         return true
     }
 	
 	/* アプリが初めて起動されたかを判定する */
-//	func isFristLaunch() -> Bool {
-//		return true
-//	}
+	func isFristLaunch() -> Bool {
+		return true
+	}
 	
 	/* ウォークスルーの表示 */
 	func playWalkthrough() {
-		print("ウォークスルー表示")
 		// 背景画像
 		let bgImage = UIImage(named: "AppIcon")
 
 		// 1ページ目の設定
-		let content1 = OnboardingContentViewController(
-			title: "Title1",
-			body: "Body1",
-			image: nil,
-			buttonText: "",
-			action: nil
-		)
+		let firstPage = OnboardingContentViewController.content(withTitle: "Title 1",
+																body: "Body 1",
+																image: UIImage(named: "Setting"),	// 画像を表示しない場合はnilにする
+																buttonText: "Next",
+																action: nil)
+		firstPage.movesToNextViewController = true
+		
 		// 2ページ目の設定
-		let content2 = OnboardingContentViewController(
-			title: "Title2",
-			body: "Body2",
-			image: nil,
-			buttonText: "",
-			action: nil
-		)
+		let secondPage = OnboardingContentViewController.content(withTitle: "Title 2",
+																 body: "Body 2",
+																 image: UIImage(named: "Setting"),
+																 buttonText: "Next",
+																 action:nil)
+		secondPage.movesToNextViewController = true
+		
 		// 3ページ目の設定
-		let content3 = OnboardingContentViewController(
-			title: "Title3",
-			body: "Body3",
-			image: nil,
-			buttonText: "さあ、始めよう！",
-			action: {
-				self.getStarted()
-		}
-		)
+
+		let thirdPage = OnboardingContentViewController.content(withTitle: "Title",
+																body: "Body 3",
+																image: UIImage(named: "Setting"),
+																buttonText: "Get Started!",
+																action: { self.getStarted() })
 		
-		// onboardingViewcontrollerのインスタンスを生成する
-		let walkthroughVC = OnboardingViewController(backgroundImage: bgImage,
-										  contents: [content1, content2, content3])
-		// スキップボタンの表示
-		walkthroughVC?.allowSkipping = true
-		// スキップボタンを押した時の動作
-		walkthroughVC?.skipHandler = { self.skip() }
+		// onboardingViewcontrollerのインスタンスを生成
+		let onboardingVC = OnboardingViewController(backgroundImage: bgImage,
+													 contents: [firstPage, secondPage, thirdPage])
 		
-//		walkthroughVC?.shouldMaskBackground = false;
-//		walkthroughVC?.shouldBlurBackground = true;
-//		walkthroughVC.shouldFadeTransitions = true;
+//		onboardingVC?.shouldMaskBackground = false
+//		onboardingVC?.shouldBlurBackground = true
+//		onboardingVC?.shouldFadeTransitions = true
+//		onboardingVC?.fadePageControlOnLastPage = true
+//		onboardingVC?.fadeSkipButtonOnLastPage = true
+		onboardingVC?.allowSkipping = false
+//		onboardingVC?.skipHandler = { self.skip() }
+
 		
-		// walkthroughtVCを表示
-		window?.rootViewController = walkthroughVC
+		// onboardingVCを表示
+		window?.rootViewController = onboardingVC
+		print("ウォークスルー表示")
 	}
 	
 	/* ウォークスルーを終了させる */
