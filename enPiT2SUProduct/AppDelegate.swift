@@ -84,12 +84,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			buttonText: "さあ、始めよう！",
 			action: {
 				self.getStarted()
-		}
+            }
 		)
 		
 		// onboardingViewcontrollerのインスタンスを生成する
 		let walkthroughVC = OnboardingViewController(backgroundImage: bgImage,
-										  contents: [content1, content2, content3])
+                                                     contents: [content1, content2, content3])
 		// スキップボタンの表示
 		walkthroughVC?.allowSkipping = true
 		// スキップボタンを押した時の動作
