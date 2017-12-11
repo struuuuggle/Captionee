@@ -24,6 +24,8 @@ class SubViewController: UIViewController{
 		super.viewDidLoad()
         print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
+        //navigationController?.navigationBar.isHidden = true
+        
         // DocumentDirectoryのPath
         let documentPath: String = FileManager.documentDir
         
