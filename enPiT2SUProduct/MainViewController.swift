@@ -14,21 +14,25 @@ import MaterialComponents
 import SpeechToTextV1
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     var window: UIWindow?
     var videoMovURL: URL?
     var videoMp4URL: URL?
     var audioM4aURL: URL?
     var audioWavURL: URL?
-    var videos = [VideoInfo]()
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
 	var translation: String = ""
+    var index: Int!
     
-    let userDefault = UserDefaults.standard
+    // AppDelegateの変数にアクセスする用
+    var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
     
     @IBOutlet weak var tableView: UITableView!
+    
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -57,14 +61,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
         
-        // UserDefaultに保存されたデータを読み込む
-        if let storedData = userDefault.object(forKey: "Videos") as? Data {
-            if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
-                print("動画をロード")
-                
-                videos = unarchivedData
-            }
-        }
+        tableView.reloadData()
         
         // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
@@ -72,16 +69,53 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             password: Credentials.SpeechToTextPassword
         )
         
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: Selector(("rowButtonAction:")))
-        longPressRecognizer.allowableMovement = 30
-        longPressRecognizer.minimumPressDuration = 3.0
-        self.tableView .addGestureRecognizer(longPressRecognizer)
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(sender:)))
+            
+        longPressGestureRecognizer.allowableMovement = 150
+        longPressGestureRecognizer.minimumPressDuration = 2.0
         
+        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
     }
+    /* 以下は UITextFieldDelegate のメソッド */
+    
+    // 改行ボタンを押した時の処理
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        // キーボードを隠す
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // クリアボタンが押された時の処理
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        
+        print("Clear")
+        return true
+    }
+    
+    // テキストフィールドがフォーカスされた時の処理
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("Start")
+        return true
+    }
+    
+    // テキストフィールドでの編集が終わろうとするときの処理
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("End " + textField.text!)
+        
+        appDelegate.videos[index].label = textField.text!
+        
+        textField.removeFromSuperview()
+        
+        tableView.reloadData()
+        
+        return true
+    }
+    
     
     /* PhotoLibraryから動画を選択する */
     @IBAction func selectImage(_ sender: Any) {
@@ -132,7 +166,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let label = convertFormat(name)
         
         // TableViewにCellを追加
-        videos.append(VideoInfo(name, image, label))
+        appDelegate.videos.append(VideoInfo(name, image, label))
         
         /*
         // サブスレッドで処理
@@ -249,15 +283,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 caption += sentence.sentence! + "。"
             }
             
-            self.videos[self.videos.count-1].caption = captions
+            self.appDelegate.videos[self.appDelegate.videos.count-1].caption = captions
 			
 			self.translateCaption(caption)
             
-            // UserDefaultにデータを保存
-            let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.videos)
-            self.userDefault.set(archiveData, forKey: "Videos")
+            /* UserDefaultにデータを保存
+            let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.appDelegate.videos)
+            self.userDefault.set(archiveData, forKey: "videos")
             self.userDefault.synchronize()
-            
+            */
             self.success()
         }
         
@@ -314,7 +348,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let documentPath = FileManager.documentDir
         
         // 削除するファイル名を設定
-        let fileName = videos[indexPath.row].name
+        let fileName = appDelegate.videos[indexPath.row].name
         
         // ファイルのPathを設定
         let filePath: String = documentPath + "/" + fileName
@@ -324,21 +358,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         try! FileManager.default.removeItem(atPath: filePath + ".m4a")
         
         // 先にデータを更新する
-        videos.remove(at: indexPath.row)
+        appDelegate.videos.remove(at: indexPath.row)
         
         // それからテーブルの更新
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
         
-        if videos.count == 0 {
-            // UserDefaultからも削除
-            userDefault.removeObject(forKey: "Videos")
-        } else {
-            // UserDefaultのデータを更新
-            let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
-            userDefault.set(archiveData, forKey: "Videos")
-            userDefault.synchronize()
-        }
     }
     
     /* 移動可能なCellを設定 */
@@ -351,17 +376,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let sourceIndex = sourceIndexPath.row
         let destinationIndex = destinationIndexPath.row
         
-        if sourceIndex >= 0 && sourceIndex < videos.count && destinationIndex >= 0 && destinationIndex < videos.count {
-            let video = videos[sourceIndex]
+        if sourceIndex >= 0 && sourceIndex < appDelegate.videos.count && destinationIndex >= 0 && destinationIndex < appDelegate.videos.count {
+            let video = appDelegate.videos[sourceIndex]
             
-            videos.remove(at: sourceIndex)
-            videos.insert(video, at: destinationIndex)
+            appDelegate.videos.remove(at: sourceIndex)
+            appDelegate.videos.insert(video, at: destinationIndex)
         }
     }
     
     /* Cellの個数を指定 */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return videos.count
+        return appDelegate.videos.count
     }
     
     /* Cellに値を設定 */
@@ -371,12 +396,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // Cellのサムネイル画像を設定
         let imageView = cell.viewWithTag(1) as! UIImageView
-        imageView.image = videos[indexPath.row].image
+        imageView.image = appDelegate.videos[indexPath.row].image
         imageView.contentMode = .scaleAspectFit
         
         // Cellの説明を設定
         let label = cell.viewWithTag(2) as! UILabel
-        label.text = videos[indexPath.row].label
+        label.text = appDelegate.videos[indexPath.row].label
         
         return cell
     }
@@ -404,11 +429,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("---> VideoName")
-        print(videos[indexPath.row].name)
+        print(appDelegate.videos[indexPath.row].name)
         print("<--- VideoName")
         
         // 選択されたセルの動画情報をprepareメソッドに渡すためにselectedVideoInfoに一時保管
-        selectedVideoInfo = videos[indexPath.row]
+        selectedVideoInfo = appDelegate.videos[indexPath.row]
         
         // SubViewController へ遷移するために Segue を呼び出す
         performSegue(withIdentifier: "toSubViewController", sender: nil)
@@ -417,21 +442,60 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func rowButtonAction(sender : UILongPressGestureRecognizer) {
+    @objc func longPressGesture(sender : UILongPressGestureRecognizer) {
+        print("Long Pressed.")
         
-        let point: CGPoint = sender.location(in: tableView)
+        //押された位置でcellのpathを取得
+        let point = sender.location(in: tableView)
         let indexPath = tableView.indexPathForRow(at: point)
         
+        var textField: UITextField!
+    
         if let indexPath = indexPath {
             if sender.state == UIGestureRecognizerState.began {
                 
                 // セルが長押しされたときの処理
                 print("long pressed \(indexPath.row)")
+                index = indexPath.row
+                
+                // インスタンス初期化
+                textField = UITextField()
+                
+                // サイズ設定
+                textField.frame.size.width = self.view.frame.width * 2 / 3
+                textField.frame.size.height = 48
+                
+                // 位置設定
+                textField.center.x = self.view.center.x
+                textField.center.y = 240
+                
+                // Delegate を設定
+                textField.delegate = self
+                
+                // プレースホルダー
+                textField.placeholder = "動画タイトルの入力"
+                
+                // 背景色
+                textField.backgroundColor = UIColor(white: 0.9, alpha: 1)
+                
+                // 左の余白
+                textField.leftViewMode = .always
+                textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+                
+                // テキストを全消去するボタンを表示
+                textField.clearButtonMode = .always
+                
+                // 改行ボタンの種類を変更
+                textField.returnKeyType = .done
+                
+                // 画面に追加
+                self.view.addSubview(textField)
             }
         }else{
             print("long press on table view")
         }
     }
+    
     
     /* Segueの準備 */
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
@@ -441,7 +505,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print("prepare")
                 let indexPath = self.tableView.indexPath(for: cell)!
                 let subVC = segue.destination as! SubViewController
-                subVC.receivedVideoInfo = self.videos[indexPath.row]
+                subVC.receivedVideoInfo = self.appDelegate.videos[indexPath.row]
             }
             */
             
