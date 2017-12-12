@@ -75,6 +75,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         longPressGestureRecognizer.minimumPressDuration = 2.0
         
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(sender:)))
+        self.view.addGestureRecognizer(panGestureRecognizer)
+        
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
@@ -363,7 +367,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // それからテーブルの更新
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
-        
     }
     
     /* 移動可能なCellを設定 */
@@ -442,6 +445,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    @objc func panGesture(sender: UIPanGestureRecognizer){
+        
+    }
     @objc func longPressGesture(sender : UILongPressGestureRecognizer) {
         print("Long Pressed.")
         

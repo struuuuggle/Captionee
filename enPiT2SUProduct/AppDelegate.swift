@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         //ウォークスルー終
-        
+    
         // UserDefaultに保存されたデータを読み込む
         if let storedData = userDefault.object(forKey: "Videos") as? Data {
             if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
@@ -116,6 +116,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(videos)
             }
         }
+        
+        let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
+        userDefault.set(archiveData, forKey: "Videos")
+        userDefault.synchronize()
         
         return true
     }
