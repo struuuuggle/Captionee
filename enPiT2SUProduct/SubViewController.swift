@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MaterialComponents
 
 class SubViewController: UIViewController {
 	
@@ -16,7 +17,7 @@ class SubViewController: UIViewController {
     
     var player: AVPlayer!
     var timeObserverToken: Any!
-    var timeSlider = UISlider()
+    var timeSlider = MDCSlider(frame: CGRect(x: 0, y: 0, width: 180, height: 20))
     var isPlaying = false
     
     var currentTime: Double {
@@ -98,7 +99,7 @@ class SubViewController: UIViewController {
         */
         
         // ボタンのサイズ
-        let buttonSize = toolBar.frame.size.height
+        let buttonSize = toolBar.frame.size.height - 10
         
         // ボタンの作成
         let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
@@ -116,9 +117,11 @@ class SubViewController: UIViewController {
         let playButtonItem = UIBarButtonItem(customView: playButton)
         let translateButtonItem = UIBarButtonItem(customView: translateButton)
         
-        
-        // スライダーの最大値を設定
-        timeSlider.maximumValue = Float(duration)
+        // スライダーの設定
+        timeSlider.minimumValue = 0
+        timeSlider.maximumValue = CGFloat(duration)
+        timeSlider.isContinuous = true
+        timeSlider.color = MDCPalette.orange.tint500
         
         // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
@@ -131,7 +134,7 @@ class SubViewController: UIViewController {
                                            target: nil, action: nil)
         
         // ToolBarにアイテムを追加する
-        toolBar.items = [timeSliderItem, flexibleItem, translateButtonItem, playButtonItem]
+        toolBar.items = [playButtonItem, flexibleItem, timeSliderItem, flexibleItem, translateButtonItem]
 	}
     
     /* 再生・停止ボタンが押されたとき */
@@ -162,7 +165,7 @@ class SubViewController: UIViewController {
     }
     
     /* スライダーの値が変わったとき */
-    @objc func timeSliderChanged(sender: UISlider) {
+    @objc func timeSliderChanged(sender: MDCSlider) {
         print("スライダーの値が変わった")
         // 動画の時間をスライダーの値にする
         currentTime = Double(sender.value)
@@ -178,15 +181,17 @@ class SubViewController: UIViewController {
         
         // TimeObserverを生成
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) { [weak self] time in
+            guard let wself = self else { return }
+            
             // Sliderの値を変える
-            self?.timeSlider.value = Float((self?.currentTime)!)
-            print(self!.currentTime)
+            wself.timeSlider.value = CGFloat(wself.currentTime)
+            print(wself.currentTime)
             
             // 字幕を適切なタイミングで表示
-            if let captions = self?.receivedVideoInfo.caption {
+            if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
-                    if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
-                        self?.caption.text = caption.sentence + "。"
+                    if wself.currentTime >= caption.startTime && wself.currentTime <= caption.endTime {
+                        wself.caption.text = caption.sentence + "。"
                         break
                     }
                 }
