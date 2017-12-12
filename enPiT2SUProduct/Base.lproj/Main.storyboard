@@ -188,7 +188,9 @@
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Item" id="MCC-2L-9xa"/>
+                                    <barButtonItem title="Item" id="MCC-2L-9xa">
+                                        <inset key="imageInsets" minX="-15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -196,6 +198,7 @@
                     </view>
                     <connections>
                         <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
+                        <outlet property="toolBar" destination="8mz-tX-9iC" id="hrc-xg-ixf"/>
                         <outlet property="translation" destination="haq-Nj-orr" id="eou-To-nQd"/>
                     </connections>
                 </viewController>

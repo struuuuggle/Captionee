@@ -30,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         UINavigationBar.appearance().isTranslucent = false
         
+        UIToolbar.appearance().tintColor = MDCPalette.grey.tint500
+        
         // 起動時間延長
         sleep(2)
         
