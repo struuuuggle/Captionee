@@ -31,19 +31,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         UINavigationBar.appearance().isTranslucent = false
         
+        UIToolbar.appearance().tintColor = MDCPalette.grey.tint500
+        
         // 起動時間延長
         sleep(2)
         
-        //ウォークスルー
-        // UserDefaultsを使ってフラグを保持する
-        let userDefault = UserDefaults.standard
-        // "firstLaunch"をキーに、Bool型の値を保持する
         let dict = ["firstLaunch": true]
-        // デフォルト値登録
-        // ※すでに値が更新されていた場合は、更新後の値のままになる
-        userDefault.register(defaults: dict)
+        self.userDefault.register(defaults: dict)
         
-        // "firstLaunch"に紐づく値がtrueなら(=初回起動)、値をfalseに更新して処理を行う
+        // 初回起動時のみに実行する処理
         if userDefault.bool(forKey: "firstLaunch") {
             userDefault.set(false, forKey: "firstLaunch")
             print("初回起動の時だけ呼ばれるよ")
@@ -122,6 +118,75 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefault.synchronize()
         
         return true
+    }
+    
+    /* アプリが初めて起動されたかを判定する */
+    func isFristLaunch() -> Bool {
+        return true
+    }
+    
+    /* ウォークスルーの表示 */
+    func playWalkthrough() {
+        // 背景画像
+        let bgImage = UIImage(named: "AppIcon")
+
+        // 1ページ目の設定
+        let firstPage = OnboardingContentViewController.content(withTitle: "Title 1",
+                                                                body: "Body 1",
+                                                                image: UIImage(named: "Setting"),    // 画像を表示しない場合はnilにする
+                                                                buttonText: "Next",
+                                                                action: nil)
+        firstPage.movesToNextViewController = true
+        
+        // 2ページ目の設定
+        let secondPage = OnboardingContentViewController.content(withTitle: "Title 2",
+                                                                 body: "Body 2",
+                                                                 image: UIImage(named: "Setting"),
+                                                                 buttonText: "Next",
+                                                                 action:nil)
+        secondPage.movesToNextViewController = true
+        
+        // 3ページ目の設定
+
+        let thirdPage = OnboardingContentViewController.content(withTitle: "Title",
+                                                                body: "Body 3",
+                                                                image: UIImage(named: "Setting"),
+                                                                buttonText: "Get Started!",
+                                                                action: { self.getStarted() })
+        
+        // onboardingViewcontrollerのインスタンスを生成
+        let onboardingVC = OnboardingViewController(backgroundImage: bgImage,
+                                                     contents: [firstPage, secondPage, thirdPage])
+        
+//        onboardingVC?.shouldMaskBackground = false
+//        onboardingVC?.shouldBlurBackground = true
+//        onboardingVC?.shouldFadeTransitions = true
+//        onboardingVC?.fadePageControlOnLastPage = true
+//        onboardingVC?.fadeSkipButtonOnLastPage = true
+        onboardingVC?.allowSkipping = false
+//        onboardingVC?.skipHandler = { self.skip() }
+
+        
+        // onboardingVCを表示
+        window?.rootViewController = onboardingVC
+        print("ウォークスルー表示")
+    }
+    
+    /* ウォークスルーを終了させる */
+    func getStarted() {
+        //Storyboardを指定
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //MainViewcontrollerを指定
+        let initialViewController = storyboard.instantiateInitialViewController()
+        //rootViewControllerに入れる
+        self.window?.rootViewController = initialViewController
+        //MainVCを表示
+        self.window?.makeKeyAndVisible()
+    }
+    
+    /* ウォークスルー中にskipボタンを押した時の処理 */
+    func skip() {
+        self.getStarted()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

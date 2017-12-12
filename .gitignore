@@ -45,7 +45,7 @@ playground.xcworkspace
 # you should judge for yourself, the pros and cons are mentioned at:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 #
-# Pods/
+Pods/
 
 # Carthage
 #
@@ -71,3 +71,5 @@ enPiT2SUProduct.xcworkspace/xcuserdata/yusuke.xcuserdatad/UserInterfaceState.xcu
 
 .DS_Store
 enPiT2SUProduct/.DS_Store
+
+init.sh
