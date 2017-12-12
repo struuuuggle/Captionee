@@ -84,54 +84,44 @@ class SubViewController: UIViewController {
 		// 翻訳結果を表示
 		translation.text = receivedTranslation
         
-        //navigationController?.navigationBar.isHidden = true
-        
         /*
-         // MainViewに戻るボタン
-         let backButtonItem = UIBarButtonItem(image: UIImage(named: "Back"),
-         style: UIBarButtonItemStyle.plain,
-         target: self,
-         action: #selector(playButtonTapped))
-         // 動画の再生・停止をするボタン
-         let playButtonItem = UIBarButtonItem(image: UIImage(named: "Play"),
-         style: UIBarButtonItemStyle.plain,
-         target: self,
-         action: #selector(playButtonTapped))
-         // 字幕の翻訳をするボタン
-         let translateButtonItem = UIBarButtonItem(image: UIImage(named: "Translate"),
-         style: UIBarButtonItemStyle.plain,
-         target: self,
-         action: #selector(playButtonTapped))
-         */
+        // 動画の再生・停止をするボタン
+        let playButtonItem = UIBarButtonItem(image: UIImage(named: "Play"),
+        style: UIBarButtonItemStyle.plain,
+        target: self,
+        action: #selector(playButtonTapped))
+        // 字幕の翻訳をするボタン
+        let translateButtonItem = UIBarButtonItem(image: UIImage(named: "Translate"),
+        style: UIBarButtonItemStyle.plain,
+        target: self,
+        action: #selector(translateButtonTapped))
+        */
         
         // ボタンのサイズ
-        let buttonSize = 10
+        let buttonSize = toolBar.frame.size.height
         
         // ボタンの作成
-        let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         let translateButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         
         // ボタンの背景に画像を設定
-        backButton.setBackgroundImage(UIImage(named: "Back"), for: UIControlState())
         playButton.setBackgroundImage(UIImage(named: "Play"), for: UIControlState())
         translateButton.setBackgroundImage(UIImage(named: "Translate"), for: UIControlState())
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
+        
+        // 作成したボタンをUIBarButtonItemとして設定
+        let playButtonItem = UIBarButtonItem(customView: playButton)
+        let translateButtonItem = UIBarButtonItem(customView: translateButton)
+        
         
         // スライダーの最大値を設定
         timeSlider.maximumValue = Float(duration)
         
         // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
-        
-        // 作成したボタンをUIBarButtonItemとして設定
-        let backButtonItem = UIBarButtonItem(customView: backButton)
-        let playButtonItem = UIBarButtonItem(customView: playButton)
-        let translateButtonItem = UIBarButtonItem(customView: translateButton)
         
         // 作成したスライダーをUIBarButtonItemとして設定
         let timeSliderItem = UIBarButtonItem(customView: timeSlider)
@@ -141,13 +131,8 @@ class SubViewController: UIViewController {
                                            target: nil, action: nil)
         
         // ToolBarにアイテムを追加する
-        toolBar.items = [backButtonItem, flexibleItem, timeSliderItem, flexibleItem, translateButtonItem, playButtonItem]
+        toolBar.items = [timeSliderItem, flexibleItem, translateButtonItem, playButtonItem]
 	}
-    
-    /* 戻るボタンが押されたとき */
-    @objc func backButtonTapped(sender: UIButton) {
-        print("戻る")
-    }
     
     /* 再生・停止ボタンが押されたとき */
     @objc func playButtonTapped(sender: UIButton) {

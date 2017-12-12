@@ -136,6 +136,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             case .authorized:
                 print("Authorized")
                 
+                /*
                 // ImagePickerControllerの設定
                 let imagePickerController = UIImagePickerController()
                 imagePickerController.sourceType = .photoLibrary
@@ -144,10 +145,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 // PhotoLibraryの表示
                 self.present(imagePickerController, animated: true, completion: nil)
+                */
+                
+                self.showPhotoLibrary()
             case .denied:
                 print("Denied")
                 
-                self.failure()
+                self.showDeniedAlert()
+                
+                //self.failure()
             case .notDetermined:
                 print("NotDetermined")
             case .restricted:
@@ -156,6 +162,54 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    func showPhotoLibrary() {
+        // ImagePickerControllerの設定
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        imagePickerController.mediaTypes = ["public.movie"]
+        
+        // PhotoLibraryの表示
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    /* PhotoLibraryへのアクセスが拒否されているときにAlertを出す */
+    func showDeniedAlert() {
+        // 表示するAlert
+        let alert: UIAlertController = UIAlertController(title: "エラー",
+                                                         message: "「写真」へのアクセスが拒否されています。設定より変更してください。",
+                                                         preferredStyle: .alert)
+        
+        // Alertをキャンセルする選択肢
+        let cancel: UIAlertAction = UIAlertAction(title: "キャンセル",
+                                                  style: .cancel,
+                                                  handler: nil)
+        
+        // iPhoneの「設定」を開く選択肢
+        let ok: UIAlertAction = UIAlertAction(title: "設定画面へ",
+                                              style: .default,
+                                              handler: { [weak self] (action) -> Void in
+                                                guard let wself = self else {
+                                                    return
+                                                }
+                                                wself.transitionToSettingsApplition()
+        })
+        
+        // 選択肢をAlertに追加
+        alert.addAction(cancel)
+        alert.addAction(ok)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+    }
+    
+    /* iPhoneの「設定」を開く */
+    fileprivate func transitionToSettingsApplition() {
+        let url = URL(string: UIApplicationOpenSettingsURLString)
+        if let url = url {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
 
     /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
