@@ -15,19 +15,25 @@ class SubViewController: UIViewController {
 	var receivedVideoInfo: VideoInfo!
 	var receivedTranslation: String!
     
+    let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+    let translateButton = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+    
     var player: AVPlayer!
     var timeObserverToken: Any!
     var timeSlider = MDCSlider(frame: CGRect(x: 0, y: 0, width: 180, height: 20))
     var isPlaying = false
+    
+    var isFinished: Bool {
+        return currentTime == duration
+    }
     
     var currentTime: Double {
         get {
             return player.currentTime().seconds
         }
         set {
-            print(newValue)
-            
             let newTime = CMTimeMakeWithSeconds(newValue, 1000)
+            
             player.seek(to: newTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         }
     }
@@ -85,26 +91,6 @@ class SubViewController: UIViewController {
 		// 翻訳結果を表示
 		translation.text = receivedTranslation
         
-        /*
-        // 動画の再生・停止をするボタン
-        let playButtonItem = UIBarButtonItem(image: UIImage(named: "Play"),
-        style: UIBarButtonItemStyle.plain,
-        target: self,
-        action: #selector(playButtonTapped))
-        // 字幕の翻訳をするボタン
-        let translateButtonItem = UIBarButtonItem(image: UIImage(named: "Translate"),
-        style: UIBarButtonItemStyle.plain,
-        target: self,
-        action: #selector(translateButtonTapped))
-        */
-        
-        // ボタンのサイズ
-        let buttonSize = toolBar.frame.size.height - 10
-        
-        // ボタンの作成
-        let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        let translateButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        
         // ボタンの背景に画像を設定
         playButton.setBackgroundImage(UIImage(named: "Play"), for: UIControlState())
         translateButton.setBackgroundImage(UIImage(named: "Translate"), for: UIControlState())
@@ -144,6 +130,10 @@ class SubViewController: UIViewController {
         isPlaying = !isPlaying
         
         if isPlaying {
+            if isFinished {
+                currentTime = 0.0
+            }
+            
             // 再生
             print("再生")
             player.play()
@@ -184,8 +174,12 @@ class SubViewController: UIViewController {
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) { [weak self] time in
             guard let wself = self else { return }
             
+            if wself.isFinished {
+                wself.isPlaying = false
+                wself.playButton.setBackgroundImage(UIImage(named: "Play"), for: .normal)
+            }
+            
             // Sliderの値を変える
-            //wself.timeSlider.value = CGFloat(wself.currentTime)
             wself.timeSlider.setValue(CGFloat(wself.currentTime), animated: true)
             print(wself.currentTime)
             
@@ -198,7 +192,7 @@ class SubViewController: UIViewController {
                     }
                 }
             } else {
-                self?.caption.text = "Caption is nil."
+                wself.caption.text = "Caption is nil."
             }
         }
     }
