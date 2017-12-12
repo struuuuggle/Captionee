@@ -152,7 +152,7 @@
 				TargetAttributes = {
 					C0F7E2601F6B7FC90038357B = {
 						CreatedOnToolsVersion = 8.3.3;
-                        DevelopmentTeam = U48PC58DNS;
+						DevelopmentTeam = Z2JW4TKX97;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
