@@ -62,36 +62,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func playWalkthrough() {
 		// 背景画像
 		let bgImage = UIImage(named: "AppIcon")
-		
-		// 1ページ目の設定
-		let firstPage = OnboardingContentViewController.content(withTitle: "Title 1",				// タイトル
-																body: "Body 1",						// 本文
-																image: UIImage(named: "Setting"),	// 画像
-																buttonText: "Next",					// ボタンのラベル
-																action: nil)						// ボタンを押した時の動作
 
+		// 1ページ目の設定
+		let firstPage = OnboardingContentViewController.content(withTitle: "Title 1",
+																body: "Body 1",
+																image: UIImage(named: "Setting"),	// 画像を表示しない場合はnilにする
+																buttonText: "Next",
+																action: nil)
 		firstPage.movesToNextViewController = true
 		
 		// 2ページ目の設定
-		let secondPage = OnboardingContentViewController.content(withTitle: "Title 2",				// タイトル
-																 body: "Body 2",					// 本文
-																 image: UIImage(named: "Setting"),	// 画像
-																 buttonText: "Next",				// ボタンのラベル
-																 action:nil)						// ボタンを押した時の動作
+		let secondPage = OnboardingContentViewController.content(withTitle: "Title 2",
+																 body: "Body 2",
+																 image: UIImage(named: "Setting"),
+																 buttonText: "Next",
+																 action:nil)
 		secondPage.movesToNextViewController = true
 		
 		// 3ページ目の設定
-		let thirdPage = OnboardingContentViewController.content(withTitle: "Title",					// タイトル
-																body: "Body 3",						// 本文
-																image: UIImage(named: "Setting"),	// 画像
-																buttonText: "Get Started!",			// ボタンのラベル
-																action: { self.getStarted() })		// ボタンを押した時の動作
+
+		let thirdPage = OnboardingContentViewController.content(withTitle: "Title",
+																body: "Body 3",
+																image: UIImage(named: "Setting"),
+																buttonText: "Get Started!",
+																action: { self.getStarted() })
 		
 		// onboardingViewcontrollerのインスタンスを生成
 		let onboardingVC = OnboardingViewController(backgroundImage: bgImage,
-													contents: [firstPage, secondPage, thirdPage])
+													 contents: [firstPage, secondPage, thirdPage])
 		
-		// onboardingVCの設定
 //		onboardingVC?.shouldMaskBackground = false
 //		onboardingVC?.shouldBlurBackground = true
 //		onboardingVC?.shouldFadeTransitions = true
@@ -103,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// onboardingVCを表示
 		window?.rootViewController = onboardingVC
-		print("ウォークスルーを表示")
+		print("ウォークスルー表示")
 	}
 	
 	/* ウォークスルーを終了させる */
