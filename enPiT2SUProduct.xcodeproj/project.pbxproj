@@ -116,6 +116,15 @@
 			path = enPiT2SUProduct;
 			sourceTree = "<group>";
 		};
+		D2B18BFB44403EE99325D4A2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3FD304D038968C07E6460056 /* Pods-enPiT2SUProduct.debug.xcconfig */,
+				1B12D3D11C9C6585C9B28481 /* Pods-enPiT2SUProduct.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
