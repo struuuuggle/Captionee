@@ -121,6 +121,7 @@ class SubViewController: UIViewController {
         timeSlider.minimumValue = 0
         timeSlider.maximumValue = CGFloat(duration)
         timeSlider.isContinuous = true
+        timeSlider.isThumbHollowAtStart = false
         timeSlider.color = MDCPalette.orange.tint500
         
         // スライダーの値が変わったときに呼び出すメソッドを指定
@@ -174,7 +175,7 @@ class SubViewController: UIViewController {
     /* 一定時間ごとに動画の再生状態を監視する */
     func addPeriodicTimeObserver() {
         // 監視の時間間隔
-        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         
         // メインスレッド
         let mainQueue = DispatchQueue.main
@@ -184,7 +185,8 @@ class SubViewController: UIViewController {
             guard let wself = self else { return }
             
             // Sliderの値を変える
-            wself.timeSlider.value = CGFloat(wself.currentTime)
+            //wself.timeSlider.value = CGFloat(wself.currentTime)
+            wself.timeSlider.setValue(CGFloat(wself.currentTime), animated: true)
             print(wself.currentTime)
             
             // 字幕を適切なタイミングで表示
