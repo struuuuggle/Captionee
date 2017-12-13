@@ -185,7 +185,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aga-F4-Bt2">
-                                <rect key="frame" x="15" y="611" width="36" height="36"/>
+                                <rect key="frame" x="20" y="611" width="36" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="8yC-Lp-zTs"/>
                                     <constraint firstAttribute="width" constant="36" id="SPj-y5-mHE"/>
@@ -197,7 +197,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="aga-F4-Bt2" secondAttribute="bottom" constant="20" id="6J4-8X-YTW"/>
-                            <constraint firstItem="aga-F4-Bt2" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leading" constant="15" id="iGy-tA-JJH"/>
+                            <constraint firstItem="aga-F4-Bt2" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leading" constant="20" id="iGy-tA-JJH"/>
                         </constraints>
                     </view>
                     <connections>

@@ -17,8 +17,8 @@ class SubViewController: UIViewController {
     
     var player: AVPlayer!
     var timeSlider: MDCSlider!
-    var isPlaying = false
     var timeObserverToken: Any!
+    var isPlaying = false
     
     var isFinished: Bool {
         return currentTime == duration
@@ -90,11 +90,11 @@ class SubViewController: UIViewController {
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        //translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
 
         // スライダーの設定
         timeSlider = MDCSlider(frame: CGRect(x: playButton.frame.size.width+30, y: view.bounds.size.height-105,
                                              width: view.bounds.size.width-playButton.frame.size.width-60, height: 5))
+        timeSlider.minimumValue = 0.0
         timeSlider.maximumValue = CGFloat(duration)
         timeSlider.isContinuous = true
         timeSlider.isThumbHollowAtStart = false
@@ -102,6 +102,7 @@ class SubViewController: UIViewController {
         
         // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
+        timeSlider.addTarget(self, action: #selector(timeSliderTapped), for: .touchUpInside)
         
         view.addSubview(timeSlider)
 	}
@@ -116,32 +117,51 @@ class SubViewController: UIViewController {
                 currentTime = 0.0
             }
             
-            // 再生
-            print("再生")
-            player.play()
-            
-            // 背景画像をPauseに変える
-            sender.setImage(UIImage(named: "Pause"), for: .normal)
+            play()
         } else {
-            // 停止
-            print("停止")
-            player.pause()
-            
-            // 背景画像をPlayに変える
-            sender.setImage(UIImage(named: "Play"), for: .normal)
+            pause()
         }
     }
     
-    /* 翻訳ボタンが押されたとき */
-    @objc func translateButtonTapped(sender: UIButton) {
-        print("翻訳")
+    /* 動画を再生する */
+    func play() {
+        // 再生
+        print("再生")
+        player.play()
+        
+        // 背景画像をPauseに変える
+        playButton.setImage(UIImage(named: "Pause"), for: .normal)
+    }
+    
+    /* 動画を一時停止する */
+    func pause() {
+        // 停止
+        print("停止")
+        player.pause()
+        
+        // 背景画像をPlayに変える
+        playButton.setImage(UIImage(named: "Play"), for: .normal)
     }
     
     /* スライダーの値が変わったとき */
     @objc func timeSliderChanged(sender: MDCSlider) {
         print("スライダーの値が変わった")
+        
         // 動画の時間をスライダーの値にする
         currentTime = Double(sender.value)
+    }
+    
+    /* スライダーがタップされたとき */
+    @objc func timeSliderTapped(sender: MDCSlider) {
+        print("スライダーがタップされた")
+        
+        if isPlaying {
+            player.pause()
+            currentTime = Double(sender.value)
+            player.play()
+        } else {
+            currentTime = Double(sender.value)
+        }
     }
     
     /* 一定時間ごとに動画の再生状態を監視する */
@@ -156,7 +176,9 @@ class SubViewController: UIViewController {
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) { [weak self] time in
             guard let wself = self else { return }
             
+            // 動画の再生が終わっているとき
             if wself.isFinished {
+                // 動画を一時停止中にする
                 wself.isPlaying = false
                 wself.playButton.setImage(UIImage(named: "Play"), for: .normal)
             }
