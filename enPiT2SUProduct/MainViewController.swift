@@ -175,24 +175,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* PhotoLibraryへのアクセスが拒否されているときにAlertを出す */
     func showDeniedAlert() {
-        // 表示するAlert
-        let alert: UIAlertController = UIAlertController(title: "エラー",
-                                                         message: "「写真」へのアクセスが拒否されています。設定より変更してください。",
-                                                         preferredStyle: .alert)
+        let alert = MDCAlertController(title: "エラー", message: "「写真」へのアクセスが拒否されています。設定より変更してください。")
         
-        // Alertをキャンセルする選択肢
-        let cancel: UIAlertAction = UIAlertAction(title: "キャンセル",
-                                                  style: .cancel,
-                                                  handler: nil)
+        let cancel = MDCAlertAction(title: "キャンセル", handler: nil)
         
-        // iPhoneの「設定」を開く選択肢
-        let ok: UIAlertAction = UIAlertAction(title: "設定画面へ",
-                                              style: .default,
-                                              handler: { [weak self] (action) -> Void in
-                                                guard let wself = self else {
-                                                    return
-                                                }
-                                                wself.transitionToSettingsApplition()
+        let ok = MDCAlertAction(title: "設定画面へ", handler: { [weak self] (action) -> Void in
+            guard let wself = self else {
+                return
+            }
+            wself.transitionToSettingsApplition()
+            
         })
         
         // 選択肢をAlertに追加
