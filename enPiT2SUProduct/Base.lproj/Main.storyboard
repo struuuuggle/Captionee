@@ -166,7 +166,7 @@
                         <viewControllerLayoutGuide type="top" id="D0M-Bx-ef8"/>
                         <viewControllerLayoutGuide type="bottom" id="Ccu-9G-Qg2"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="c5f-MH-R5h">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="c5f-MH-R5h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -184,21 +184,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8mz-tX-9iC">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem title="Item" id="MCC-2L-9xa">
-                                        <inset key="imageInsets" minX="-15" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aga-F4-Bt2">
+                                <rect key="frame" x="15" y="611" width="36" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="8yC-Lp-zTs"/>
+                                    <constraint firstAttribute="width" constant="36" id="SPj-y5-mHE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" image="Play"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="aga-F4-Bt2" secondAttribute="bottom" constant="20" id="6J4-8X-YTW"/>
+                            <constraint firstItem="aga-F4-Bt2" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leading" constant="15" id="iGy-tA-JJH"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
-                        <outlet property="toolBar" destination="8mz-tX-9iC" id="hrc-xg-ixf"/>
+                        <outlet property="playButton" destination="aga-F4-Bt2" id="WK4-wI-t2x"/>
                         <outlet property="translation" destination="haq-Nj-orr" id="eou-To-nQd"/>
                     </connections>
                 </viewController>
@@ -232,6 +236,7 @@
     </scenes>
     <resources>
         <image name="Add" width="24" height="24"/>
+        <image name="Play" width="36" height="36"/>
         <image name="Setting" width="24" height="24"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

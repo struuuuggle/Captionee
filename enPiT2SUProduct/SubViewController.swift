@@ -15,13 +15,10 @@ class SubViewController: UIViewController {
 	var receivedVideoInfo: VideoInfo!
 	var receivedTranslation: String!
     
-    let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-    let translateButton = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-    
     var player: AVPlayer!
-    var timeObserverToken: Any!
-    var timeSlider = MDCSlider(frame: CGRect(x: 0, y: 0, width: 180, height: 20))
+    var timeSlider: MDCSlider!
     var isPlaying = false
+    var timeObserverToken: Any!
     
     var isFinished: Bool {
         return currentTime == duration
@@ -44,10 +41,10 @@ class SubViewController: UIViewController {
         return CMTimeGetSeconds(currentItem.asset.duration)
     }
 	
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var translation: UILabel!
-	
+    @IBOutlet weak var playButton: UIButton!
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
         print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
@@ -91,20 +88,13 @@ class SubViewController: UIViewController {
 		// 翻訳結果を表示
 		translation.text = receivedTranslation
         
-        // ボタンの背景に画像を設定
-        playButton.setBackgroundImage(UIImage(named: "Play"), for: UIControlState())
-        translateButton.setBackgroundImage(UIImage(named: "Translate"), for: UIControlState())
-        
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
-        
-        // 作成したボタンをUIBarButtonItemとして設定
-        let playButtonItem = UIBarButtonItem(customView: playButton)
-        let translateButtonItem = UIBarButtonItem(customView: translateButton)
-        
+        //translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
+
         // スライダーの設定
-        timeSlider.minimumValue = 0
+        timeSlider = MDCSlider(frame: CGRect(x: playButton.frame.size.width+30, y: view.bounds.size.height-105,
+                                             width: view.bounds.size.width-playButton.frame.size.width-60, height: 5))
         timeSlider.maximumValue = CGFloat(duration)
         timeSlider.isContinuous = true
         timeSlider.isThumbHollowAtStart = false
@@ -113,15 +103,7 @@ class SubViewController: UIViewController {
         // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
         
-        // 作成したスライダーをUIBarButtonItemとして設定
-        let timeSliderItem = UIBarButtonItem(customView: timeSlider)
-        
-        // 余白を設定するスペーサー
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
-                                           target: nil, action: nil)
-        
-        // ToolBarにアイテムを追加する
-        toolBar.items = [playButtonItem, flexibleItem, timeSliderItem, flexibleItem, translateButtonItem]
+        view.addSubview(timeSlider)
 	}
     
     /* 再生・停止ボタンが押されたとき */
@@ -139,14 +121,14 @@ class SubViewController: UIViewController {
             player.play()
             
             // 背景画像をPauseに変える
-            sender.setBackgroundImage(UIImage(named: "Pause"), for: .normal)
+            sender.setImage(UIImage(named: "Pause"), for: .normal)
         } else {
             // 停止
             print("停止")
             player.pause()
             
             // 背景画像をPlayに変える
-            sender.setBackgroundImage(UIImage(named: "Play"), for: .normal)
+            sender.setImage(UIImage(named: "Play"), for: .normal)
         }
     }
     
@@ -176,7 +158,7 @@ class SubViewController: UIViewController {
             
             if wself.isFinished {
                 wself.isPlaying = false
-                wself.playButton.setBackgroundImage(UIImage(named: "Play"), for: .normal)
+                wself.playButton.setImage(UIImage(named: "Play"), for: .normal)
             }
             
             // Sliderの値を変える
