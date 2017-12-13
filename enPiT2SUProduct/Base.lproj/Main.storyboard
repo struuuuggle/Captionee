@@ -202,7 +202,7 @@
                     </view>
                     <connections>
                         <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
-                        <outlet property="playButton" destination="aga-F4-Bt2" id="WK4-wI-t2x"/>
+                        <outlet property="playButton" destination="aga-F4-Bt2" id="0pl-dk-0cT"/>
                         <outlet property="translation" destination="haq-Nj-orr" id="eou-To-nQd"/>
                     </connections>
                 </viewController>

@@ -64,26 +64,34 @@ class SubViewController: UIViewController {
         // AVPlayerViewControllerの設定
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
-        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height/2)
         playerViewController.showsPlaybackControls = false
+        addChildViewController(playerViewController)
+        view.addSubview(playerViewController.view)
+        
+        // AVPlayerViewControllerの制約を設定
+        playerViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        playerViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        playerViewController.view.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        playerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        playerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         // TimeObserverを設定
         addPeriodicTimeObserver()
         
-        // AVPlayerViewControllerをViewControllerに追加
-        addChildViewController(playerViewController)
-        
-        // 最大画面になった時、これが使用される感じ
-        view.addSubview(playerViewController.view)
-        
         // 字幕のLabelのサイズを設定
-        caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+        caption.text = ""
+        caption.numberOfLines = 0
+        view.addSubview(caption)
+        
+        // 字幕のLabelの制約を設定
+        caption.translatesAutoresizingMaskIntoConstraints = false
+        caption.topAnchor.constraint(equalTo: playerViewController.view.bottomAnchor, constant: 20).isActive = true
+        caption.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        caption.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -20)
         
         // 翻訳のLabelのサイズを設定
 		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
-        
-        // 字幕を表示
-        caption.text = ""
 		
 		// 翻訳結果を表示
 		translation.text = receivedTranslation
@@ -92,54 +100,59 @@ class SubViewController: UIViewController {
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 
         // スライダーの設定
-        timeSlider = MDCSlider(frame: CGRect(x: playButton.frame.size.width+30, y: view.bounds.size.height-105,
-                                             width: view.bounds.size.width-playButton.frame.size.width-60, height: 5))
+        timeSlider = MDCSlider()
         timeSlider.minimumValue = 0.0
         timeSlider.maximumValue = CGFloat(duration)
         timeSlider.isContinuous = true
         timeSlider.isThumbHollowAtStart = false
         timeSlider.color = MDCPalette.orange.tint500
+        view.addSubview(timeSlider)
         
         // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
         timeSlider.addTarget(self, action: #selector(timeSliderTapped), for: .touchUpInside)
         
-        view.addSubview(timeSlider)
+        // スライダーの制約を設定
+        timeSlider.translatesAutoresizingMaskIntoConstraints = false
+        timeSlider.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 10).isActive = true
+        timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
+        timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
 	}
     
-    /* 再生・停止ボタンが押されたとき */
+    /* 再生・一時停止ボタンが押されたとき */
     @objc func playButtonTapped(sender: UIButton) {
-        // 再生・停止の切り替え
-        isPlaying = !isPlaying
-        
         if isPlaying {
+            // 一時停止
+            pause()
+        } else {
+            // 動画が終わっていたら最初に戻す
             if isFinished {
                 currentTime = 0.0
             }
             
+            // 再生
             play()
-        } else {
-            pause()
         }
     }
     
     /* 動画を再生する */
     func play() {
-        // 再生
         print("再生")
         player.play()
+        isPlaying = true
         
-        // 背景画像をPauseに変える
+        // ボタンの画像をPauseに変える
         playButton.setImage(UIImage(named: "Pause"), for: .normal)
     }
     
     /* 動画を一時停止する */
     func pause() {
-        // 停止
-        print("停止")
+        print("一時停止")
         player.pause()
+        isPlaying = false
         
-        // 背景画像をPlayに変える
+        // ボタンの画像をPlayに変える
         playButton.setImage(UIImage(named: "Play"), for: .normal)
     }
     
@@ -156,9 +169,9 @@ class SubViewController: UIViewController {
         print("スライダーがタップされた")
         
         if isPlaying {
-            player.pause()
+            pause()
             currentTime = Double(sender.value)
-            player.play()
+            play()
         } else {
             currentTime = Double(sender.value)
         }
@@ -178,9 +191,8 @@ class SubViewController: UIViewController {
             
             // 動画の再生が終わっているとき
             if wself.isFinished {
-                // 動画を一時停止中にする
-                wself.isPlaying = false
-                wself.playButton.setImage(UIImage(named: "Play"), for: .normal)
+                // 一時停止
+                wself.pause()
             }
             
             // Sliderの値を変える
