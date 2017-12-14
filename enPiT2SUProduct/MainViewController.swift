@@ -277,20 +277,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             print("---> Caption")
             for sentence in captions.sentences {
-                print("Sentence: \(sentence.sentence!), Start: \(sentence.startTime!), End: \(sentence.endTime!)")
+                print("Sentence: \(sentence.original!), Start: \(sentence.startTime!), End: \(sentence.endTime!)")
             }
             print("<--- Caption")
             
-            // 認識結果を字幕に設定
-            var caption = ""
-            for sentence in captions.sentences {
-                caption += sentence.sentence! + "。"
-            }
-            
             self.appDelegate.videos[self.appDelegate.videos.count-1].caption = captions
 			
-			self.translateCaption(caption)
-            
             /* UserDefaultにデータを保存
             let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.appDelegate.videos)
             self.userDefault.set(archiveData, forKey: "videos")
@@ -304,20 +296,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
     }
     
-    /* 字幕の翻訳 */
-    func translateCaption(_ caption: String) {
-        
-        let translator = Translation()
-        
-        let translationInfo = TranslationInfo(sourceLanguage: "ja", targetLanguage: "en", text: caption)
-        
-        translator.translate(params: translationInfo) { (result) in
-            self.translation = "\(result)"
-            print("---> Translation")
-            print(result)
-            print("<--- Translation")
-        }
-    }
     
     /* 動画のアップロードに成功したとき */
     func success() {
@@ -520,7 +498,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
-			subVC.receivedTranslation = translation
         }
     }
     

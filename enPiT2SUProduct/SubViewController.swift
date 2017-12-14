@@ -12,8 +12,7 @@ import AVKit
 class SubViewController: UIViewController {
 	
 	var receivedVideoInfo: VideoInfo!
-	var receivedTranslation: String!
-    
+	
     var player: AVPlayer!
     var timeObserverToken: Any!
     var timeSlider = UISlider()
@@ -82,7 +81,7 @@ class SubViewController: UIViewController {
         caption.text = ""
 		
 		// 翻訳結果を表示
-		translation.text = receivedTranslation
+		translation.text = ""
         
         //navigationController?.navigationBar.isHidden = true
         
@@ -174,6 +173,28 @@ class SubViewController: UIViewController {
     /* 翻訳ボタンが押されたとき */
     @objc func translateButtonTapped(sender: UIButton) {
         print("翻訳")
+		
+		let queue = DispatchQueue.global(qos: .default)
+		let translator = Translation("ja", "en")
+				
+		if let captions = self.receivedVideoInfo.caption {
+			for caption in captions.sentences {
+				// サブスレッドで処理
+				queue.async {
+					// データの取得
+					caption.foreign = translator.translate(caption.original)
+					// メインスレッドで処理
+					DispatchQueue.main.async {
+						// 取得した翻訳結果を表示
+						print("---> Translation")
+						print(caption.foreign)
+						print("<--- Translation")
+					}
+				}
+			}
+		} else {
+			print("Translation is nil.")
+		}
     }
     
     /* スライダーの値が変わったとき */
@@ -201,7 +222,8 @@ class SubViewController: UIViewController {
             if let captions = self?.receivedVideoInfo.caption {
                 for caption in captions.sentences {
                     if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
-                        self?.caption.text = caption.sentence + "。"
+                        self?.caption.text = caption.original + "。"
+						self?.translation.text = caption.foreign
                         break
                     }
                 }
