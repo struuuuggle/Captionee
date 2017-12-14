@@ -44,15 +44,12 @@ class Caption: NSObject, NSCoding {
 		var endTime: Double!
 		
 		init(_ original: String, _ startTime: Double, _ endTime: Double) {
-			self.original = original			
+			self.original = original
+            self.foreign = original
 			self.startTime = startTime
 			self.endTime = endTime
 		}
-		
-		func setForeign(_ foreign: String) {
-			self.foreign = foreign
-		}
-		
+        
 		func encode(with aCoder: NSCoder) {
 			aCoder.encode(original, forKey: "Sentence")
 			aCoder.encode(foreign, forKey: "Foreign")

@@ -18,7 +18,6 @@
         <!--Setting-->
         <scene sceneID="FXX-or-jCW">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Setting" id="R3h-QI-D0b" customClass="SettingViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nlt-nt-ZyM"/>
@@ -48,6 +47,7 @@
                         <outlet property="textField" destination="xW3-1d-H2a" id="RWg-x0-gPJ"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="928.79999999999995" y="-690.40479760119945"/>
         </scene>
@@ -180,13 +180,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="翻訳結果" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haq-Nj-orr">
-                                <rect key="frame" x="272" y="517" width="87" height="20.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aga-F4-Bt2">
                                 <rect key="frame" x="20" y="611" width="36" height="36"/>
                                 <constraints>
@@ -206,7 +199,6 @@
                     <connections>
                         <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
                         <outlet property="playButton" destination="aga-F4-Bt2" id="0pl-dk-0cT"/>
-                        <outlet property="translation" destination="haq-Nj-orr" id="eou-To-nQd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5o-aQ-1Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -89,12 +89,6 @@ class SubViewController: UIViewController {
         caption.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -20)
         
-        // 翻訳のLabelのサイズを設定
-        translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
-        
-        // 翻訳結果を表示
-        translation.text = ""
-        
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
 
@@ -117,6 +111,13 @@ class SubViewController: UIViewController {
         timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        
+        // NavigationBarの右側にtranslateButtonを設置
+        let translateButton = UIBarButtonItem(image: UIImage(named: "Vertical"),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(translateButtonTapped))
+        navigationItem.rightBarButtonItem = translateButton
     }
     
     /* 再生・一時停止ボタンが押されたとき */
@@ -228,8 +229,7 @@ class SubViewController: UIViewController {
             if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
                     if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
-                        self?.caption.text = caption.original + "。"
-                        self?.translation.text = caption.foreign
+                        self?.caption.text = caption.foreign + "."
                         break
                     }
                 }
