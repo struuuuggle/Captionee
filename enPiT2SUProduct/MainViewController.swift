@@ -18,9 +18,6 @@ import SwiftReorder
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
     DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
-    
-    
-    
     var window: UIWindow?
     var videoMovURL: URL?
     var videoMp4URL: URL?
@@ -40,6 +37,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var selectImageButton: MDCFloatingButton!
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -72,14 +70,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        /*
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(sender:)))
-            
-        longPressGestureRecognizer.allowableMovement = 150
-        longPressGestureRecognizer.minimumPressDuration = 2.0
-        
-        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
- */
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(sender:)))
         self.view.addGestureRecognizer(panGestureRecognizer)
