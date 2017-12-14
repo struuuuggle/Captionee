@@ -26,13 +26,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var translation: String = ""
     var index: Int!
     
+    let languages = ["Japanese": "ja-JP_BroadbandModel", "USEnglish": "en-GB_BroadbandModel",
+                     "UKEnglish": "en-US_BroadbandModel", "Chinese": "zh-CN_BroadbandModel"]
+    
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
     @IBOutlet weak var tableView: UITableView!
-    
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -84,26 +86,28 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
     }
+    
     /* 以下は UITextFieldDelegate のメソッド */
     
     // 改行ボタンを押した時の処理
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         // キーボードを隠す
         textField.resignFirstResponder()
+        
         return true
     }
     
     // クリアボタンが押された時の処理
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        
         print("Clear")
+        
         return true
     }
     
     // テキストフィールドがフォーカスされた時の処理
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Start")
+        
         return true
     }
     
@@ -120,7 +124,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return true
     }
     
-    
     /* PhotoLibraryから動画を選択する */
     @IBAction func selectImage(_ sender: Any) {
         print("カメラロールから動画を選択")
@@ -136,24 +139,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             case .authorized:
                 print("Authorized")
                 
-                /*
-                // ImagePickerControllerの設定
-                let imagePickerController = UIImagePickerController()
-                imagePickerController.sourceType = .photoLibrary
-                imagePickerController.delegate = self
-                imagePickerController.mediaTypes = ["public.movie"]
-                
-                // PhotoLibraryの表示
-                self.present(imagePickerController, animated: true, completion: nil)
-                */
-                
                 self.showPhotoLibrary()
             case .denied:
                 print("Denied")
                 
                 self.showDeniedAlert()
-                
-                //self.failure()
             case .notDetermined:
                 print("NotDetermined")
             case .restricted:
@@ -162,6 +152,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    /* PhotoLibraryの全動画を表示する */
     func showPhotoLibrary() {
         // ImagePickerControllerの設定
         let imagePickerController = UIImagePickerController()
@@ -249,21 +240,62 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(audioM4aURL!)
         print("<--- M4a URL")
         
+        let languageKey = "Chinese"
+        
         // メインスレッドで処理
         let lockQueue = DispatchQueue.main
         lockQueue.async {
             // 動画選択画面を閉じる
             picker.dismiss(animated: true, completion: nil)
+            
+            //languageKey = self.selectLanguage()
         }
         
         // KRProgressHUDの開始
         KRProgressHUD.show(withMessage: "Uploading...")
-		
+        
+        print("Language is \(languageKey).")
+        
+        let language = languages[languageKey]!
+        
         // 字幕を生成
-        generateCaption()
+        generateCaption(language: language)
         
         // TableViewの更新
         tableView.reloadData()
+    }
+    
+    func selectLanguage() -> String {
+        var languageKey = "Japanese"
+        
+        let alert = MDCAlertController(title: "言語選択", message: "動画の言語を選択してください")
+        
+        let japanese = MDCAlertAction(title: "日本語", handler: { (action) -> Void in
+            languageKey = "Japanese"
+        })
+        
+        let usEnglish = MDCAlertAction(title: "アメリカ英語", handler: { (action) -> Void in
+            languageKey = "USEnglish"
+        })
+        
+        let ukEnglish = MDCAlertAction(title: "イギリス英語", handler: { (action) -> Void in
+            languageKey = "UKEnglish"
+        })
+        
+        let chinese = MDCAlertAction(title: "中国語", handler: { (action) -> Void in
+            languageKey = "Chinese"
+        })
+        
+        // 選択肢をAlertに追加
+        alert.addAction(japanese)
+        alert.addAction(usEnglish)
+        alert.addAction(ukEnglish)
+        alert.addAction(chinese)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+        
+        return languageKey
     }
     
     /* 動画からサムネイルを生成する */
@@ -298,7 +330,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* 字幕を生成する */
-    func generateCaption() {
+    func generateCaption(language model: String) {
         print("字幕を生成")
         
         // 対象ファイルのURL
@@ -337,16 +369,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 			
 			self.translateCaption(caption)
             
-            /* UserDefaultにデータを保存
-            let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.appDelegate.videos)
-            self.userDefault.set(archiveData, forKey: "videos")
-            self.userDefault.synchronize()
-            */
             self.success()
         }
         
         // 音声認識の実行
-        speechToText.recognize(audio: speechUrl, settings: settings, model: "ja-JP_BroadbandModel",
+        speechToText.recognize(audio: speechUrl, settings: settings, model: model,
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
     }
     
