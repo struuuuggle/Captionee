@@ -11,9 +11,9 @@ import AVKit
 import MaterialComponents
 
 class SubViewController: UIViewController {
-	
-	var receivedVideoInfo: VideoInfo!
-	
+    
+     var receivedVideoInfo: VideoInfo!
+    
     var player: AVPlayer!
     var timeSlider: MDCSlider!
     var timeObserverToken: Any!
@@ -39,13 +39,13 @@ class SubViewController: UIViewController {
         
         return CMTimeGetSeconds(currentItem.asset.duration)
     }
-	
+    
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var translation: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
-	override func viewDidLoad() {
-		super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // DocumentDirectoryのPath
@@ -90,10 +90,10 @@ class SubViewController: UIViewController {
         caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -20)
         
         // 翻訳のLabelのサイズを設定
-		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
-		
-		// 翻訳結果を表示
-		translation.text = ""
+        translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+        
+        // 翻訳結果を表示
+        translation.text = ""
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
@@ -117,7 +117,7 @@ class SubViewController: UIViewController {
         timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
-	}
+    }
     
     /* 再生・一時停止ボタンが押されたとき */
     @objc func playButtonTapped(sender: UIButton) {
@@ -138,28 +138,47 @@ class SubViewController: UIViewController {
     /* 翻訳ボタンが押されたとき */
     @objc func translateButtonTapped(sender: UIButton) {
         print("翻訳")
-		
-		let queue = DispatchQueue.global(qos: .default)
-		let translator = Translation("ja", "en")
-				
-		if let captions = self.receivedVideoInfo.caption {
-			for caption in captions.sentences {
-				// サブスレッドで処理
-				queue.async {
-					// データの取得
-					caption.foreign = translator.translate(caption.original)
-					// メインスレッドで処理
-					DispatchQueue.main.async {
-						// 取得した翻訳結果を表示
-						print("---> Translation")
-						print(caption.foreign)
-						print("<--- Translation")
-					}
-				}
-			}
-		} else {
-			print("Translation is nil.")
-		}
+        
+        let queue = DispatchQueue.global(qos: .default)
+        let translator = Translation("ja", "en")
+                
+        if let captions = self.receivedVideoInfo.caption {
+            for caption in captions.sentences {
+                // サブスレッドで処理
+                queue.async {
+                    // データの取得
+                    caption.foreign = translator.translate(caption.original)
+                    // メインスレッドで処理
+                    DispatchQueue.main.async {
+                        // 取得した翻訳結果を表示
+                        print("---> Translation")
+                        print(caption.foreign)
+                        print("<--- Translation")
+                    }
+                }
+            }
+        } else {
+            print("Translation is nil.")
+        }
+    }
+    /* 動画を再生する */
+    func play() {
+        print("再生")
+        player.play()
+        isPlaying = true
+        
+        // ボタンの画像をPauseに変える
+        playButton.setImage(UIImage(named: "Pause"), for: .normal)
+    }
+    
+    /* 動画を一時停止する */
+    func pause() {
+        print("一時停止")
+        player.pause()
+        isPlaying = false
+        
+        // ボタンの画像をPlayに変える
+        playButton.setImage(UIImage(named: "Play"), for: .normal)
     }
     
     /* スライダーの値が変わったとき */
@@ -210,7 +229,7 @@ class SubViewController: UIViewController {
                 for caption in captions.sentences {
                     if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
                         self?.caption.text = caption.original + "。"
-						self?.translation.text = caption.foreign
+                        self?.translation.text = caption.foreign
                         break
                     }
                 }
@@ -245,9 +264,9 @@ class SubViewController: UIViewController {
         super.viewDidDisappear(animated)
         print("ViewController/viewDidDisappear/別の画面に遷移した直後")
     }
-	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
         print("ViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
-	}
+    }
 }

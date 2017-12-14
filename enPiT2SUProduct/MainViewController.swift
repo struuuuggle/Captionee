@@ -25,7 +25,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var audioWavURL: URL?
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
-	var translation: String = ""
+    var translation: String = ""
     var index: Int!
     
     let languages = ["Japanese": "ja-JP_BroadbandModel", "USEnglish": "en-GB_BroadbandModel",
@@ -364,12 +364,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("<--- Caption")
             
             self.appDelegate.videos[self.appDelegate.videos.count-1].caption = captions
-			
-            /* UserDefaultにデータを保存
-            let archiveData = NSKeyedArchiver.archivedData(withRootObject: self.appDelegate.videos)
-            self.userDefault.set(archiveData, forKey: "videos")
-            self.userDefault.synchronize()
-            */
+            
             self.success()
         }
         
