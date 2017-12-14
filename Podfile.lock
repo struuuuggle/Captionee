@@ -350,12 +350,14 @@ PODS:
   - MotionInterchange (1.4.0)
   - MotionTransitioning (5.0.0)
   - Onboard (2.3.1)
+  - SwiftReorder (3.2.0)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
   - KRProgressHUD
   - MaterialComponents
   - Onboard
+  - SwiftReorder
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
@@ -368,7 +370,8 @@ SPEC CHECKSUMS:
   MotionInterchange: 35e0fd286ceab53dd4ee03494b3fcafa6a70637a
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
+  SwiftReorder: 27d737099efd6125339d5e8cb090e46c67341143
 
-PODFILE CHECKSUM: 746028ffc7c873b85b33eff3f64a157bf90e45ff
+PODFILE CHECKSUM: 815711a9e9fcd15b0f66faab82c8c4941037346f
 
 COCOAPODS: 1.3.1
