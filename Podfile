@@ -10,5 +10,5 @@ target 'enPiT2SUProduct' do
   pod 'DZNEmptyDataSet'
   pod 'MaterialComponents'
   pod 'Onboard'
-  
+  pod 'SwiftReorder'
 end

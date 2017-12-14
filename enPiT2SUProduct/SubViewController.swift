@@ -8,24 +8,28 @@
 
 import UIKit
 import AVKit
+import MaterialComponents
 
 class SubViewController: UIViewController {
 	
 	var receivedVideoInfo: VideoInfo!
 	
     var player: AVPlayer!
+    var timeSlider: MDCSlider!
     var timeObserverToken: Any!
-    var timeSlider = UISlider()
     var isPlaying = false
+    
+    var isFinished: Bool {
+        return currentTime == duration
+    }
     
     var currentTime: Double {
         get {
             return player.currentTime().seconds
         }
         set {
-            print(newValue)
-            
             let newTime = CMTimeMakeWithSeconds(newValue, 1000)
+            
             player.seek(to: newTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         }
     }
@@ -36,10 +40,10 @@ class SubViewController: UIViewController {
         return CMTimeGetSeconds(currentItem.asset.duration)
     }
 	
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var translation: UILabel!
-	
+    @IBOutlet weak var playButton: UIButton!
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
         print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
@@ -59,114 +63,75 @@ class SubViewController: UIViewController {
         // AVPlayerViewControllerの設定
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
-        playerViewController.view.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height/2)
         playerViewController.showsPlaybackControls = false
+        addChildViewController(playerViewController)
+        view.addSubview(playerViewController.view)
+        
+        // AVPlayerViewControllerの制約を設定
+        playerViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        playerViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        playerViewController.view.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        playerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        playerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         // TimeObserverを設定
         addPeriodicTimeObserver()
         
-        // AVPlayerViewControllerをViewControllerに追加
-        addChildViewController(playerViewController)
-        
-        // 最大画面になった時、これが使用される感じ
-        view.addSubview(playerViewController.view)
-        
         // 字幕のLabelのサイズを設定
-        caption.frame = CGRect(x: 10, y: view.bounds.size.height*2/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
+        caption.text = ""
+        caption.numberOfLines = 0
+        view.addSubview(caption)
+        
+        // 字幕のLabelの制約を設定
+        caption.translatesAutoresizingMaskIntoConstraints = false
+        caption.topAnchor.constraint(equalTo: playerViewController.view.bottomAnchor, constant: 20).isActive = true
+        caption.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        caption.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -20)
         
         // 翻訳のLabelのサイズを設定
 		translation.frame = CGRect(x: 10, y: view.bounds.size.height*3/5, width: view.bounds.size.width-20, height: view.bounds.size.height/5)
-        
-        // 字幕を表示
-        caption.text = ""
 		
 		// 翻訳結果を表示
 		translation.text = ""
         
-        //navigationController?.navigationBar.isHidden = true
-        
-        /*
-         // MainViewに戻るボタン
-         let backButtonItem = UIBarButtonItem(image: UIImage(named: "Back"),
-         style: UIBarButtonItemStyle.plain,
-         target: self,
-         action: #selector(playButtonTapped))
-         // 動画の再生・停止をするボタン
-         let playButtonItem = UIBarButtonItem(image: UIImage(named: "Play"),
-         style: UIBarButtonItemStyle.plain,
-         target: self,
-         action: #selector(playButtonTapped))
-         // 字幕の翻訳をするボタン
-         let translateButtonItem = UIBarButtonItem(image: UIImage(named: "Translate"),
-         style: UIBarButtonItemStyle.plain,
-         target: self,
-         action: #selector(playButtonTapped))
-         */
-        
-        // ボタンのサイズ
-        let buttonSize = 10
-        
-        // ボタンの作成
-        let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        let translateButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
-        
-        // ボタンの背景に画像を設定
-        backButton.setBackgroundImage(UIImage(named: "Back"), for: UIControlState())
-        playButton.setBackgroundImage(UIImage(named: "Play"), for: UIControlState())
-        translateButton.setBackgroundImage(UIImage(named: "Translate"), for: UIControlState())
-        
         // ボタンをクリックしたときに呼び出すメソッドを指定
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
-        
-        // スライダーの最大値を設定
-        timeSlider.maximumValue = Float(duration)
+
+        // スライダーの設定
+        timeSlider = MDCSlider()
+        timeSlider.minimumValue = 0.0
+        timeSlider.maximumValue = CGFloat(duration)
+        timeSlider.isContinuous = true
+        timeSlider.isThumbHollowAtStart = false
+        timeSlider.color = MDCPalette.orange.tint500
+        view.addSubview(timeSlider)
         
         // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
+        timeSlider.addTarget(self, action: #selector(timeSliderTapped), for: .touchUpInside)
         
-        // 作成したボタンをUIBarButtonItemとして設定
-        let backButtonItem = UIBarButtonItem(customView: backButton)
-        let playButtonItem = UIBarButtonItem(customView: playButton)
-        let translateButtonItem = UIBarButtonItem(customView: translateButton)
-        
-        // 作成したスライダーをUIBarButtonItemとして設定
-        let timeSliderItem = UIBarButtonItem(customView: timeSlider)
-        
-        // 余白を設定するスペーサー
-        let flexibleItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
-                                           target: nil, action: nil)
-        
-        // ToolBarにアイテムを追加する
-        toolBar.items = [backButtonItem, flexibleItem, timeSliderItem, flexibleItem, translateButtonItem, playButtonItem]
+        // スライダーの制約を設定
+        timeSlider.translatesAutoresizingMaskIntoConstraints = false
+        timeSlider.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 10).isActive = true
+        timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
+        timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
 	}
     
-    /* 戻るボタンが押されたとき */
-    @objc func backButtonTapped(sender: UIButton) {
-        print("戻る")
-    }
-    
-    /* 再生・停止ボタンが押されたとき */
+    /* 再生・一時停止ボタンが押されたとき */
     @objc func playButtonTapped(sender: UIButton) {
-        // 再生・停止の切り替え
-        isPlaying = !isPlaying
-        
         if isPlaying {
-            // 再生
-            print("再生")
-            player.play()
-            
-            // 背景画像をPauseに変える
-            sender.setBackgroundImage(UIImage(named: "Pause"), for: .normal)
+            // 一時停止
+            pause()
         } else {
-            // 停止
-            print("停止")
-            player.pause()
+            // 動画が終わっていたら最初に戻す
+            if isFinished {
+                currentTime = 0.0
+            }
             
-            // 背景画像をPlayに変える
-            sender.setBackgroundImage(UIImage(named: "Play"), for: .normal)
+            // 再生
+            play()
         }
     }
     
@@ -198,28 +163,50 @@ class SubViewController: UIViewController {
     }
     
     /* スライダーの値が変わったとき */
-    @objc func timeSliderChanged(sender: UISlider) {
+    @objc func timeSliderChanged(sender: MDCSlider) {
         print("スライダーの値が変わった")
+        
         // 動画の時間をスライダーの値にする
         currentTime = Double(sender.value)
+    }
+    
+    /* スライダーがタップされたとき */
+    @objc func timeSliderTapped(sender: MDCSlider) {
+        print("スライダーがタップされた")
+        
+        if isPlaying {
+            pause()
+            currentTime = Double(sender.value)
+            play()
+        } else {
+            currentTime = Double(sender.value)
+        }
     }
     
     /* 一定時間ごとに動画の再生状態を監視する */
     func addPeriodicTimeObserver() {
         // 監視の時間間隔
-        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        let interval = CMTime(seconds: 0.1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         
         // メインスレッド
         let mainQueue = DispatchQueue.main
         
         // TimeObserverを生成
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: mainQueue) { [weak self] time in
+            guard let wself = self else { return }
+            
+            // 動画の再生が終わっているとき
+            if wself.isFinished {
+                // 一時停止
+                wself.pause()
+            }
+            
             // Sliderの値を変える
-            self?.timeSlider.value = Float((self?.currentTime)!)
-            print(self!.currentTime)
+            wself.timeSlider.setValue(CGFloat(wself.currentTime), animated: true)
+            print(wself.currentTime)
             
             // 字幕を適切なタイミングで表示
-            if let captions = self?.receivedVideoInfo.caption {
+            if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
                     if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
                         self?.caption.text = caption.original + "。"
@@ -228,7 +215,7 @@ class SubViewController: UIViewController {
                     }
                 }
             } else {
-                self?.caption.text = "Caption is nil."
+                wself.caption.text = "Caption is nil."
             }
         }
     }

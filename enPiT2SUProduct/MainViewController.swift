@@ -12,10 +12,12 @@ import DZNEmptyDataSet
 import KRProgressHUD
 import MaterialComponents
 import SpeechToTextV1
+import SwiftReorder
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
-    
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
+    DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+
     var window: UIWindow?
     var videoMovURL: URL?
     var videoMp4URL: URL?
@@ -26,13 +28,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 	var translation: String = ""
     var index: Int!
     
+    let languages = ["Japanese": "ja-JP_BroadbandModel", "USEnglish": "en-GB_BroadbandModel",
+                     "UKEnglish": "en-US_BroadbandModel", "Chinese": "zh-CN_BroadbandModel"]
+    
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var selectImageButton: MDCFloatingButton!
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -47,9 +52,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                          action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
-        // NavigationBarの右側にEditButtonを設置
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
         
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
@@ -69,41 +71,37 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             password: Credentials.SpeechToTextPassword
         )
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(sender:)))
-            
-        longPressGestureRecognizer.allowableMovement = 150
-        longPressGestureRecognizer.minimumPressDuration = 2.0
-        
-        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
-        
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(sender:)))
         self.view.addGestureRecognizer(panGestureRecognizer)
         
+        tableView.reorder.delegate = self as TableViewReorderDelegate
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
     }
+    
     /* 以下は UITextFieldDelegate のメソッド */
     
     // 改行ボタンを押した時の処理
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
         // キーボードを隠す
         textField.resignFirstResponder()
+        
         return true
     }
     
     // クリアボタンが押された時の処理
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        
         print("Clear")
+        
         return true
     }
     
     // テキストフィールドがフォーカスされた時の処理
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         print("Start")
+        
         return true
     }
     
@@ -111,15 +109,24 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         print("End " + textField.text!)
         
+        if textField.text! == ""{
+            textField.removeFromSuperview()
+            selectImageButton.isEnabled = true
+            self.tableView.allowsSelection = true
+            
+            return true
+        }
+        
         appDelegate.videos[index].label = textField.text!
         
         textField.removeFromSuperview()
         
         tableView.reloadData()
+        selectImageButton.isEnabled = true
+        self.tableView.allowsSelection = true
         
         return true
     }
-    
     
     /* PhotoLibraryから動画を選択する */
     @IBAction func selectImage(_ sender: Any) {
@@ -136,18 +143,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             case .authorized:
                 print("Authorized")
                 
-                // ImagePickerControllerの設定
-                let imagePickerController = UIImagePickerController()
-                imagePickerController.sourceType = .photoLibrary
-                imagePickerController.delegate = self
-                imagePickerController.mediaTypes = ["public.movie"]
-                
-                // PhotoLibraryの表示
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.showPhotoLibrary()
             case .denied:
                 print("Denied")
                 
-                self.failure()
+                self.showDeniedAlert()
             case .notDetermined:
                 print("NotDetermined")
             case .restricted:
@@ -156,6 +156,47 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    /* PhotoLibraryの全動画を表示する */
+    func showPhotoLibrary() {
+        // ImagePickerControllerの設定
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        imagePickerController.mediaTypes = ["public.movie"]
+        
+        // PhotoLibraryの表示
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    /* PhotoLibraryへのアクセスが拒否されているときにAlertを出す */
+    func showDeniedAlert() {
+        let alert = MDCAlertController(title: "エラー", message: "「写真」へのアクセスが拒否されています。設定より変更してください。")
+        
+        let cancel = MDCAlertAction(title: "キャンセル", handler: nil)
+        
+        let ok = MDCAlertAction(title: "設定画面へ", handler: { [weak self] (action) -> Void in
+            guard let wself = self else {
+                return
+            }
+            wself.transitionToSettingsApplition()
+            
+        })
+        
+        // 選択肢をAlertに追加
+        alert.addAction(cancel)
+        alert.addAction(ok)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+    }
+    
+    /* iPhoneの「設定」を開く */
+    fileprivate func transitionToSettingsApplition() {
+        let url = URL(string: UIApplicationOpenSettingsURLString)
+        if let url = url {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
 
     /* PhotoLibraryで動画を選択したとき */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -203,21 +244,62 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(audioM4aURL!)
         print("<--- M4a URL")
         
+        let languageKey = "Chinese"
+        
         // メインスレッドで処理
         let lockQueue = DispatchQueue.main
         lockQueue.async {
             // 動画選択画面を閉じる
             picker.dismiss(animated: true, completion: nil)
+            
+            //languageKey = self.selectLanguage()
         }
         
         // KRProgressHUDの開始
         KRProgressHUD.show(withMessage: "Uploading...")
-		
+        
+        print("Language is \(languageKey).")
+        
+        let language = languages[languageKey]!
+        
         // 字幕を生成
-        generateCaption()
+        generateCaption(language: language)
         
         // TableViewの更新
         tableView.reloadData()
+    }
+    
+    func selectLanguage() -> String {
+        var languageKey = "Japanese"
+        
+        let alert = MDCAlertController(title: "言語選択", message: "動画の言語を選択してください")
+        
+        let japanese = MDCAlertAction(title: "日本語", handler: { (action) -> Void in
+            languageKey = "Japanese"
+        })
+        
+        let usEnglish = MDCAlertAction(title: "アメリカ英語", handler: { (action) -> Void in
+            languageKey = "USEnglish"
+        })
+        
+        let ukEnglish = MDCAlertAction(title: "イギリス英語", handler: { (action) -> Void in
+            languageKey = "UKEnglish"
+        })
+        
+        let chinese = MDCAlertAction(title: "中国語", handler: { (action) -> Void in
+            languageKey = "Chinese"
+        })
+        
+        // 選択肢をAlertに追加
+        alert.addAction(japanese)
+        alert.addAction(usEnglish)
+        alert.addAction(ukEnglish)
+        alert.addAction(chinese)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+        
+        return languageKey
     }
     
     /* 動画からサムネイルを生成する */
@@ -252,7 +334,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* 字幕を生成する */
-    func generateCaption() {
+    func generateCaption(language model: String) {
         print("字幕を生成")
         
         // 対象ファイルのURL
@@ -292,7 +374,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         
         // 音声認識の実行
-        speechToText.recognize(audio: speechUrl, settings: settings, model: "ja-JP_BroadbandModel",
+        speechToText.recognize(audio: speechUrl, settings: settings, model: model,
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
     }
     
@@ -326,6 +408,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* Cellの削除 */
     func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("Cell: \(indexPath.row) を削除")
+        
         // DocumentDirectoryのPathを設定
         let documentPath = FileManager.documentDir
         
@@ -336,8 +420,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let filePath: String = documentPath + "/" + fileName
         
         // MP4とM4aのファイルを削除
-        try! FileManager.default.removeItem(atPath: filePath + ".mp4")
-        try! FileManager.default.removeItem(atPath: filePath + ".m4a")
+        do {
+            try FileManager.default.removeItem(atPath: filePath + ".mp4")
+            try FileManager.default.removeItem(atPath: filePath + ".m4a")
+        } catch {
+            print("\(fileName)は既に削除済み")
+        }
         
         // 先にデータを更新する
         appDelegate.videos.remove(at: indexPath.row)
@@ -347,24 +435,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.reloadData()
     }
     
+    
     /* 移動可能なCellを設定 */
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-    /* Cellの移動 */
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let sourceIndex = sourceIndexPath.row
-        let destinationIndex = destinationIndexPath.row
-        
-        if sourceIndex >= 0 && sourceIndex < appDelegate.videos.count && destinationIndex >= 0 && destinationIndex < appDelegate.videos.count {
-            let video = appDelegate.videos[sourceIndex]
-            
-            appDelegate.videos.remove(at: sourceIndex)
-            appDelegate.videos.insert(video, at: destinationIndex)
-        }
-    }
-    
+
     /* Cellの個数を指定 */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appDelegate.videos.count
@@ -383,7 +459,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Cellの説明を設定
         let label = cell.viewWithTag(2) as! UILabel
         label.text = appDelegate.videos[indexPath.row].label
-        
+
         return cell
     }
     
@@ -426,22 +502,19 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func panGesture(sender: UIPanGestureRecognizer){
         
     }
-    @objc func longPressGesture(sender : UILongPressGestureRecognizer) {
-        print("Long Pressed.")
-        
+    @IBAction func labelEditButton(_ sender: UIButton) {
         //押された位置でcellのpathを取得
-        let point = sender.location(in: tableView)
-        let indexPath = tableView.indexPathForRow(at: point)
+        let btn = sender
+        let cell = btn.superview?.superview as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)?.row
         
         var textField: UITextField!
-    
-        if let indexPath = indexPath {
-            if sender.state == UIGestureRecognizerState.began {
                 
                 // セルが長押しされたときの処理
-                print("long pressed \(indexPath.row)")
-                index = indexPath.row
-                
+        print("long pressed \(String(describing: indexPath))")
+        
+                index = indexPath
+        
                 // インスタンス初期化
                 textField = UITextField()
                 
@@ -474,11 +547,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 // 画面に追加
                 self.view.addSubview(textField)
-            }
-        }else{
-            print("long press on table view")
-        }
+                selectImageButton.isEnabled = false
+                self.tableView.allowsSelection = false
     }
+    /*@objc func longPressGesture(sender : UILongPressGestureRecognizer) {
+        print("Long Pressed.")
+        
+     
+    }
+ */
     
     
     /* Segueの準備 */
@@ -588,4 +665,20 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     */
 
+}
+extension MainViewController: TableViewReorderDelegate{
+    func tableView(_ tableView: UITableView, reorderRowAt sourceIndexPath: IndexPath,  to destinationIndexPath: IndexPath) {
+        
+        // Update data model
+        let sourceVideo = sourceIndexPath.row
+        let destinationVideo = destinationIndexPath.row
+        
+        if sourceVideo >= 0 && sourceVideo < appDelegate.videos.count && destinationVideo >= 0 && destinationVideo < appDelegate.videos.count{
+            let video = appDelegate.videos[sourceVideo]
+            
+            appDelegate.videos.remove(at: sourceVideo)
+            appDelegate.videos.insert(video, at: destinationVideo)
+            
+        }
+    }
 }
