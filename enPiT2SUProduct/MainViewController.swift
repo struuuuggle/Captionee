@@ -12,9 +12,14 @@ import DZNEmptyDataSet
 import KRProgressHUD
 import MaterialComponents
 import SpeechToTextV1
+import SwiftReorder
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
+    DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+
+    
+    
     
     var window: UIWindow?
     var videoMovURL: URL?
@@ -47,9 +52,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                          action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
-        // NavigationBarの右側にEditButtonを設置
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem?.image = UIImage(named: "Edit")
         
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
@@ -68,17 +70,19 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             username: Credentials.SpeechToTextUsername,
             password: Credentials.SpeechToTextPassword
         )
-        
+        /*
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(MainViewController.longPressGesture(sender:)))
             
         longPressGestureRecognizer.allowableMovement = 150
         longPressGestureRecognizer.minimumPressDuration = 2.0
         
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+ */
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(sender:)))
         self.view.addGestureRecognizer(panGestureRecognizer)
         
+        tableView.reorder.delegate = self as TableViewReorderDelegate
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
@@ -111,15 +115,27 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         print("End " + textField.text!)
         
+        if textField.text! == ""{
+            textField.removeFromSuperview()
+            selectImageButton.isEnabled = true
+            self.tableView.allowsSelection = true
+            
+            return true
+        }
+        
         appDelegate.videos[index].label = textField.text!
         
         textField.removeFromSuperview()
         
         tableView.reloadData()
+        selectImageButton.isEnabled = true
+        self.tableView.allowsSelection = true
         
         return true
     }
     
+    
+    @IBOutlet weak var selectImageButton: UIButton!
     
     /* PhotoLibraryから動画を選択する */
     @IBAction func selectImage(_ sender: Any) {
@@ -369,24 +385,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.reloadData()
     }
     
+    
     /* 移動可能なCellを設定 */
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-    /* Cellの移動 */
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let sourceIndex = sourceIndexPath.row
-        let destinationIndex = destinationIndexPath.row
-        
-        if sourceIndex >= 0 && sourceIndex < appDelegate.videos.count && destinationIndex >= 0 && destinationIndex < appDelegate.videos.count {
-            let video = appDelegate.videos[sourceIndex]
-            
-            appDelegate.videos.remove(at: sourceIndex)
-            appDelegate.videos.insert(video, at: destinationIndex)
-        }
-    }
-    
+
     /* Cellの個数を指定 */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appDelegate.videos.count
@@ -405,7 +409,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Cellの説明を設定
         let label = cell.viewWithTag(2) as! UILabel
         label.text = appDelegate.videos[indexPath.row].label
-        
+
         return cell
     }
     
@@ -448,22 +452,19 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func panGesture(sender: UIPanGestureRecognizer){
         
     }
-    @objc func longPressGesture(sender : UILongPressGestureRecognizer) {
-        print("Long Pressed.")
-        
+    @IBAction func labelEditButton(_ sender: UIButton) {
         //押された位置でcellのpathを取得
-        let point = sender.location(in: tableView)
-        let indexPath = tableView.indexPathForRow(at: point)
+        let btn = sender
+        let cell = btn.superview?.superview as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)?.row
         
         var textField: UITextField!
-    
-        if let indexPath = indexPath {
-            if sender.state == UIGestureRecognizerState.began {
                 
                 // セルが長押しされたときの処理
-                print("long pressed \(indexPath.row)")
-                index = indexPath.row
-                
+        print("long pressed \(String(describing: indexPath))")
+        
+                index = indexPath
+        
                 // インスタンス初期化
                 textField = UITextField()
                 
@@ -496,11 +497,15 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 
                 // 画面に追加
                 self.view.addSubview(textField)
-            }
-        }else{
-            print("long press on table view")
-        }
+                selectImageButton.isEnabled = false
+                self.tableView.allowsSelection = false
     }
+    /*@objc func longPressGesture(sender : UILongPressGestureRecognizer) {
+        print("Long Pressed.")
+        
+     
+    }
+ */
     
     
     /* Segueの準備 */
@@ -611,4 +616,20 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     */
 
+}
+extension MainViewController: TableViewReorderDelegate{
+    func tableView(_ tableView: UITableView, reorderRowAt sourceIndexPath: IndexPath,  to destinationIndexPath: IndexPath) {
+        
+        // Update data model
+        let sourceVideo = sourceIndexPath.row
+        let destinationVideo = destinationIndexPath.row
+        
+        if sourceVideo >= 0 && sourceVideo < appDelegate.videos.count && destinationVideo >= 0 && destinationVideo < appDelegate.videos.count{
+            let video = appDelegate.videos[sourceVideo]
+            
+            appDelegate.videos.remove(at: sourceVideo)
+            appDelegate.videos.insert(video, at: destinationVideo)
+            
+        }
+    }
 }
