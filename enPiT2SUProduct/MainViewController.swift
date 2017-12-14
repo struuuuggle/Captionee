@@ -244,7 +244,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(audioM4aURL!)
         print("<--- M4a URL")
         
-        let languageKey = "Chinese"
+        let languageKey = "Japanese"
         
         // メインスレッドで処理
         let lockQueue = DispatchQueue.main

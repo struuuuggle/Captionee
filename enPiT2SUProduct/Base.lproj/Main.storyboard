@@ -18,6 +18,7 @@
         <!--Setting-->
         <scene sceneID="FXX-or-jCW">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Setting" id="R3h-QI-D0b" customClass="SettingViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nlt-nt-ZyM"/>
@@ -47,7 +48,6 @@
                         <outlet property="textField" destination="xW3-1d-H2a" id="RWg-x0-gPJ"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="928.79999999999995" y="-690.40479760119945"/>
         </scene>
@@ -86,12 +86,13 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPN-2v-sGp">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPN-2v-sGp">
                                                     <rect key="frame" x="314" y="10" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="ZiP-zO-7bi"/>
                                                         <constraint firstAttribute="height" constant="24" id="ktf-Uc-obW"/>
                                                     </constraints>
+                                                    <color key="tintColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                                                     <state key="normal" image="Vertical"/>
                                                     <connections>
                                                         <action selector="labelEditButton:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="3l2-gg-hZD"/>
@@ -149,21 +150,7 @@
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="trailing" secondItem="FMJ-NX-m0Y" secondAttribute="trailingMargin" id="z4c-qb-OAy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK">
-                        <barButtonItem key="rightBarButtonItem" title="Item" style="done" id="HIh-ll-lBg">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZIn-3p-4Qh">
-                                <rect key="frame" x="335" y="10" width="24" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Setting"/>
-                                <connections>
-                                    <segue destination="R3h-QI-D0b" kind="show" id="mnc-dW-uQv"/>
-                                </connections>
-                            </button>
-                            <connections>
-                                <action selector="settingButtonTapped:" destination="Z6o-d9-NA3" id="0p1-Ma-kPN"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK"/>
                     <connections>
                         <outlet property="selectImageButton" destination="IjN-qc-j9U" id="J18-dS-rmA"/>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
@@ -253,7 +240,6 @@
     <resources>
         <image name="Add" width="24" height="24"/>
         <image name="Play" width="36" height="36"/>
-        <image name="Setting" width="24" height="24"/>
         <image name="Vertical" width="24" height="24"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
