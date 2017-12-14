@@ -120,11 +120,11 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
-                                <rect key="frame" x="295" y="590" width="60" height="60"/>
+                                <rect key="frame" x="299" y="594" width="56" height="56"/>
                                 <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="2jk-F4-cQX"/>
-                                    <constraint firstAttribute="width" constant="60" id="yS9-ae-ROb"/>
+                                    <constraint firstAttribute="height" constant="56" id="2jk-F4-cQX"/>
+                                    <constraint firstAttribute="width" constant="56" id="yS9-ae-ROb"/>
                                 </constraints>
                                 <state key="normal" image="Add">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
@@ -132,7 +132,7 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="30"/>
+                                        <integer key="value" value="28"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>

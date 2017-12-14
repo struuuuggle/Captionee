@@ -79,6 +79,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
+        
+        // チュートリアルのサンプル
+        let completion = {(accepted: Bool) in
+            // perform analytics here
+            // and record whether the highlight was accepted
+            
+            print("Accepted")
+        }
+        
+        let highlightController = MDCFeatureHighlightViewController(highlightedView: selectImageButton,
+                                                                    completion: completion)
+        highlightController.titleText = "Just how you want it"
+        highlightController.bodyText = "Tap the menu button to switch accounts, change settings & more."
+        highlightController.outerHighlightColor =
+            UIColor.blue.withAlphaComponent(kMDCFeatureHighlightOuterHighlightAlpha)
+        present(highlightController, animated: true, completion:nil)
     }
     
     /* 以下は UITextFieldDelegate のメソッド */
