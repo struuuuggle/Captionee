@@ -10,7 +10,7 @@ import UIKit
 import AVKit
 import MaterialComponents
 
-class SubViewController: UIViewController {
+class SubViewController: UIViewController, ItemDelegate {
     
      var receivedVideoInfo: VideoInfo!
     
@@ -113,10 +113,10 @@ class SubViewController: UIViewController {
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
         // NavigationBarの右側にtranslateButtonを設置
-        let translateButton = UIBarButtonItem(image: UIImage(named: "Vertical"),
+        let translateButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
                                          style: .plain,
                                          target: self,
-                                         action: #selector(translateButtonTapped))
+                                         action: #selector(itemButtonTapped))
         navigationItem.rightBarButtonItem = translateButton
     }
     
@@ -136,14 +136,31 @@ class SubViewController: UIViewController {
         }
     }
     
+    /* アイテムボタンが押されたとき */
+    @objc func itemButtonTapped(sender: UIButton) {
+        // View controller the bottom sheet will hold
+        let viewController: ItemViewController = ItemViewController()
+        viewController.delegate = self
+        //viewController.preferredContentSize = CGSize(width: UIScreen.main.bounds.size.width, height: 200)
+        // Initialize the bottom sheet with the view controller just created
+        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
+        // Present the bottom sheet
+        present(bottomSheet, animated: true, completion: nil)
+    }
+    
+    /* 編集ボタンが押されたとき */
+    func editButtonTapped() {
+        print("編集")
+    }
+    
     /* 翻訳ボタンが押されたとき */
-    @objc func translateButtonTapped(sender: UIButton) {
+    func translateButtonTapped() {
         print("翻訳")
         
         let queue = DispatchQueue.global(qos: .default)
         let translator = Translation("ja", "en")
                 
-        if let captions = self.receivedVideoInfo.caption {
+        if let captions = receivedVideoInfo.caption {
             for caption in captions.sentences {
                 // サブスレッドで処理
                 queue.async {
@@ -162,6 +179,7 @@ class SubViewController: UIViewController {
             print("Translation is nil.")
         }
     }
+    
     /* 動画を再生する */
     func play() {
         print("再生")
