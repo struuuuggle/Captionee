@@ -1,5 +1,6 @@
 //
 //  MainViewController.swift
+//  enPiT2SUProduct
 //
 //  Created by team-E on 2017/10/19.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
@@ -228,25 +229,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // TableViewにCellを追加
         appDelegate.videos.append(VideoInfo(name, image, label))
-        
-        /*
-        // サブスレッドで処理
-        let queue = DispatchQueue(label: "lockQueue")
-        queue.async {
-            // 動画から音声を抽出
-            self.videoMp4URL = FileManager.save(self.videoMovURL!, name, .mp4)
-            print("---> MP4 URL")
-            print(self.videoMp4URL!)
-            print("<--- MP4 URL")
-            
-            sleep(1)
-        
-            self.audioM4aURL = FileManager.save(self.videoMp4URL!, name, .m4a)
-            print("---> M4a URL")
-            print(self.audioM4aURL!)
-            print("<--- M4a URL")
-        }
-        */
         
         // MOVからMP4に変換
         videoMp4URL = FileManager.save(videoMovURL!, name, .mp4)

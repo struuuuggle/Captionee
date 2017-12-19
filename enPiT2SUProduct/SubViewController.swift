@@ -12,7 +12,7 @@ import MaterialComponents
 
 class SubViewController: UIViewController, ItemDelegate {
     
-     var receivedVideoInfo: VideoInfo!
+    var receivedVideoInfo: VideoInfo!
     
     var player: AVPlayer!
     var timeSlider: MDCSlider!
@@ -138,13 +138,14 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* アイテムボタンが押されたとき */
     @objc func itemButtonTapped(sender: UIButton) {
-        // View controller the bottom sheet will hold
+        // ItemViewControllerを作成
         let viewController: ItemViewController = ItemViewController()
+        // ItemViewControllerのdelegateを設定
         viewController.delegate = self
-        //viewController.preferredContentSize = CGSize(width: UIScreen.main.bounds.size.width, height: 200)
-        // Initialize the bottom sheet with the view controller just created
+        
+        // BottomSheetを作成
         let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
-        // Present the bottom sheet
+        // BottomSheetを表示
         present(bottomSheet, animated: true, completion: nil)
     }
     
