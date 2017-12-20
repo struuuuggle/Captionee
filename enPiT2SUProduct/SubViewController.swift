@@ -82,7 +82,9 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // 字幕のLabelの設定
         caption.text = ""
+        caption.font = MDCTypography.body1Font()
         caption.numberOfLines = 0
+        caption.lineBreakMode = .byWordWrapping
         view.addSubview(caption)
         
         // 字幕のLabelの制約を設定
@@ -130,6 +132,7 @@ class SubViewController: UIViewController, ItemDelegate {
         // 編集完了ボタンの設定
         editCompleteButton = MDCRaisedButton()
         editCompleteButton.setTitle("OK", for: .normal)
+        editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
         editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
         editCompleteButton.setTitleColor(UIColor.white, for: .normal)
         editCompleteButton.isHidden = true
@@ -146,6 +149,7 @@ class SubViewController: UIViewController, ItemDelegate {
         // 編集キャンセルボタンの設定
         editCancelButton = MDCRaisedButton()
         editCancelButton.setTitle("CANCEL", for: .normal)
+        editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
         editCancelButton.backgroundColor = UIColor.white
         editCancelButton.setTitleColor(UIColor.black, for: .normal)
         editCancelButton.isHidden = true

@@ -436,6 +436,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Cellの説明を設定
         let label = cell.viewWithTag(2) as! UILabel
         label.text = appDelegate.videos[indexPath.row].label
+        label.font = MDCTypography.captionFont()
+        label.alpha = MDCTypography.captionFontOpacity()
 
         return cell
     }

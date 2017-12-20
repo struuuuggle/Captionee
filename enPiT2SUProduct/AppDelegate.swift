@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-UltraLight", size: 25)!
+            NSAttributedStringKey.font: MDCTypography.titleFont()
         ]
         UINavigationBar.appearance().isTranslucent = false
         
