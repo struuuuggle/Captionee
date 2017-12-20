@@ -41,7 +41,6 @@ class SubViewController: UIViewController, ItemDelegate {
     }
     
     @IBOutlet weak var caption: UILabel!
-    @IBOutlet weak var translation: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
     override func viewDidLoad() {
@@ -113,11 +112,11 @@ class SubViewController: UIViewController, ItemDelegate {
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
         // NavigationBarの右側にtranslateButtonを設置
-        let translateButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
+        let itemButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
                                          style: .plain,
                                          target: self,
                                          action: #selector(itemButtonTapped))
-        navigationItem.rightBarButtonItem = translateButton
+        navigationItem.rightBarButtonItem = itemButton
     }
     
     /* 再生・一時停止ボタンが押されたとき */
@@ -152,6 +151,58 @@ class SubViewController: UIViewController, ItemDelegate {
     /* 編集ボタンが押されたとき */
     func editButtonTapped() {
         print("編集")
+        
+        /*
+        Tutorial.add(playButton, "再生ボタン", "このボタンを押すことで、動画を再生・一時停止することができます")
+        Tutorial.add(caption, "字幕", "ここに字幕が表示されます")
+        Tutorial.add(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします")
+        Tutorial.show(self)
+        */
+        
+        tutorial1()
+    }
+    
+    /* チュートリアル1 */
+    func tutorial1() {
+        let completion1 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+            
+            self.tutorial2()
+        }
+        let tutorial1 = Tutorial.create(playButton, "再生ボタン", "このボタンを押すことで、動画を再生・一時停止することができます", completion1)
+        present(tutorial1, animated: true, completion: nil)
+    }
+    
+    /* チュートリアル2 */
+    func tutorial2() {
+        let completion2 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+            
+            self.tutorial3()
+        }
+        let tutorial2 = Tutorial.create(caption, "字幕", "ここに字幕が表示されます", completion2)
+        present(tutorial2, animated: true, completion: nil)
+    }
+    
+    /* チュートリアル3 */
+    func tutorial3() {
+        let completion3 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+        }
+        let tutorial3 = Tutorial.create(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします", completion3)
+        present(tutorial3, animated: true, completion: nil)
     }
     
     /* 翻訳ボタンが押されたとき */

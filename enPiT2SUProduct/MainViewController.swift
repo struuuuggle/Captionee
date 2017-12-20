@@ -26,7 +26,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var audioWavURL: URL?
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
-    var translation: String = ""
     var index: Int!
     
     let languages = ["Japanese": "ja-JP_BroadbandModel", "USEnglish": "en-GB_BroadbandModel",
@@ -39,6 +38,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var selectImageButton: MDCFloatingButton!
+    var menuButton: UIBarButtonItem!
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -47,10 +47,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // Do any additional setup after loading the view.
         
         // NavigationBarの左側にMenuButtonを設置
-        let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(menuButtonTapped))
+        menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
         
@@ -80,22 +80,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
-        
-        // チュートリアルのサンプル
-        let completion = {(accepted: Bool) in
-            // perform analytics here
-            // and record whether the highlight was accepted
-            
-            print("Accepted")
-        }
-        
-        let highlightController = MDCFeatureHighlightViewController(highlightedView: selectImageButton,
-                                                                    completion: completion)
-        highlightController.titleText = "Just how you want it"
-        highlightController.bodyText = "Tap the menu button to switch accounts, change settings & more."
-        highlightController.outerHighlightColor =
-            UIColor.blue.withAlphaComponent(kMDCFeatureHighlightOuterHighlightAlpha)
-        present(highlightController, animated: true, completion:nil)
     }
     
     /* 以下は UITextFieldDelegate のメソッド */
