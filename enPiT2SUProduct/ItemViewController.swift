@@ -41,8 +41,17 @@ class ItemViewController: UIViewController {
         view.addSubview(translateButton)
         translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
         
+        // チュートリアルボタンの設定
+        let tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: view.frame.width, height: itemHeight))
+        tutorialButton.setTitle("チュートリアル", for: .normal)
+        tutorialButton.titleLabel?.font = MDCTypography.buttonFont()
+        tutorialButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        tutorialButton.contentHorizontalAlignment = .left
+        view.addSubview(tutorialButton)
+        tutorialButton.addTarget(self, action: #selector(tutorialButtonTapped), for: .touchUpInside)
+        
         // キャンセルボタンの設定
-        let cancelButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: view.frame.width, height: itemHeight))
+        let cancelButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: view.frame.width, height: itemHeight))
         cancelButton.setTitle("キャンセル", for: .normal)
         cancelButton.titleLabel?.font = MDCTypography.buttonFont()
         cancelButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
@@ -51,7 +60,7 @@ class ItemViewController: UIViewController {
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         
         // Viewの大きさを設定
-        preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: itemHeight*3)
+        preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: itemHeight*4)
     }
     
     /* 編集ボタンが押されたとき */
@@ -68,6 +77,14 @@ class ItemViewController: UIViewController {
         
         // delegate先に処理を投げる
         delegate?.translateButtonTapped()
+    }
+    
+    /* チュートリアルボタンが押されたとき */
+    @objc func tutorialButtonTapped() {
+        dismiss(animated: true, completion: nil)
+        
+        // delegate先に処理を投げる
+        delegate?.tutorialButtonTapped()
     }
     
     /* キャンセルボタンが押されたとき */
@@ -102,4 +119,6 @@ protocol ItemDelegate: class {
     func editButtonTapped()
     // 翻訳ボタン用
     func translateButtonTapped()
+    // チュートリアルボタン用
+    func tutorialButtonTapped()
 }

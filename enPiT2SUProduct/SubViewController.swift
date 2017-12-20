@@ -43,6 +43,10 @@ class SubViewController: UIViewController, ItemDelegate {
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
+    var textField: MDCMultilineTextField!
+    var editCompleteButton: MDCRaisedButton!
+    var editCancelButton: MDCRaisedButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
@@ -76,7 +80,7 @@ class SubViewController: UIViewController, ItemDelegate {
         // TimeObserverを設定
         addPeriodicTimeObserver()
         
-        // 字幕のLabelのサイズを設定
+        // 字幕のLabelの設定
         caption.text = ""
         caption.numberOfLines = 0
         view.addSubview(caption)
@@ -86,7 +90,7 @@ class SubViewController: UIViewController, ItemDelegate {
         caption.topAnchor.constraint(equalTo: playerViewController.view.bottomAnchor, constant: 20).isActive = true
         caption.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         caption.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -20)
+        caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
@@ -110,6 +114,50 @@ class SubViewController: UIViewController, ItemDelegate {
         timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        
+        // TextFieldの設定
+        textField = MDCMultilineTextField()
+        textField.isHidden = true
+        view.addSubview(textField)
+        
+        // TextFieldの制約を設定
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: playerViewController.view.bottomAnchor, constant: 20).isActive = true
+        textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        textField.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
+        
+        // 編集完了ボタンの設定
+        editCompleteButton = MDCRaisedButton()
+        editCompleteButton.setTitle("OK", for: .normal)
+        editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
+        editCompleteButton.setTitleColor(UIColor.white, for: .normal)
+        editCompleteButton.isHidden = true
+        editCompleteButton.addTarget(self, action: #selector(editCompleteButtonTapped), for: .touchUpInside)
+        view.addSubview(editCompleteButton)
+        
+        // 編集完了ボタンの制約を設定
+        editCompleteButton.translatesAutoresizingMaskIntoConstraints = false
+        editCompleteButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        editCompleteButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+        editCompleteButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
+        editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        // 編集キャンセルボタンの設定
+        editCancelButton = MDCRaisedButton()
+        editCancelButton.setTitle("CANCEL", for: .normal)
+        editCancelButton.backgroundColor = UIColor.white
+        editCancelButton.setTitleColor(UIColor.black, for: .normal)
+        editCancelButton.isHidden = true
+        editCancelButton.addTarget(self, action: #selector(editCancelButtonTapped), for: .touchUpInside)
+        view.addSubview(editCancelButton)
+        
+        // 編集キャンセルボタンの制約を設定
+        editCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        editCancelButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        editCancelButton.trailingAnchor.constraint(equalTo: editCompleteButton.leadingAnchor, constant: -10).isActive = true
+        editCancelButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
+        editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // NavigationBarの右側にtranslateButtonを設置
         let itemButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
@@ -152,14 +200,69 @@ class SubViewController: UIViewController, ItemDelegate {
     func editButtonTapped() {
         print("編集")
         
-        /*
+        caption.isHidden = true
+        textField.isHidden = false
+        textField.text = caption.text
+        editCompleteButton.isHidden = false
+        editCancelButton.isHidden = false
+    }
+    
+    /* 編集が完了されたとき */
+    @objc func editCompleteButtonTapped() {
+        textField.isHidden = true
+        editCompleteButton.isHidden = true
+        editCancelButton.isHidden = true
+        caption.isHidden = false
+        caption.text = textField.text
+    }
+    
+    /* 編集がキャンセルされたとき */
+    @objc func editCancelButtonTapped() {
+        textField.isHidden = true
+        editCompleteButton.isHidden = true
+        editCancelButton.isHidden = true
+        caption.isHidden = false
+    }
+    
+    /* 翻訳ボタンが押されたとき */
+    func translateButtonTapped() {
+        print("翻訳")
+        
+        let queue = DispatchQueue.global(qos: .default)
+        let translator = Translation("ja", "en")
+                
+        if let captions = receivedVideoInfo.caption {
+            for caption in captions.sentences {
+                // サブスレッドで処理
+                queue.async {
+                    // データの取得
+                    caption.foreign = translator.translate(caption.original)
+                    // メインスレッドで処理
+                    DispatchQueue.main.async {
+                        // 取得した翻訳結果を表示
+                        print("---> Translation")
+                        print(caption.foreign)
+                        print("<--- Translation")
+                    }
+                }
+            }
+        } else {
+            print("Translation is nil.")
+        }
+    }
+    
+    /* チュートリアルボタンが押されたとき */
+    func tutorialButtonTapped() {
+        print("チュートリアル")
+        
+        tutorial1()
+        
+        /* 将来的にこうしたい
         Tutorial.add(playButton, "再生ボタン", "このボタンを押すことで、動画を再生・一時停止することができます")
         Tutorial.add(caption, "字幕", "ここに字幕が表示されます")
         Tutorial.add(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします")
         Tutorial.show(self)
         */
-        
-        tutorial1()
     }
     
     /* チュートリアル1 */
@@ -203,33 +306,6 @@ class SubViewController: UIViewController, ItemDelegate {
         }
         let tutorial3 = Tutorial.create(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします", completion3)
         present(tutorial3, animated: true, completion: nil)
-    }
-    
-    /* 翻訳ボタンが押されたとき */
-    func translateButtonTapped() {
-        print("翻訳")
-        
-        let queue = DispatchQueue.global(qos: .default)
-        let translator = Translation("ja", "en")
-                
-        if let captions = receivedVideoInfo.caption {
-            for caption in captions.sentences {
-                // サブスレッドで処理
-                queue.async {
-                    // データの取得
-                    caption.foreign = translator.translate(caption.original)
-                    // メインスレッドで処理
-                    DispatchQueue.main.async {
-                        // 取得した翻訳結果を表示
-                        print("---> Translation")
-                        print(caption.foreign)
-                        print("<--- Translation")
-                    }
-                }
-            }
-        } else {
-            print("Translation is nil.")
-        }
     }
     
     /* 動画を再生する */
