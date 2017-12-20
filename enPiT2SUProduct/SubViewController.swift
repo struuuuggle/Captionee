@@ -46,6 +46,7 @@ class SubViewController: UIViewController, ItemDelegate {
     var textField: MDCMultilineTextField!
     var editCompleteButton: MDCRaisedButton!
     var editCancelButton: MDCRaisedButton!
+    var stepper: UIStepper!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,6 +165,25 @@ class SubViewController: UIViewController, ItemDelegate {
         editCancelButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
         editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
+        // Stepperの設定
+        stepper = UIStepper()
+        stepper.minimumValue = 10
+        stepper.maximumValue = 25
+        stepper.value = Double(caption.font.pointSize)
+        stepper.stepValue = 1
+        stepper.autorepeat = true
+        stepper.isContinuous = true
+        stepper.tintColor = MDCPalette.orange.tint500
+        stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
+        view.addSubview(stepper)
+        
+        // Stepperの制約を設定
+        stepper.translatesAutoresizingMaskIntoConstraints = false
+        stepper.topAnchor.constraint(equalTo: playButton.topAnchor, constant: -48).isActive = true
+        stepper.leadingAnchor.constraint(equalTo: caption.leadingAnchor).isActive = true
+        stepper.widthAnchor.constraint(equalToConstant: 6).isActive = true
+        stepper.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        
         // NavigationBarの右側にtranslateButtonを設置
         let itemButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
                                          style: .plain,
@@ -206,6 +226,7 @@ class SubViewController: UIViewController, ItemDelegate {
         print("編集")
         
         caption.isHidden = true
+        stepper.isHidden = true
         textField.isHidden = false
         textField.text = caption.text
         editCompleteButton.isHidden = false
@@ -219,6 +240,7 @@ class SubViewController: UIViewController, ItemDelegate {
         editCancelButton.isHidden = true
         caption.isHidden = false
         caption.text = textField.text
+        stepper.isHidden = false
     }
     
     /* 編集がキャンセルされたとき */
@@ -227,6 +249,7 @@ class SubViewController: UIViewController, ItemDelegate {
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
         caption.isHidden = false
+        stepper.isHidden = false
     }
     
     /* 翻訳ボタンが押されたとき */
@@ -311,6 +334,11 @@ class SubViewController: UIViewController, ItemDelegate {
         }
         let tutorial3 = Tutorial.create(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします", completion3)
         present(tutorial3, animated: true, completion: nil)
+    }
+    
+    /* Stepperの値が変わったとき */
+    @objc func stepperValueChanged(sender: UIStepper) {
+        caption.font = MDCTypography.body1Font().withSize(CGFloat(sender.value))
     }
     
     /* 動画を再生する */
