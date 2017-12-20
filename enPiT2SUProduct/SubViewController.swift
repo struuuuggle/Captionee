@@ -256,6 +256,8 @@ class SubViewController: UIViewController, ItemDelegate {
     @objc func timeSliderChanged(sender: MDCSlider) {
         print("スライダーの値が変わった")
         
+        player.pause()
+        
         // 動画の時間をスライダーの値にする
         currentTime = Double(sender.value)
     }
@@ -265,9 +267,8 @@ class SubViewController: UIViewController, ItemDelegate {
         print("スライダーがタップされた")
         
         if isPlaying {
-            pause()
             currentTime = Double(sender.value)
-            play()
+            player.play()
         } else {
             currentTime = Double(sender.value)
         }
