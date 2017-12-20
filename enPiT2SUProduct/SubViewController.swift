@@ -299,11 +299,13 @@ class SubViewController: UIViewController, ItemDelegate {
             // 字幕を適切なタイミングで表示
             if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
-                    if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
-                        self?.caption.text = caption.foreign + "."
-                        break
+                    if wself.currentTime >= caption.startTime && wself.currentTime <= caption.endTime {
+                        wself.caption.text = caption.foreign + "."
+                        return
                     }
                 }
+                
+                wself.caption.text = ""
             } else {
                 wself.caption.text = "Caption is nil."
             }
