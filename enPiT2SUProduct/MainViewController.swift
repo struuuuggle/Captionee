@@ -28,16 +28,27 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var selectedVideoInfo: VideoInfo?
     var index: Int!
     
-    let languages = ["Japanese": "ja-JP_BroadbandModel", "USEnglish": "en-GB_BroadbandModel",
-                     "UKEnglish": "en-US_BroadbandModel", "Chinese": "zh-CN_BroadbandModel"]
-    
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
+    var languageKey = "日本語" {
+        willSet {
+            // KRProgressHUDの開始
+            KRProgressHUD.show(withMessage: "Uploading...")
+        }
+        didSet {
+            print("Language is \(languageKey).")
+            
+            // 字幕を生成
+            generateCaption()
+        }
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var selectImageButton: MDCFloatingButton!
+    
     var menuButton: UIBarButtonItem!
     
     /* Viewがロードされたとき */
@@ -171,21 +182,22 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* PhotoLibraryへのアクセスが拒否されているときにAlertを出す */
     func showDeniedAlert() {
+        // AlertControllerを作成
         let alert = MDCAlertController(title: "エラー", message: "「写真」へのアクセスが拒否されています。設定より変更してください。")
         
-        let cancel = MDCAlertAction(title: "キャンセル", handler: nil)
-        
-        let ok = MDCAlertAction(title: "設定画面へ", handler: { [weak self] (action) -> Void in
+        // AlertActionを作成
+        let ok = MDCAlertAction(title: "SETTINGS", handler: { [weak self] (action) -> Void in
             guard let wself = self else {
                 return
             }
             wself.transitionToSettingsApplition()
             
         })
+        let cancel = MDCAlertAction(title: "CANCEL", handler: nil)
         
         // 選択肢をAlertに追加
-        alert.addAction(cancel)
         alert.addAction(ok)
+        alert.addAction(cancel)
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
@@ -226,62 +238,47 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(audioM4aURL!)
         print("<--- M4a URL")
         
-        let languageKey = "Japanese"
+        //languageKey = "Japanese"
         
         // メインスレッドで処理
         let lockQueue = DispatchQueue.main
         lockQueue.async {
-            // 動画選択画面を閉じる
-            picker.dismiss(animated: true, completion: nil)
+            let completion = { () in
+                self.selectLanguage()
+            }
             
-            //languageKey = self.selectLanguage()
+            // 動画選択画面を閉じる
+            picker.dismiss(animated: true, completion: completion)
         }
-        
-        // KRProgressHUDの開始
-        KRProgressHUD.show(withMessage: "Uploading...")
-        
-        print("Language is \(languageKey).")
-        
-        let language = languages[languageKey]!
-        
-        // 字幕を生成
-        generateCaption(language: language)
         
         // TableViewの更新
         tableView.reloadData()
     }
     
-    func selectLanguage() -> String {
-        var languageKey = "Japanese"
-        
+    /* 動画の言語の選択用ダイアログを表示する */
+    func selectLanguage() {
+        // AlertControllerを作成
         let alert = MDCAlertController(title: "言語選択", message: "動画の言語を選択してください")
         
-        let japanese = MDCAlertAction(title: "日本語", handler: { (action) -> Void in
-            languageKey = "Japanese"
-        })
+        // AlertAction用ハンドラ
+        let handler: MDCActionHandler = { (action) -> Void in
+            self.languageKey = action.title!
+        }
         
-        let usEnglish = MDCAlertAction(title: "アメリカ英語", handler: { (action) -> Void in
-            languageKey = "USEnglish"
-        })
-        
-        let ukEnglish = MDCAlertAction(title: "イギリス英語", handler: { (action) -> Void in
-            languageKey = "UKEnglish"
-        })
-        
-        let chinese = MDCAlertAction(title: "中国語", handler: { (action) -> Void in
-            languageKey = "Chinese"
-        })
+        // AlertActionを作成
+        let ukEnglish = MDCAlertAction(title: "イギリス英語", handler: handler)
+        let usEnglish = MDCAlertAction(title: "アメリカ英語", handler: handler)
+        let chinese = MDCAlertAction(title: "中国語", handler: handler)
+        let japanese = MDCAlertAction(title: "日本語", handler: handler)
         
         // 選択肢をAlertに追加
-        alert.addAction(japanese)
-        alert.addAction(usEnglish)
         alert.addAction(ukEnglish)
+        alert.addAction(usEnglish)
         alert.addAction(chinese)
+        alert.addAction(japanese)
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
-        
-        return languageKey
     }
     
     /* 動画からサムネイルを生成する */
@@ -316,7 +313,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* 字幕を生成する */
-    func generateCaption(language model: String) {
+    func generateCaption() {
         print("字幕を生成")
         
         // 対象ファイルのURL
@@ -350,8 +347,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.success()
         }
         
+        // 言語モデルの辞書
+        let languages = [
+            "日本語": "ja-JP_BroadbandModel",
+            "アメリカ英語": "en-GB_BroadbandModel",
+            "イギリス英語": "en-US_BroadbandModel",
+            "中国語": "zh-CN_BroadbandModel"
+        ]
+        
         // 音声認識の実行
-        speechToText.recognize(audio: speechUrl, settings: settings, model: model,
+        speechToText.recognize(audio: speechUrl, settings: settings, model: languages[languageKey],
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
     }
     
