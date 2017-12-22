@@ -1,3 +1,8 @@
+# 「Captionee」
+<div style="text-align: center;">
+<img src=https://github.com/enpit2su-ics/team-E/blob/dev/Screenshot/LandingPage.png width=800px>
+</div>
+
 # チームE「(株)イー」
 チームメンバ
 - 15TI021, 佐々木友哉
@@ -9,10 +14,14 @@
 動画に字幕を付けたい動画視聴者向けの、自動字幕表示を実現するCaptioneeです。
 これは動画から音声認識によって字幕を自動で生成することができ、既存の自動字幕表示と違って、高精度な翻訳機能と字幕のカスタマイズ機能が備わっています。
 
-# 「Captionee」
-<div style="text-align: center;">
-<img src=https://github.com/enpit2su-ics/team-E/blob/dev/Screenshot/LandingPage.png width=800px>
-</div>
+# スクリーンショット
+<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/LaunchScreen.png width=200px>     
+<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/ScreenShot1.png width=200px>     
+<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/ScreenShot2.png width=200px>     
+<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/ScreenShot3.png width=200px>
+
+公式ホームページは[こちら](https://struuuuggle.github.io/Captionee/)  
+ホームページを管理するリポジトリは[こちら](https://github.com/struuuuggle/Captionee)
 
 
 # 想定利用者像
@@ -40,11 +49,4 @@
 > - Web上の外国語の講義動画を翻訳前と翻訳後の言語を指定してアプリにアップロードすることで、その動画の音声を母国語に翻訳した字幕を表示してくれるため、言語の壁を超えた学習が可能になります。  
 > - 海外の映画やTVの動画を翻訳前と翻訳後の言語を指定してアプリにアップロードすることで、その動画の音声を母国語に翻訳した字幕を表示してくれるため、効率的に外国語の学習を進めることができます。  
 
-# スクリーンショット
-<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/LaunchScreen.png width=200px>     
-<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/ScreenShot1.png width=200px>     
-<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/ScreenShot2.png width=200px>     
-<img src=https://github.com/enpit2su-ics/team-E/blob/master/Screenshot/ScreenShot3.png width=200px>
 
-公式ホームページは[こちら](https://struuuuggle.github.io/Captionee/)  
-ホームページを管理するリポジトリは[こちら](https://github.com/struuuuggle/Captionee)
