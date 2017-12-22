@@ -49,22 +49,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("初回起動じゃなくても呼ばれるアプリ起動時の処理だよ")
             if true {
                 let content1 = OnboardingContentViewController(
-                    title: "Title1",
-                    body: "Body1",
+                    title: "ようこそ",
+                    body: "Captioneeへ",
                     image: nil,
                     buttonText: "",
                     action: nil
                 )
                 let content2 = OnboardingContentViewController(
-                    title: "Title2",
-                    body: "Body2",
+                    title: "使い方",
+                    body: "動画をアップロードするだけで、字幕が生成されます",
                     image: nil,
                     buttonText: "",
                     action: nil
                 )
                 let content3 = OnboardingContentViewController(
-                    title: "Title3",
-                    body: "Body3",
+                    title: "使ってみよう",
+                    body: "",
                     image: nil,
                     buttonText: "始める",
                     action: {
