@@ -1,5 +1,6 @@
 //
 //  AppDelegate.swift
+//  enPiT2SUProduct
 //
 //  Created by team-E on 2017/09/15.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
@@ -27,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-UltraLight", size: 25)!
+            NSAttributedStringKey.font: MDCTypography.titleFont()
         ]
         UINavigationBar.appearance().isTranslucent = false
         
@@ -48,22 +49,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("初回起動じゃなくても呼ばれるアプリ起動時の処理だよ")
             if true {
                 let content1 = OnboardingContentViewController(
-                    title: "Title1",
-                    body: "Body1",
+                    title: "ようこそ",
+                    body: "Captioneeへ",
                     image: nil,
                     buttonText: "",
                     action: nil
                 )
                 let content2 = OnboardingContentViewController(
-                    title: "Title2",
-                    body: "Body2",
+                    title: "使い方",
+                    body: "動画をアップロードするだけで、字幕が生成されます",
                     image: nil,
                     buttonText: "",
                     action: nil
                 )
                 let content3 = OnboardingContentViewController(
-                    title: "Title3",
-                    body: "Body3",
+                    title: "使ってみよう",
+                    body: "",
                     image: nil,
                     buttonText: "始める",
                     action: {

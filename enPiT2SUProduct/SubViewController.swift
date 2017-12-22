@@ -10,9 +10,9 @@ import UIKit
 import AVKit
 import MaterialComponents
 
-class SubViewController: UIViewController {
+class SubViewController: UIViewController, ItemDelegate {
     
-     var receivedVideoInfo: VideoInfo!
+    var receivedVideoInfo: VideoInfo!
     
     var player: AVPlayer!
     var timeSlider: MDCSlider!
@@ -41,8 +41,12 @@ class SubViewController: UIViewController {
     }
     
     @IBOutlet weak var caption: UILabel!
-    @IBOutlet weak var translation: UILabel!
     @IBOutlet weak var playButton: UIButton!
+    
+    var textField: MDCMultilineTextField!
+    var editCompleteButton: MDCRaisedButton!
+    var editCancelButton: MDCRaisedButton!
+    var stepper: UIStepper!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,16 +74,19 @@ class SubViewController: UIViewController {
         // AVPlayerViewControllerの制約を設定
         playerViewController.view.translatesAutoresizingMaskIntoConstraints = false
         playerViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        playerViewController.view.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        //playerViewController.view.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         playerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         playerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        playerViewController.view.heightAnchor.constraint(equalToConstant: view.frame.width*9/16).isActive = true
         
         // TimeObserverを設定
         addPeriodicTimeObserver()
         
-        // 字幕のLabelのサイズを設定
+        // 字幕のLabelの設定
         caption.text = ""
+        caption.font = MDCTypography.body1Font()
         caption.numberOfLines = 0
+        caption.lineBreakMode = .byWordWrapping
         view.addSubview(caption)
         
         // 字幕のLabelの制約を設定
@@ -87,7 +94,7 @@ class SubViewController: UIViewController {
         caption.topAnchor.constraint(equalTo: playerViewController.view.bottomAnchor, constant: 20).isActive = true
         caption.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         caption.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -20)
+        caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
@@ -112,12 +119,77 @@ class SubViewController: UIViewController {
         timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
+        // TextFieldの設定
+        textField = MDCMultilineTextField()
+        textField.isHidden = true
+        view.addSubview(textField)
+        
+        // TextFieldの制約を設定
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: playerViewController.view.bottomAnchor, constant: 20).isActive = true
+        textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        textField.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
+        
+        // 編集完了ボタンの設定
+        editCompleteButton = MDCRaisedButton()
+        editCompleteButton.setTitle("OK", for: .normal)
+        editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
+        editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
+        editCompleteButton.setTitleColor(UIColor.white, for: .normal)
+        editCompleteButton.isHidden = true
+        editCompleteButton.addTarget(self, action: #selector(editCompleteButtonTapped), for: .touchUpInside)
+        view.addSubview(editCompleteButton)
+        
+        // 編集完了ボタンの制約を設定
+        editCompleteButton.translatesAutoresizingMaskIntoConstraints = false
+        editCompleteButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        editCompleteButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+        editCompleteButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
+        editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        // 編集キャンセルボタンの設定
+        editCancelButton = MDCRaisedButton()
+        editCancelButton.setTitle("CANCEL", for: .normal)
+        editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
+        editCancelButton.backgroundColor = UIColor.white
+        editCancelButton.setTitleColor(UIColor.black, for: .normal)
+        editCancelButton.isHidden = true
+        editCancelButton.addTarget(self, action: #selector(editCancelButtonTapped), for: .touchUpInside)
+        view.addSubview(editCancelButton)
+        
+        // 編集キャンセルボタンの制約を設定
+        editCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        editCancelButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        editCancelButton.trailingAnchor.constraint(equalTo: editCompleteButton.leadingAnchor, constant: -10).isActive = true
+        editCancelButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
+        editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        // Stepperの設定
+        stepper = UIStepper()
+        stepper.minimumValue = 10
+        stepper.maximumValue = 25
+        stepper.value = Double(caption.font.pointSize)
+        stepper.stepValue = 1
+        stepper.autorepeat = true
+        stepper.isContinuous = true
+        stepper.tintColor = MDCPalette.orange.tint500
+        stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
+        view.addSubview(stepper)
+        
+        // Stepperの制約を設定
+        stepper.translatesAutoresizingMaskIntoConstraints = false
+        stepper.topAnchor.constraint(equalTo: playButton.topAnchor, constant: -48).isActive = true
+        stepper.leadingAnchor.constraint(equalTo: caption.leadingAnchor).isActive = true
+        stepper.widthAnchor.constraint(equalToConstant: 6).isActive = true
+        stepper.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        
         // NavigationBarの右側にtranslateButtonを設置
-        let translateButton = UIBarButtonItem(image: UIImage(named: "Vertical"),
+        let itemButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
                                          style: .plain,
                                          target: self,
-                                         action: #selector(translateButtonTapped))
-        navigationItem.rightBarButtonItem = translateButton
+                                         action: #selector(itemButtonTapped))
+        navigationItem.rightBarButtonItem = itemButton
     }
     
     /* 再生・一時停止ボタンが押されたとき */
@@ -136,14 +208,58 @@ class SubViewController: UIViewController {
         }
     }
     
+    /* アイテムボタンが押されたとき */
+    @objc func itemButtonTapped(sender: UIButton) {
+        // ItemViewControllerを作成
+        let viewController: ItemViewController = ItemViewController()
+        // ItemViewControllerのdelegateを設定
+        viewController.delegate = self
+        
+        // BottomSheetを作成
+        let bottomSheet: MDCBottomSheetController = MDCBottomSheetController(contentViewController: viewController)
+        // BottomSheetを表示
+        present(bottomSheet, animated: true, completion: nil)
+    }
+    
+    /* 編集ボタンが押されたとき */
+    func editButtonTapped() {
+        print("編集")
+        
+        caption.isHidden = true
+        stepper.isHidden = true
+        textField.isHidden = false
+        textField.text = caption.text
+        editCompleteButton.isHidden = false
+        editCancelButton.isHidden = false
+    }
+    
+    /* 編集が完了されたとき */
+    @objc func editCompleteButtonTapped() {
+        textField.isHidden = true
+        editCompleteButton.isHidden = true
+        editCancelButton.isHidden = true
+        caption.isHidden = false
+        caption.text = textField.text
+        stepper.isHidden = false
+    }
+    
+    /* 編集がキャンセルされたとき */
+    @objc func editCancelButtonTapped() {
+        textField.isHidden = true
+        editCompleteButton.isHidden = true
+        editCancelButton.isHidden = true
+        caption.isHidden = false
+        stepper.isHidden = false
+    }
+    
     /* 翻訳ボタンが押されたとき */
-    @objc func translateButtonTapped(sender: UIButton) {
+    func translateButtonTapped() {
         print("翻訳")
         
         let queue = DispatchQueue.global(qos: .default)
         let translator = Translation("ja", "en")
                 
-        if let captions = self.receivedVideoInfo.caption {
+        if let captions = receivedVideoInfo.caption {
             for caption in captions.sentences {
                 // サブスレッドで処理
                 queue.async {
@@ -162,6 +278,69 @@ class SubViewController: UIViewController {
             print("Translation is nil.")
         }
     }
+    
+    /* チュートリアルボタンが押されたとき */
+    func tutorialButtonTapped() {
+        print("チュートリアル")
+        
+        tutorial1()
+        
+        /* 将来的にこうしたい
+        Tutorial.add(playButton, "再生ボタン", "このボタンを押すことで、動画を再生・一時停止することができます")
+        Tutorial.add(caption, "字幕", "ここに字幕が表示されます")
+        Tutorial.add(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします")
+        Tutorial.show(self)
+        */
+    }
+    
+    /* チュートリアル1 */
+    func tutorial1() {
+        let completion1 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+            
+            self.tutorial2()
+        }
+        let tutorial1 = Tutorial.create(playButton, "再生ボタン", "このボタンを押すことで、動画を再生・一時停止することができます", completion1)
+        present(tutorial1, animated: true, completion: nil)
+    }
+    
+    /* チュートリアル2 */
+    func tutorial2() {
+        let completion2 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+            
+            self.tutorial3()
+        }
+        let tutorial2 = Tutorial.create(caption, "字幕", "ここに字幕が表示されます", completion2)
+        present(tutorial2, animated: true, completion: nil)
+    }
+    
+    /* チュートリアル3 */
+    func tutorial3() {
+        let completion3 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+        }
+        let tutorial3 = Tutorial.create(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします", completion3)
+        present(tutorial3, animated: true, completion: nil)
+    }
+    
+    /* Stepperの値が変わったとき */
+    @objc func stepperValueChanged(sender: UIStepper) {
+        caption.font = MDCTypography.body1Font().withSize(CGFloat(sender.value))
+    }
+    
     /* 動画を再生する */
     func play() {
         print("再生")
@@ -186,6 +365,8 @@ class SubViewController: UIViewController {
     @objc func timeSliderChanged(sender: MDCSlider) {
         print("スライダーの値が変わった")
         
+        player.pause()
+        
         // 動画の時間をスライダーの値にする
         currentTime = Double(sender.value)
     }
@@ -195,9 +376,8 @@ class SubViewController: UIViewController {
         print("スライダーがタップされた")
         
         if isPlaying {
-            pause()
             currentTime = Double(sender.value)
-            play()
+            player.play()
         } else {
             currentTime = Double(sender.value)
         }
@@ -228,11 +408,13 @@ class SubViewController: UIViewController {
             // 字幕を適切なタイミングで表示
             if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
-                    if self!.currentTime >= caption.startTime && self!.currentTime <= caption.endTime {
-                        self?.caption.text = caption.foreign + "."
-                        break
+                    if wself.currentTime >= caption.startTime && wself.currentTime <= caption.endTime {
+                        wself.caption.text = caption.foreign + "."
+                        return
                     }
                 }
+                
+                wself.caption.text = ""
             } else {
                 wself.caption.text = "Caption is nil."
             }
