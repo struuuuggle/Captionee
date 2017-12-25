@@ -11,4 +11,5 @@ target 'enPiT2SUProduct' do
   pod 'MaterialComponents'
   pod 'Onboard'
   pod 'SwiftReorder'
+  pod 'Alamofire'
 end

@@ -14,6 +14,7 @@ import KRProgressHUD
 import MaterialComponents
 import SpeechToTextV1
 import SwiftReorder
+import Alamofire
 
 /* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,

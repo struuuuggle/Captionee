@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.6.0)
   - DZNEmptyDataSet (1.8.1)
   - KRActivityIndicatorView (2.1.1)
   - KRProgressHUD (3.1.2):
@@ -346,14 +347,15 @@ PODS:
     - MaterialComponents/private/Application
   - MDFInternationalization (1.0.4)
   - MDFTextAccessibility (1.2.0)
-  - MotionAnimator (2.6.0):
-    - MotionInterchange (~> 1.3)
+  - MotionAnimator (2.8.0):
+    - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
   - MotionTransitioning (5.0.0)
   - Onboard (2.3.1)
   - SwiftReorder (3.2.0)
 
 DEPENDENCIES:
+  - Alamofire
   - DZNEmptyDataSet
   - KRProgressHUD
   - MaterialComponents
@@ -361,18 +363,19 @@ DEPENDENCIES:
   - SwiftReorder
 
 SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   KRActivityIndicatorView: fa5df9f4cf039651ad8b0f9c11c3159d1e19299f
   KRProgressHUD: 6e23870531f8e854c8cba430b0f5a61074865250
   MaterialComponents: dc77450aafa8639522bb15aa9440a1a3b6946cd3
   MDFInternationalization: e355b0cebecf53d60233bd267084e49366c82513
   MDFTextAccessibility: 94098925e0853551c5a311ce7c1ecefbe297cdb6
-  MotionAnimator: a4b0ba87a674bb3e89e25f0530b7e80a204ac1c1
+  MotionAnimator: 8af077dac084b7880a4d2ddae31a26171087bd87
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   SwiftReorder: 27d737099efd6125339d5e8cb090e46c67341143
 
-PODFILE CHECKSUM: 815711a9e9fcd15b0f66faab82c8c4941037346f
+PODFILE CHECKSUM: 1221e12bbbdba8241732b20b3e2757adac2d8c4f
 
 COCOAPODS: 1.3.1
