@@ -239,7 +239,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(audioM4aURL!)
         print("<--- M4a URL")
         
-        //languageKey = "Japanese"
+        // MP4をサーバにアップロード
+        uploadFileToServer(videoMp4URL!)
+        
+        // WAVをサーバからダウンロード
+        //audioWavURL = downloadFileFromServer(name)
+        if let audioWavURL = audioWavURL {
+            print("---> WAV URL")
+            print(audioWavURL)
+            print("<--- WAV URL")
+        }
         
         // メインスレッドで処理
         let lockQueue = DispatchQueue.main
@@ -311,6 +320,59 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         } catch {
             return nil
         }
+    }
+    
+    /* ファイルをサーバにアップロードする */
+    func uploadFileToServer(_ fileURL: URL) {
+        print("ファイルをサーバにアップロード")
+        
+        Alamofire.upload(
+            multipartFormData: { multipartFormData in
+                multipartFormData.append(fileURL, withName: "input", fileName: "input.mp4", mimeType: "video/mp4")
+            },
+            to: "http://captionee.ddns.net/encoder/uploader.php",
+            encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    print("Upload success!")
+                    
+                    upload.responseString { response in
+                        debugPrint(response)
+                    }
+                case .failure(let encodingError):
+                    print("Upload failure...")
+                    print(encodingError)
+                }
+            }
+        )
+    }
+    
+    /* ファイルをサーバからダウンロードする */
+    func downloadFileFromServer(_ fileName: String) -> URL? {
+        print("ファイルをサーバからダウンロード")
+        
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            let documentsURL = URL(fileURLWithPath: FileManager.documentDir)
+            let fileURL = documentsURL.appendingPathComponent("\(fileName).wav")
+            
+            return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+        }
+        
+        var resultURL: URL? = nil
+        
+        Alamofire.download("http://captionee.ddns.net/encoder/Output/output.wav", to: destination).response { response in
+            if response.error == nil {
+                print("Download success!")
+                debugPrint(response)
+                
+                resultURL = response.destinationURL
+            } else {
+                print("Download failure...")
+                print(response.error!)
+            }
+        }
+        
+        return resultURL
     }
     
     /* 字幕を生成する */
