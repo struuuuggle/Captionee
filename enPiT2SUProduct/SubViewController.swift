@@ -133,7 +133,7 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // 編集完了ボタンの設定
         editCompleteButton = MDCRaisedButton()
-        editCompleteButton.setTitle("OK", for: .normal)
+        editCompleteButton.setTitle("SAVE", for: .normal)
         editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
         editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
         editCompleteButton.setTitleColor(UIColor.white, for: .normal)

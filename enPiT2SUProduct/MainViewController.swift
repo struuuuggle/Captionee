@@ -27,6 +27,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var selectedVideoInfo: VideoInfo?
     var index: Int!
+    var textField: MDCMultilineTextField!
+    var editCompleteButton: MDCRaisedButton!
+    var editCancelButton: MDCRaisedButton!
+    var menuNumber: Int = 0
+    let viewController = SideMenuController()
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -86,59 +91,134 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(MainViewController.panGesture(sender:)))
         self.view.addGestureRecognizer(panGestureRecognizer)
         
+        // スワイプ認識
+        let directionList:[UISwipeGestureRecognizerDirection] = [.right, .left]
+        for direction in directionList {
+            let menuSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.swipeGesture(sender:)))
+            menuSwipe.direction = direction
+            self.view.addGestureRecognizer(menuSwipe)
+        }
+        
+
+            
         tableView.reorder.delegate = self as TableViewReorderDelegate
+        
+        // TextFieldの設定
+        textField = MDCMultilineTextField()
+        textField.isHidden = true
+        view.addSubview(textField)
+        
+        // 編集完了ボタンの設定
+        editCompleteButton = MDCRaisedButton()
+        editCompleteButton.setTitle("SAVE", for: .normal)
+        editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
+        editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
+        editCompleteButton.setTitleColor(UIColor.white, for: .normal)
+        editCompleteButton.isHidden = true
+        editCompleteButton.addTarget(self, action: #selector(editCompleteButtonTapped), for: .touchUpInside)
+        view.addSubview(editCompleteButton)
+        
+        // 編集完了ボタンの制約を設定
+        editCompleteButton.translatesAutoresizingMaskIntoConstraints = false
+        editCompleteButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        editCompleteButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
+        editCompleteButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
+        editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        // 編集キャンセルボタンの設定
+        editCancelButton = MDCRaisedButton()
+        editCancelButton.setTitle("CANCEL", for: .normal)
+        editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
+        editCancelButton.backgroundColor = UIColor.white
+        editCancelButton.setTitleColor(UIColor.black, for: .normal)
+        editCancelButton.isHidden = true
+        editCancelButton.addTarget(self, action: #selector(editCancelButtonTapped), for: .touchUpInside)
+        view.addSubview(editCancelButton)
+        
+        // 編集キャンセルボタンの制約を設定
+        editCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        editCancelButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        editCancelButton.trailingAnchor.constraint(equalTo: editCompleteButton.leadingAnchor, constant: -10).isActive = true
+        editCancelButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
+        editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        viewController.view.isHidden = true
+        
+        
     }
     
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
+    
         print("Menu button tapped.")
-    }
-    
-    /* 以下は UITextFieldDelegate のメソッド */
-    
-    // 改行ボタンを押した時の処理
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // キーボードを隠す
-        textField.resignFirstResponder()
         
-        return true
+        if(menuNumber == 0){
+            print("aaa")
+        viewController.beginAppearanceTransition(true, animated: true)
+        viewController.view.isHidden = false
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
+        }, completion: {_ in
+            self.viewController.endAppearanceTransition()
+        })
+
+        view.addSubview(viewController.view)
+            menuNumber = 1
+            return
+        }else{
+            print("iii")
+            viewController.beginAppearanceTransition(false, animated: true)
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            }, completion: {_ in
+                self.viewController.view.isHidden = true
+                self.viewController.endAppearanceTransition()
+            })
+            viewController.view.isHidden = true
+
+            menuNumber = 0
+            return
+        }
+        
     }
-    
+    /* 以下は UITextFieldDelegate のメソッド */
+    @objc func swipeGesture(sender: UISwipeGestureRecognizer){
+        print("スワイプ")
+        //スワイプした方向をラベルに表示する。
+        switch(sender.direction){
+        case UISwipeGestureRecognizerDirection.right:
+            print("右")
+        default:
+            print("左")
+        }
+    }
     // クリアボタンが押された時の処理
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    private func textFieldShouldClear(_ textField: MDCMultilineTextField) -> Bool {
         print("Clear")
         
         return true
     }
     
-    // テキストフィールドがフォーカスされた時の処理
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        print("Start")
-        
-        return true
-    }
-    
-    // テキストフィールドでの編集が終わろうとするときの処理
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        print("End " + textField.text!)
-        
-        if textField.text! == ""{
-            textField.removeFromSuperview()
-            selectImageButton.isEnabled = true
-            self.tableView.allowsSelection = true
-            
-            return true
-        }
+    /* 編集が完了されたとき */
+    @objc func editCompleteButtonTapped() {
+        textField.isHidden = true
+        editCompleteButton.isHidden = true
+        editCancelButton.isHidden = true
         
         appDelegate.videos[index].label = textField.text!
-        
-        textField.removeFromSuperview()
         
         tableView.reloadData()
         selectImageButton.isEnabled = true
         self.tableView.allowsSelection = true
         
-        return true
+        textField.text = ""
     }
+    
+    /* 編集がキャンセルされたとき */
+    @objc func editCancelButtonTapped() {
+        textField.isHidden = true
+        editCompleteButton.isHidden = true
+        editCancelButton.isHidden = true
+        textField.text = ""
+    }
+    
     
     /* PhotoLibraryから動画を選択する */
     @IBAction func selectImage(_ sender: Any) {
@@ -487,50 +567,41 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
     }
     @IBAction func labelEditButton(_ sender: UIButton) {
-        //押された位置でcellのpathを取得
+        print("編集")
+        
+        textField.isHidden = false
+        editCompleteButton.isHidden = false
+        editCancelButton.isHidden = false
+        
+     //押された位置でcellのpathを取得
         let btn = sender
         let cell = btn.superview?.superview as! UITableViewCell
         let indexPath = tableView.indexPath(for: cell)?.row
         
-        var textField: UITextField!
-                
-                // セルが長押しされたときの処理
-        print("long pressed \(String(describing: indexPath))")
         
-                index = indexPath
+
+        index = indexPath
         
-                // インスタンス初期化
-                textField = UITextField()
-                
-                // サイズ設定
-                textField.frame.size.width = self.view.frame.width * 2 / 3
-                textField.frame.size.height = 48
-                
-                // 位置設定
-                textField.center.x = self.view.center.x
-                textField.center.y = 240
-                
-                // Delegate を設定
-                textField.delegate = self
+        
+        // サイズ設定
+        textField.frame.size.width = self.view.frame.width * 2 / 3
+        textField.frame.size.height = 48
+        
+        // 位置設定
+        textField.center.x = self.view.center.x
+        textField.center.y = 240
+
+        // Delegate を設定
+        textField.layoutDelegate = self as? MDCMultilineTextInputLayoutDelegate
                 
                 // プレースホルダー
                 textField.placeholder = "動画タイトルの入力"
                 
-                // 背景色
-                textField.backgroundColor = UIColor(white: 0.9, alpha: 1)
-                
-                // 左の余白
-                textField.leftViewMode = .always
-                textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+
                 
                 // テキストを全消去するボタンを表示
                 textField.clearButtonMode = .always
-                
-                // 改行ボタンの種類を変更
-                textField.returnKeyType = .done
-                
-                // 画面に追加
-                self.view.addSubview(textField)
+        
                 selectImageButton.isEnabled = false
                 self.tableView.allowsSelection = false
     }
