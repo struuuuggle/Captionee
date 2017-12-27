@@ -1,5 +1,10 @@
 PODS:
   - Alamofire (4.6.0)
+  - DKImagePickerController (3.8.1):
+    - DKImagePickerController/Camera (= 3.8.1)
+    - DKImagePickerController/ImageManager (= 3.8.1)
+  - DKImagePickerController/Camera (3.8.1)
+  - DKImagePickerController/ImageManager (3.8.1)
   - DZNEmptyDataSet (1.8.1)
   - KRActivityIndicatorView (2.1.1)
   - KRProgressHUD (3.1.2):
@@ -356,6 +361,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - DKImagePickerController
   - DZNEmptyDataSet
   - KRProgressHUD
   - MaterialComponents
@@ -364,6 +370,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  DKImagePickerController: 51ad6ee2ba05414bb741db54a72cd7f4fb178e34
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   KRActivityIndicatorView: fa5df9f4cf039651ad8b0f9c11c3159d1e19299f
   KRProgressHUD: 6e23870531f8e854c8cba430b0f5a61074865250
@@ -376,6 +383,6 @@ SPEC CHECKSUMS:
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   SwiftReorder: 27d737099efd6125339d5e8cb090e46c67341143
 
-PODFILE CHECKSUM: 1221e12bbbdba8241732b20b3e2757adac2d8c4f
+PODFILE CHECKSUM: 7356999c83d343e1f1472189c0c6a3c841cb00fc
 
 COCOAPODS: 1.3.1

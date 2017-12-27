@@ -15,6 +15,8 @@ import MaterialComponents
 import SpeechToTextV1
 import SwiftReorder
 import Alamofire
+import DKImagePickerController
+import CoreAudio
 
 /* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
@@ -171,11 +173,32 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* PhotoLibraryの全動画を表示する */
     func showPhotoLibrary() {
+        /*
         // ImagePickerControllerの設定
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
         imagePickerController.mediaTypes = ["public.movie"]
+        */
+        
+        let imagePickerController = DKImagePickerController()
+        imagePickerController.autoCloseOnSingleSelect = false
+        imagePickerController.singleSelect = true
+        imagePickerController.showsCancelButton = true
+        imagePickerController.showsEmptyAlbums = false
+        imagePickerController.sourceType = .both
+        imagePickerController.assetType = .allVideos
+        
+        imagePickerController.didSelectAssets = { (assets: [DKAsset]) in
+            print("didSelectAssets")
+            print(assets)
+            
+            let path = FileManager.documentDir + "/output.mp4"
+            
+            for asset in assets {
+                asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")})
+            }
+        }
         
         // PhotoLibraryの表示
         present(imagePickerController, animated: true, completion: nil)

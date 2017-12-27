@@ -12,4 +12,5 @@ target 'enPiT2SUProduct' do
   pod 'Onboard'
   pod 'SwiftReorder'
   pod 'Alamofire'
+  pod 'DKImagePickerController'
 end
