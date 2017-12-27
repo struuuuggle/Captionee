@@ -462,10 +462,9 @@ class SubViewController: UIViewController, ItemDelegate {
         }
         
         // AlertActionを作成
-        let English = MDCAlertAction(title: "英語", handler: handler)
-        let Chinese = MDCAlertAction(title: "中国語（簡体）", handler: handler)
-        //let Korean = MDCAlertAction(title: "한국어", handler: handler)
-        let Korean = MDCAlertAction(title: "韓国語", handler: handler)
+        let English = MDCAlertAction(title: "English", handler: handler)
+        let Chinese = MDCAlertAction(title: "中文", handler: handler)
+        let Korean = MDCAlertAction(title: "한국어", handler: handler)
         let Japanese = MDCAlertAction(title: "日本語", handler: handler)
         
         // 選択肢をAlertに追加

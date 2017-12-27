@@ -266,14 +266,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         
         // AlertActionを作成
-        let ukEnglish = MDCAlertAction(title: "イギリス英語", handler: handler)
-        let usEnglish = MDCAlertAction(title: "アメリカ英語", handler: handler)
-        let chinese = MDCAlertAction(title: "中国語", handler: handler)
+        let usEnglish = MDCAlertAction(title: "English", handler: handler)
+        let ukEnglish = MDCAlertAction(title: "UK English", handler: handler)
+        let chinese = MDCAlertAction(title: "中文", handler: handler)
         let japanese = MDCAlertAction(title: "日本語", handler: handler)
         
         // 選択肢をAlertに追加
-        alert.addAction(ukEnglish)
         alert.addAction(usEnglish)
+        alert.addAction(ukEnglish)
         alert.addAction(chinese)
         alert.addAction(japanese)
         
