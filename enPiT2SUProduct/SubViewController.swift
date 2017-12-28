@@ -13,7 +13,7 @@ import MaterialComponents
 class SubViewController: UIViewController, ItemDelegate {
     
     var receivedVideoInfo: VideoInfo!
-    
+
     var player: AVPlayer!
     var timeSlider: MDCSlider!
     var timeObserverToken: Any!
@@ -40,8 +40,22 @@ class SubViewController: UIViewController, ItemDelegate {
         return CMTimeGetSeconds(currentItem.asset.duration)
     }
     
+    var languageKey = "英語" {
+        willSet {
+            // KRProgressHUDの開始
+            
+        }
+        didSet {
+            print("Language is \(languageKey).")
+            
+            // 字幕を翻訳
+            translation()
+        }
+    }
+    
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var playButton: UIButton!
+    
     
     var textField: MDCMultilineTextField!
     var editCompleteButton: MDCRaisedButton!
@@ -133,7 +147,7 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // 編集完了ボタンの設定
         editCompleteButton = MDCRaisedButton()
-        editCompleteButton.setTitle("OK", for: .normal)
+        editCompleteButton.setTitle("SAVE", for: .normal)
         editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
         editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
         editCompleteButton.setTitleColor(UIColor.white, for: .normal)
@@ -254,11 +268,27 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* 翻訳ボタンが押されたとき */
     func translateButtonTapped() {
+        print("翻訳ボタン")
+        
+        selectLanguage()
+        
+    }
+    
+    /* 字幕を翻訳する */
+    func translation() {
         print("翻訳")
+
+        // サポートされている翻訳言語リスト
+        let languages = [
+            "日本語": "ja",
+            "英語": "en",
+            "한국어": "ko",
+            "中国語（簡体）": "zh-CN",
+            ]
         
         let queue = DispatchQueue.global(qos: .default)
-        let translator = Translation("ja", "en")
-                
+        let translator = Translation("ja", languages[languageKey]!)
+        
         if let captions = receivedVideoInfo.caption {
             for caption in captions.sentences {
                 // サブスレッドで処理
@@ -419,6 +449,32 @@ class SubViewController: UIViewController, ItemDelegate {
                 wself.caption.text = "Caption is nil."
             }
         }
+    }
+    
+    /* 翻訳言語の選択用ダイアログを表示する */
+    func selectLanguage() {
+        // AlertControllerを作成
+        let alert = MDCAlertController(title: "言語選択", message: "翻訳する言語を選択してください")
+        
+        // AlertAction用ハンドラ
+        let handler: MDCActionHandler = { (action) -> Void in
+            self.languageKey = action.title!
+        }
+        
+        // AlertActionを作成
+        let English = MDCAlertAction(title: "English", handler: handler)
+        let Chinese = MDCAlertAction(title: "中文", handler: handler)
+        let Korean = MDCAlertAction(title: "한국어", handler: handler)
+        let Japanese = MDCAlertAction(title: "日本語", handler: handler)
+        
+        // 選択肢をAlertに追加
+        alert.addAction(English)
+        alert.addAction(Chinese)
+        alert.addAction(Korean)
+        alert.addAction(Japanese)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -24,6 +24,7 @@
 		C0F7E26A1F6B7FC90038357B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E2681F6B7FC90038357B /* Main.storyboard */; };
 		C0F7E26C1F6B7FC90038357B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E26B1F6B7FC90038357B /* Assets.xcassets */; };
 		C0F7E26F1F6B7FC90038357B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */; };
+		EACF676C1FECEB8A0003F3A6 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACF676B1FECEB8A0003F3A6 /* SideMenuController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		C0F7E26E1F6B7FC90038357B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0F7E2701F6B7FC90038357B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C92292339A9351118EF0EFD3 /* Pods-enPiT2SUProduct.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.debug.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.debug.xcconfig"; sourceTree = "<group>"; };
+		EACF676B1FECEB8A0003F3A6 /* SideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SideMenuController.swift; path = ../SideMenuController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
 				701FB1F51FA5711700BBFCB0 /* FileManager.swift */,
 				154368D61FD3D479007E7618 /* Translation.swift */,
+				EACF676B1FECEB8A0003F3A6 /* SideMenuController.swift */,
 				C0F7E2681F6B7FC90038357B /* Main.storyboard */,
 				C0F7E26B1F6B7FC90038357B /* Assets.xcassets */,
 				70E23B0B1FB560C3009D900C /* simple.wav */,
@@ -294,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				700A1B011FA9D977004C7782 /* Credentials.swift in Sources */,
+				EACF676C1FECEB8A0003F3A6 /* SideMenuController.swift in Sources */,
 				701FB1F61FA5711700BBFCB0 /* FileManager.swift in Sources */,
 				15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */,
 				154368D71FD3D479007E7618 /* Translation.swift in Sources */,
