@@ -41,10 +41,6 @@ class SubViewController: UIViewController, ItemDelegate {
     }
     
     var languageKey = "英語" {
-        willSet {
-            // KRProgressHUDの開始
-            
-        }
         didSet {
             print("Language is \(languageKey).")
             
@@ -245,6 +241,8 @@ class SubViewController: UIViewController, ItemDelegate {
         textField.text = caption.text
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
+        
+        pause()
     }
     
     /* 編集が完了されたとき */
@@ -274,8 +272,9 @@ class SubViewController: UIViewController, ItemDelegate {
     func translateButtonTapped() {
         print("翻訳ボタン")
         
-        selectLanguage()
+        pause()
         
+        selectLanguage()
     }
     
     /* 字幕を翻訳する */
@@ -317,6 +316,8 @@ class SubViewController: UIViewController, ItemDelegate {
     /* チュートリアルボタンが押されたとき */
     func tutorialButtonTapped() {
         print("チュートリアル")
+        
+        pause()
         
         tutorial1()
         
