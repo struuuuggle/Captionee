@@ -9,6 +9,6 @@ target 'enPiT2SUProduct' do
   pod 'KRProgressHUD'
   pod 'DZNEmptyDataSet'
   pod 'MaterialComponents'
-  pod 'Onboard'
+  pod 'Presentation'
   pod 'SwiftReorder'
 end

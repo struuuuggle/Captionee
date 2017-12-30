@@ -431,9 +431,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 音声認識の言語モデルの辞書
         let languages = [
             "日本語": "ja-JP_BroadbandModel",
-            "アメリカ英語": "en-GB_BroadbandModel",
-            "イギリス英語": "en-US_BroadbandModel",
-            "中国語": "zh-CN_BroadbandModel"
+            "English": "en-GB_BroadbandModel",
+            "UK English": "en-US_BroadbandModel",
+            "中文": "zh-CN_BroadbandModel"
         ]
         
         // 音声認識の実行

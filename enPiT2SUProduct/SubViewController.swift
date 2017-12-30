@@ -13,7 +13,6 @@ import MaterialComponents
 class SubViewController: UIViewController, ItemDelegate {
     
     var receivedVideoInfo: VideoInfo!
-
     var player: AVPlayer!
     var timeSlider: MDCSlider!
     var timeObserverToken: Any!
@@ -42,12 +41,12 @@ class SubViewController: UIViewController, ItemDelegate {
     
     // 翻訳元と翻訳先の言語
     var sourceLanguageKey: String!
-    var targetLanguageKey = "英語" {
+    var targetLanguageKey = "English" {
         willSet {
             // Do something
         }
         didSet {
-            print("Language is \(targetLanguageKey).")
+            print("targetLanguage is \(targetLanguageKey).")
             
             // 字幕を翻訳
             translation()
@@ -206,9 +205,8 @@ class SubViewController: UIViewController, ItemDelegate {
                                          action: #selector(itemButtonTapped))
         navigationItem.rightBarButtonItem = itemButton
         
-        print("---> sourceLanguageKey")
-        print(sourceLanguageKey)
-        print("<--- sourceLanguageKey")
+        print("sourceLanguage is \(sourceLanguageKey)")
+        print("targetLanguage is \(targetLanguageKey)")
     }
     
     /* 再生・一時停止ボタンが押されたとき */
@@ -286,7 +284,7 @@ class SubViewController: UIViewController, ItemDelegate {
         // サポートされている翻訳言語の辞書
         let languages = [
             "日本語": "ja",
-            "英語": "en",
+            "English": "en",
             "한국어": "ko",
             "中文": "zh-CN",
             ]
@@ -472,7 +470,6 @@ class SubViewController: UIViewController, ItemDelegate {
         let Chinese = MDCAlertAction(title: "中文", handler: handler)
         let English = MDCAlertAction(title: "English", handler: handler)
 
-        
         // 選択肢をAlertに追加
         // ダイアログ上では、先に追加したAlertActionほど下に表示される
         alert.addAction(Japanese)
@@ -480,7 +477,6 @@ class SubViewController: UIViewController, ItemDelegate {
         alert.addAction(Chinese)
         alert.addAction(English)
 
-        
         // Alertを表示
         present(alert, animated: true, completion: nil)
     }
