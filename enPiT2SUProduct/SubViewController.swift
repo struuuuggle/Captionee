@@ -40,7 +40,7 @@ class SubViewController: UIViewController, ItemDelegate {
     }
     
     // 翻訳元と翻訳先の言語
-    var sourceLanguageKey: String!
+    var sourceLanguageKey: String = ""
     var targetLanguageKey = "English" {
         willSet {
             // Do something
