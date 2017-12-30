@@ -249,6 +249,8 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* 編集が完了されたとき */
     @objc func editCompleteButtonTapped() {
+        print("編集完了")
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -259,6 +261,8 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* 編集がキャンセルされたとき */
     @objc func editCancelButtonTapped() {
+        print("編集キャンセル")
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -281,12 +285,13 @@ class SubViewController: UIViewController, ItemDelegate {
         // サポートされている翻訳言語リスト
         let languages = [
             "日本語": "ja",
-            "英語": "en",
+            "中文": "zh-CN",
             "한국어": "ko",
-            "中国語（簡体）": "zh-CN",
-            ]
+            "English": "en",
+        ]
         
         let queue = DispatchQueue.global(qos: .default)
+        
         let translator = Translation("ja", languages[languageKey]!)
         
         if let captions = receivedVideoInfo.caption {
