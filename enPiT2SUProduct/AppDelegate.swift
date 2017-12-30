@@ -8,7 +8,6 @@
 
 import UIKit
 import MaterialComponents
-import Onboard
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -48,57 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
             print("初回起動じゃなくても呼ばれるアプリ起動時の処理だよ")
             if true {
-                let content1 = OnboardingContentViewController(
-                    title: "ようこそ",
-                    body: "Captioneeへ",
-                    image: nil,
-                    buttonText: "",
-                    action: nil
-                )
-                let content2 = OnboardingContentViewController(
-                    title: "使い方",
-                    body: "動画をアップロードするだけで、字幕が生成されます",
-                    image: nil,
-                    buttonText: "",
-                    action: nil
-                )
-                let content3 = OnboardingContentViewController(
-                    title: "使ってみよう",
-                    body: "",
-                    image: nil,
-                    buttonText: "始める",
-                    action: {
-                        //Storyboardを指定
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        //Viewcontrollerを指定
-                        let initialViewController = storyboard.instantiateInitialViewController()
-                        //rootViewControllerに入れる
-                        self.window?.rootViewController = initialViewController
-                        //表示
-                        self.window?.makeKeyAndVisible()
-                }
-                )
                 
-                let bgImage = UIImage(named: "AppIcon")
-                let vc = OnboardingViewController(
-                    backgroundImage: bgImage,
-                    contents: [content1, content2, content3]
-                )
-                vc?.allowSkipping = true
-                vc?.fadeSkipButtonOnLastPage = false
-
-                vc?.skipHandler = {
-                    //Storyboardを指定
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    //Viewcontrollerを指定
-                    let initialViewController = storyboard.instantiateInitialViewController()
-                    //rootViewControllerに入れる
-                    self.window?.rootViewController = initialViewController
-                    //表示
-                    self.window?.makeKeyAndVisible()
-                }
-                
-                window?.rootViewController = vc
                 
                 return true
             }
@@ -122,70 +71,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /* アプリが初めて起動されたかを判定する */
     func isFristLaunch() -> Bool {
         return true
-    }
-    
-    /* ウォークスルーの表示 */
-    func playWalkthrough() {
-        // 背景画像
-        let bgImage = UIImage(named: "AppIcon")
-
-        // 1ページ目の設定
-        let firstPage = OnboardingContentViewController.content(withTitle: "Title 1",
-                                                                body: "Body 1",
-                                                                image: UIImage(named: "Setting"),    // 画像を表示しない場合はnilにする
-                                                                buttonText: "Next",
-                                                                action: nil)
-        firstPage.movesToNextViewController = true
-        
-        // 2ページ目の設定
-        let secondPage = OnboardingContentViewController.content(withTitle: "Title 2",
-                                                                 body: "Body 2",
-                                                                 image: UIImage(named: "Setting"),
-                                                                 buttonText: "Next",
-                                                                 action:nil)
-        secondPage.movesToNextViewController = true
-        
-        // 3ページ目の設定
-
-        let thirdPage = OnboardingContentViewController.content(withTitle: "Title",
-                                                                body: "Body 3",
-                                                                image: UIImage(named: "Setting"),
-                                                                buttonText: "Get Started!",
-                                                                action: { self.getStarted() })
-        
-        // onboardingViewcontrollerのインスタンスを生成
-        let onboardingVC = OnboardingViewController(backgroundImage: bgImage,
-                                                     contents: [firstPage, secondPage, thirdPage])
-        
-//        onboardingVC?.shouldMaskBackground = false
-//        onboardingVC?.shouldBlurBackground = true
-//        onboardingVC?.shouldFadeTransitions = true
-//        onboardingVC?.fadePageControlOnLastPage = true
-//        onboardingVC?.fadeSkipButtonOnLastPage = true
-        onboardingVC?.allowSkipping = false
-//        onboardingVC?.skipHandler = { self.skip() }
-
-        
-        // onboardingVCを表示
-        window?.rootViewController = onboardingVC
-        print("ウォークスルー表示")
-    }
-    
-    /* ウォークスルーを終了させる */
-    func getStarted() {
-        //Storyboardを指定
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //MainViewcontrollerを指定
-        let initialViewController = storyboard.instantiateInitialViewController()
-        //rootViewControllerに入れる
-        self.window?.rootViewController = initialViewController
-        //MainVCを表示
-        self.window?.makeKeyAndVisible()
-    }
-    
-    /* ウォークスルー中にskipボタンを押した時の処理 */
-    func skip() {
-        self.getStarted()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
