@@ -346,15 +346,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         
         // AlertActionを作成
-        let usEnglish = MDCAlertAction(title: "English", handler: handler)
-        let ukEnglish = MDCAlertAction(title: "UK English", handler: handler)
         let chinese = MDCAlertAction(title: "中文", handler: handler)
+        let ukEnglish = MDCAlertAction(title: "UK English", handler: handler)
+        let usEnglish = MDCAlertAction(title: "English", handler: handler)
         let japanese = MDCAlertAction(title: "日本語", handler: handler)
         
         // 選択肢をAlertに追加
-        alert.addAction(usEnglish)
-        alert.addAction(ukEnglish)
+        // ダイアログ上では、以下のコードで先に追加したAlertActionほど下に表示される
         alert.addAction(chinese)
+        alert.addAction(ukEnglish)
+        alert.addAction(usEnglish)
         alert.addAction(japanese)
         
         // Alertを表示
@@ -427,7 +428,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.success()
         }
         
-        // 言語モデルの辞書
+        // 音声認識の言語モデルの辞書
         let languages = [
             "日本語": "ja-JP_BroadbandModel",
             "アメリカ英語": "en-GB_BroadbandModel",
@@ -630,6 +631,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
+            subVC.sourceLanguageKey = self.languageKey
         }
     }
     

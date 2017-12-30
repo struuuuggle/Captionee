@@ -40,13 +40,14 @@ class SubViewController: UIViewController, ItemDelegate {
         return CMTimeGetSeconds(currentItem.asset.duration)
     }
     
-    var languageKey = "英語" {
+    // 翻訳元と翻訳先の言語
+    var sourceLanguageKey: String!
+    var targetLanguageKey = "英語" {
         willSet {
-            // KRProgressHUDの開始
-            
+            // Do something
         }
         didSet {
-            print("Language is \(languageKey).")
+            print("Language is \(targetLanguageKey).")
             
             // 字幕を翻訳
             translation()
@@ -204,6 +205,10 @@ class SubViewController: UIViewController, ItemDelegate {
                                          target: self,
                                          action: #selector(itemButtonTapped))
         navigationItem.rightBarButtonItem = itemButton
+        
+        print("---> sourceLanguageKey")
+        print(sourceLanguageKey)
+        print("<--- sourceLanguageKey")
     }
     
     /* 再生・一時停止ボタンが押されたとき */
@@ -278,7 +283,7 @@ class SubViewController: UIViewController, ItemDelegate {
     func translation() {
         print("翻訳")
 
-        // サポートされている翻訳言語リスト
+        // サポートされている翻訳言語の辞書
         let languages = [
             "日本語": "ja",
             "英語": "en",
@@ -287,7 +292,7 @@ class SubViewController: UIViewController, ItemDelegate {
             ]
         
         let queue = DispatchQueue.global(qos: .default)
-        let translator = Translation("ja", languages[languageKey]!)
+        let translator = Translation(languages[sourceLanguageKey]!, languages[targetLanguageKey]!)
         
         if let captions = receivedVideoInfo.caption {
             for caption in captions.sentences {
@@ -458,20 +463,23 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // AlertAction用ハンドラ
         let handler: MDCActionHandler = { (action) -> Void in
-            self.languageKey = action.title!
+            self.targetLanguageKey = action.title!
         }
         
         // AlertActionを作成
-        let English = MDCAlertAction(title: "English", handler: handler)
-        let Chinese = MDCAlertAction(title: "中文", handler: handler)
-        let Korean = MDCAlertAction(title: "한국어", handler: handler)
         let Japanese = MDCAlertAction(title: "日本語", handler: handler)
+        let Korean = MDCAlertAction(title: "한국어", handler: handler)
+        let Chinese = MDCAlertAction(title: "中文", handler: handler)
+        let English = MDCAlertAction(title: "English", handler: handler)
+
         
         // 選択肢をAlertに追加
-        alert.addAction(English)
-        alert.addAction(Chinese)
-        alert.addAction(Korean)
+        // ダイアログ上では、先に追加したAlertActionほど下に表示される
         alert.addAction(Japanese)
+        alert.addAction(Korean)
+        alert.addAction(Chinese)
+        alert.addAction(English)
+
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
