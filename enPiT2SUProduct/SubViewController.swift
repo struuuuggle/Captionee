@@ -283,7 +283,7 @@ class SubViewController: UIViewController, ItemDelegate {
             "日本語": "ja",
             "英語": "en",
             "한국어": "ko",
-            "中国語（簡体）": "zh-CN",
+            "中文": "zh-CN",
             ]
         
         let queue = DispatchQueue.global(qos: .default)
