@@ -374,8 +374,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let ukEnglish = MDCAlertAction(title: "UK English", handler: handler)
         let usEnglish = MDCAlertAction(title: "English", handler: handler)
         let japanese = MDCAlertAction(title: "日本語", handler: handler)
-        let chinese = MDCAlertAction(title: "中文", handler: handler)
-        let usEnglish = MDCAlertAction(title: "English", handler: handler)
         
         // 選択肢をAlertに追加
         // ダイアログ上では、以下のコードで先に追加したAlertActionほど下に表示される
@@ -383,8 +381,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         alert.addAction(ukEnglish)
         alert.addAction(usEnglish)
         alert.addAction(japanese)
-        alert.addAction(chinese)
-        alert.addAction(usEnglish)
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
@@ -481,9 +477,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 音声認識の言語モデルの辞書
         let languages = [
             "日本語": "ja-JP_BroadbandModel",
-            "English": "en-GB_BroadbandModel",
-            "UK English": "en-US_BroadbandModel",
-            "中文": "zh-CN_BroadbandModel"
+            "中文": "zh-CN_BroadbandModel",
+            "English": "en-US_BroadbandModel",
         ]
         
         // 音声認識の実行
