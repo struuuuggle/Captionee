@@ -46,7 +46,7 @@ class SubViewController: UIViewController, ItemDelegate {
             print("targetLanguage is \(targetLanguageKey).")
             
             // 字幕を翻訳
-            if sourceLanguageKey != targetLanguageKey {
+            if self.sourceLanguageKey != self.targetLanguageKey {
                 translation()
             }
         }
