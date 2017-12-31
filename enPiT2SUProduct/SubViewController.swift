@@ -248,10 +248,14 @@ class SubViewController: UIViewController, ItemDelegate {
         textField.text = caption.text
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
+        
+        pause()
     }
     
     /* 編集が完了されたとき */
     @objc func editCompleteButtonTapped() {
+        print("編集完了")
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -262,6 +266,8 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* 編集がキャンセルされたとき */
     @objc func editCancelButtonTapped() {
+        print("編集キャンセル")
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -273,8 +279,9 @@ class SubViewController: UIViewController, ItemDelegate {
     func translateButtonTapped() {
         print("翻訳ボタン")
         
-        selectLanguage()
+        pause()
         
+        selectLanguage()
     }
     
     /* 字幕を翻訳する */
@@ -315,6 +322,8 @@ class SubViewController: UIViewController, ItemDelegate {
     /* チュートリアルボタンが押されたとき */
     func tutorialButtonTapped() {
         print("チュートリアル")
+        
+        pause()
         
         tutorial1()
         

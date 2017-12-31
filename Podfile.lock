@@ -359,6 +359,8 @@ PODS:
   - SwiftReorder (3.2.0)
 
 DEPENDENCIES:
+  - Alamofire
+  - DKImagePickerController
   - DZNEmptyDataSet
   - KRProgressHUD
   - MaterialComponents

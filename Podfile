@@ -11,4 +11,6 @@ target 'enPiT2SUProduct' do
   pod 'MaterialComponents'
   pod 'Presentation'
   pod 'SwiftReorder'
+  pod 'Alamofire'
+  pod 'DKImagePickerController'
 end
