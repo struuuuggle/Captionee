@@ -8,6 +8,7 @@
 
 import UIKit
 import MaterialComponents
+import Presentation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,11 +21,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var videos = [VideoInfo]()
     let userDefault = UserDefaults.standard
     
+    private lazy var navigationController: UINavigationController = { [unowned self] in
+        let controller = UINavigationController(rootViewController: self.presentationController)
+        // ウォークスルーの背景色をここで設定
+        controller.view.backgroundColor = color["Blue"] // colorは要変更
+        return controller
+        }()
+    
+    private lazy var presentationController: PresentationController = {
+        let controller = PresentationController(pages: [])
+        controller.setNavigationTitle = false
+        return controller
+    }()
+    
+    private lazy var leftButton: UIBarButtonItem = { [unowned self] in
+        let button = UIBarButtonItem(
+            title: "Previous page",
+            style: .plain,
+            target: self.presentationController,
+            action: #selector(PresentationController.moveBack)
+        )
+        
+        button.setTitleTextAttributes(
+            [NSAttributedStringKey.foregroundColor: UIColor.white],
+            for: .normal
+        )
+        
+        return button
+        }()
+    
+    private lazy var rightButton: UIBarButtonItem = { [unowned self] in
+        let button = UIBarButtonItem(
+            title: "Next page",
+            style: .plain,
+            target: self.presentationController,
+            action: #selector(PresentationController.moveForward)
+        )
+        
+        button.setTitleTextAttributes(
+            [NSAttributedStringKey.foregroundColor: UIColor.white],
+            for: .normal
+        )
+        
+        return button
+        }()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         // NavigationBarの設定
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
+        UINavigationBar.appearance().barTintColor = color[themeColor]
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: MDCTypography.titleFont()
@@ -32,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().isTranslucent = false
         
         UIToolbar.appearance().tintColor = MDCPalette.grey.tint500
-        UIToolbar.appearance().backgroundColor = MDCPalette.orange.tint500
+        UIToolbar.appearance().backgroundColor = color[themeColor]
         
         // 起動時間延長
         sleep(2)
@@ -40,21 +86,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let dict = ["firstLaunch": true]
         self.userDefault.register(defaults: dict)
         
-        // 初回起動時のみに実行する処理
-        if userDefault.bool(forKey: "firstLaunch") {
-            userDefault.set(false, forKey: "firstLaunch")
-            print("初回起動の時だけ呼ばれるよ")
+        // 初回起動時のみに行うための処理をここに書く
         
-            print("初回起動じゃなくても呼ばれるアプリ起動時の処理だよ")
-            if true {
-                
-                
-                return true
-            }
-        }
-        //ウォークスルー終
+        // ウォークスルーの実行
+        playWalkthrough()
     
-        
         // UserDefaultに保存されたデータを読み込む
         if let storedData = userDefault.object(forKey: "Videos") as? Data {
             if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
@@ -72,7 +108,123 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func isFristLaunch() -> Bool {
         return true
     }
+    
+    /* ウォークスルーの実行 */
+    func playWalkthrough() {
+        print("ウォークスルーの実行")
+        
+        // ウォークスルー実行時のナビゲーションバーの色をここで設定
+        UINavigationBar.appearance().barTintColor = color[themeColor]
+        UINavigationBar.appearance().barStyle = .blackTranslucent
+        
+        presentationController.navigationItem.leftBarButtonItem = leftButton
+        presentationController.navigationItem.rightBarButtonItem = rightButton
+        
+        configureSlides()
+        configureBackground()
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+    }
+    
+    /* Page animations */
+    private func configureSlides() {
+        let ratio: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 1 : 0.4
+        let font = UIFont(name: "ArialRoundedMTBold", size: 42.0 * ratio)!
+        let color = UIColor.white
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        
+        let attributes = [NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: color,
+                          NSAttributedStringKey.paragraphStyle: paragraphStyle]
+        
+        let titles = ["Tutorial on how to make a profit", "Step I", "Step II", "Step III", "Thanks"].map {
+            Content.content(forTitle: $0, attributes: attributes)
+        }
+        let texts = ["", "Collect underpants\n💭", "🎅🎅🏻🎅🏼🎅🏽🎅🏾🎅🏿", "Profit\n💸", ""].map {
+            Content.content(forText: $0, attributes: attributes)
+        }
+        
+        var slides = [SlideController]()
+        
+        for index in 0...4 {
+            let controller = SlideController(contents: [titles[index], texts[index]])
+            
+            if index == 0 {
+                titles[index].position.left = 0.5
+                
+                controller.add(animations: [
+                    DissolveAnimation(content: titles[index], duration: 2.0, delay: 1.0, initial: true)])
+            } else {
+                controller.add(animations: [
+                    Content.centerTransition(forSlideContent: titles[index]),
+                    Content.centerTransition(forSlideContent: texts[index])])
+            }
+            
+            slides.append(controller)
+        }
+        
 
+//        slides[4].add(content: Content.content(forText: "Get Started!"))
+        
+        presentationController.add(slides)
+    }
+    
+    /* Background views */
+    func configureBackground() {
+        let images = ["Cloud", "Cloud", "Cloud"].map { UIImageView(image: UIImage(named: $0)) }
+        let content1 = Content(view: images[0], position: Position(left: -0.3, top: 0.2))
+        let content2 = Content(view: images[1], position: Position(right: -0.3, top: 0.22))
+//        let content3 = Content(view: images[2], position: Position(left: 0.5, top: 0.5))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+        label.text = "Get Started!"
+        let content3 = Content(view: label, position: Position(left: 0.5, top: 0.5), centered: true)
+        
+        presentationController.addToBackground([content1, content2, content3])
+        
+        // 各ページのアニメーション
+        
+        presentationController.addAnimations([
+            TransitionAnimation(content: content1, destination: Position(left: 0.2, top: 0.2)),
+            TransitionAnimation(content: content2, destination: Position(right: 0.3, top: 0.22)),
+//            PopAnimation(content: content3, duration: 1.0)
+            ], forPage: 0)
+        
+        presentationController.addAnimations([
+            TransitionAnimation(content: content1, destination: Position(left: 0.3, top: 0.2)),
+            TransitionAnimation(content: content2, destination: Position(right: 0.4, top: 0.22)),
+            ], forPage: 1)
+        
+        presentationController.addAnimations([
+            TransitionAnimation(content: content1, destination: Position(left: 0.5, top: 0.2)),
+            TransitionAnimation(content: content2, destination: Position(right: 0.5, top: 0.22)),
+            ], forPage: 2)
+        
+        presentationController.addAnimations([
+            TransitionAnimation(content: content1, destination: Position(left: 0.6, top: 0.2)),
+            TransitionAnimation(content: content2, destination: Position(right: 0.7, top: 0.22)),
+            ], forPage: 3)
+        
+        presentationController.addAnimations([
+            TransitionAnimation(content: content1, destination: Position(left: 0.8, top: 0.2)),
+            TransitionAnimation(content: content2, destination: Position(right: 0.9, top: 0.22)),
+            PopAnimation(content: content3, duration: 1.0)
+            ], forPage: 4)
+    }
+    
+    /* ウォークスルーを終了させる */
+    func getStarted() {
+        //Storyboardを指定
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //MainViewcontrollerを指定
+        let initialViewController = storyboard.instantiateInitialViewController()
+        //rootViewControllerに入れる
+        self.window?.rootViewController = initialViewController
+        //MainVCを表示
+        self.window?.makeKeyAndVisible()
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
