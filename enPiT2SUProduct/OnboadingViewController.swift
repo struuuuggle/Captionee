@@ -22,7 +22,9 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         
         // ページごとの背景色
         let pageColors = [MDCPalette.blue.tint500, MDCPalette.blue.tint600, MDCPalette.blue.tint700]
+        // ページごとの画像
         let pageImages = ["Subtitles", "Translate", "Happy"]
+        // ページごとのテキスト
         let pageTexts = ["Page 1", "Page 2", "Page 3"]
         
         // ScrollViewを作成
@@ -47,7 +49,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
             let image = UIImage(named: pageImages[i])
             pageImage.image = image
             pageImage.tintColor = UIColor.black
-            pageImage.backgroundColor = UIColor.white
+            pageImage.backgroundColor = UIColor.white // これは後で無くす
             page.addSubview(pageImage)
             
             // ページ画像の制約を設定
@@ -61,10 +63,11 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
             let pageText = UILabel()
             pageText.text = pageTexts[i]
             pageText.font = MDCTypography.body1Font()
+            pageText.textColor = UIColor.white
             pageText.textAlignment = .center
-            pageText.backgroundColor = UIColor.white
+            pageText.lineBreakMode = .byWordWrapping
+            pageText.backgroundColor = UIColor.white // これは後で無くす
             page.addSubview(pageText)
-            //pages.add(pageLabel)
             
             // ページテキストの制約を設定
             pageText.translatesAutoresizingMaskIntoConstraints = false
@@ -100,41 +103,6 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         getStartedButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
     }
     
-    /*
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        let pageBeforeChange = pageControl.currentPage
-        let pageCount = pages.count
-        
-        for i in 0..<pageCount {
-            let page: UILabel = pages.object(at: i) as! UILabel
-            page.frame = view.bounds.offsetBy(dx: CGFloat(i)*view.bounds.width, dy: 0)
-        }
-        
-        scrollView.contentSize = CGSize(width: view.bounds.width, height: view.bounds.height)
-        
-        var offset = scrollView.contentOffset
-        offset.x = CGFloat(pageBeforeChange) * view.bounds.width
-        scrollView.setContentOffset(offset, animated: false)
-        
-        let standardizedFrame = view.frame.standardized
-        pageControl.sizeThatFits(standardizedFrame.size)
-        
-        var edgeInsets = UIEdgeInsets.zero
-        if #available(iOS 11.0, *) {
-            edgeInsets = view.safeAreaInsets
-        }
-        
-        let yOffset = view.frame.height - pageControl.frame.height - edgeInsets.bottom
-        pageControl.frame = CGRect(x: 0, y: yOffset, width: view.frame.width, height: pageControl.frame.height)
-        
-        nextButton.sizeToFit()
-        let buttonCenterX = view.bounds.width - nextButton.frame.width / 2 - 16 - edgeInsets.right
-        nextButton.center = CGPoint(x: buttonCenterX, y: pageControl.center.y)
-    }
-    */
-    
     @objc func didChangePage(sender: MDCPageControl){
         print("Page changed.")
         
@@ -146,17 +114,15 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
     @objc func getStarted(sender: MDCRaisedButton) {
         print("Get started!")
         
-        //dismiss(animated: true, completion: nil)
-        
-        //Storyboardを指定
+        // Storyboardを指定
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //MainViewcontrollerを指定
+        // MainViewcontrollerを指定
         let initialViewController = storyboard.instantiateInitialViewController()
-        
+        // windowを作成
         window = UIWindow(frame: UIScreen.main.bounds)
-        //rootViewControllerに入れる
+        // rootViewControllerに入れる
         window?.rootViewController = initialViewController
-        //MainVCを表示
+        // MainVCを表示
         window?.makeKeyAndVisible()
     }
     
