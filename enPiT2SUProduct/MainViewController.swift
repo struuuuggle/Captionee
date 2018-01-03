@@ -369,6 +369,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // AlertAction用ハンドラ
         let handler: MDCActionHandler = { (action) -> Void in
+            self.appDelegate.videos[self.appDelegate.videos.count-1].language = action.title!
             self.languageKey = action.title!
         }
         
@@ -655,7 +656,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
-            subVC.sourceLanguageKey = self.languageKey
         }
     }
     

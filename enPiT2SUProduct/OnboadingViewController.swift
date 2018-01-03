@@ -63,7 +63,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
             let pageText = UILabel()
             pageText.text = pageTexts[i]
             pageText.font = MDCTypography.body1Font()
-            pageText.textColor = UIColor.white
+            pageText.textColor = UIColor.black
             pageText.textAlignment = .center
             pageText.lineBreakMode = .byWordWrapping
             pageText.backgroundColor = UIColor.white // これは後で無くす
