@@ -57,6 +57,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         print("MainViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
+        //let onboarding = OnboadingViewController()
+        //present(onboarding, animated: true, completion: nil)
+        
         // NavigationBarの左側にMenuButtonを設置
         let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
                                      style: .plain,
