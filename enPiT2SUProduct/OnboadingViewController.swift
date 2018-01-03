@@ -23,6 +23,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         // ページごとの背景色
         let pageColors = [MDCPalette.blue.tint500, MDCPalette.blue.tint600, MDCPalette.blue.tint700]
         let pageImages = ["Subtitles", "Translate", "Happy"]
+        let pageTexts = ["Page 1", "Page 2", "Page 3"]
         
         // ScrollViewを作成
         scrollView = UIScrollView(frame: view.bounds)
@@ -37,25 +38,40 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         for i in 0..<pageColors.count {
             // ページフレームの設定
             let pageFrame = view.bounds.offsetBy(dx: CGFloat(i)*view.bounds.width, dy: 0)
+            let page = UIView(frame: pageFrame)
+            page.backgroundColor = pageColors[i]
+            scrollView.addSubview(page)
             
-            let pageImage = UIImageView(frame: pageFrame)
+            // ページ画像の設定
+            let pageImage = UIImageView()
             let image = UIImage(named: pageImages[i])
             pageImage.image = image
             pageImage.tintColor = UIColor.black
-            pageImage.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
-            scrollView.addSubview(pageImage)
+            pageImage.backgroundColor = UIColor.white
+            page.addSubview(pageImage)
             
-            /*
-            // ページラベルの設定
-            let pageLabel = UILabel(frame: pageFrame)
-            pageLabel.text = "Page \(i)"
-            pageLabel.font = MDCTypography.body1Font()
-            pageLabel.textAlignment = .center
-            pageLabel.backgroundColor = pageColors[i]
-            pageLabel.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
-            scrollView.addSubview(pageLabel)
-            pages.add(pageLabel)
-            */
+            // ページ画像の制約を設定
+            pageImage.translatesAutoresizingMaskIntoConstraints = false
+            pageImage.topAnchor.constraint(equalTo: page.topAnchor, constant: 56).isActive = true
+            pageImage.leadingAnchor.constraint(equalTo: page.leadingAnchor, constant: 18).isActive = true
+            pageImage.trailingAnchor.constraint(equalTo: page.trailingAnchor, constant: -18).isActive = true
+            pageImage.heightAnchor.constraint(equalToConstant: page.frame.width-36).isActive = true
+            
+            // ページテキストの設定
+            let pageText = UILabel()
+            pageText.text = pageTexts[i]
+            pageText.font = MDCTypography.body1Font()
+            pageText.textAlignment = .center
+            pageText.backgroundColor = UIColor.white
+            page.addSubview(pageText)
+            //pages.add(pageLabel)
+            
+            // ページテキストの制約を設定
+            pageText.translatesAutoresizingMaskIntoConstraints = false
+            pageText.topAnchor.constraint(equalTo: pageImage.bottomAnchor, constant: 56).isActive = true
+            pageText.bottomAnchor.constraint(equalTo: page.bottomAnchor, constant: -128).isActive = true
+            pageText.centerXAnchor.constraint(equalTo: page.centerXAnchor).isActive = true
+            pageText.widthAnchor.constraint(equalToConstant: 196).isActive = true
         }
         
         // ページ数
