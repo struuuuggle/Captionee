@@ -22,6 +22,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         
         // ページごとの背景色
         let pageColors = [MDCPalette.blue.tint500, MDCPalette.blue.tint600, MDCPalette.blue.tint700]
+        let pageImages = ["Subtitles", "Translate", "Happy"]
         
         // ScrollViewを作成
         scrollView = UIScrollView(frame: view.bounds)
@@ -36,15 +37,25 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         for i in 0..<pageColors.count {
             // ページフレームの設定
             let pageFrame = view.bounds.offsetBy(dx: CGFloat(i)*view.bounds.width, dy: 0)
+            
+            let pageImage = UIImageView(frame: pageFrame)
+            let image = UIImage(named: pageImages[i])
+            pageImage.image = image
+            pageImage.tintColor = UIColor.black
+            pageImage.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
+            scrollView.addSubview(pageImage)
+            
+            /*
             // ページラベルの設定
-            let page = UILabel(frame: pageFrame)
-            page.text = "Page \(i)"
-            page.font = MDCTypography.body1Font()
-            page.textAlignment = .center
-            page.backgroundColor = pageColors[i]
-            page.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
-            scrollView.addSubview(page)
-            pages.add(page)
+            let pageLabel = UILabel(frame: pageFrame)
+            pageLabel.text = "Page \(i)"
+            pageLabel.font = MDCTypography.body1Font()
+            pageLabel.textAlignment = .center
+            pageLabel.backgroundColor = pageColors[i]
+            pageLabel.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin]
+            scrollView.addSubview(pageLabel)
+            pages.add(pageLabel)
+            */
         }
         
         // ページ数
