@@ -21,11 +21,11 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         // ページごとの背景色
-        let pageColors = [MDCPalette.blue.tint500, MDCPalette.blue.tint600, MDCPalette.blue.tint700]
+        let pageColors = [MDCPalette.orange.tint500, MDCPalette.orange.tint600, MDCPalette.orange.tint700]
         // ページごとの画像
-        let pageImages = ["Subtitles", "Translate", "Happy"]
+        let pageImages = ["", "", ""]
         // ページごとのテキスト
-        let pageTexts = ["Page 1", "Page 2", "Page 3"]
+        let pageTexts = ["動画に自動で字幕をつけます", "字幕をお好きな言語に翻訳します", "字幕がなくて見られなかった動画を見てみましょう！"]
         
         // ScrollViewを作成
         scrollView = UIScrollView(frame: view.bounds)
@@ -62,19 +62,20 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
             // ページテキストの設定
             let pageText = UILabel()
             pageText.text = pageTexts[i]
-            pageText.font = MDCTypography.body1Font()
-            pageText.textColor = UIColor.black
+            pageText.font = MDCTypography.subheadFont()
+            pageText.textColor = UIColor.white
             pageText.textAlignment = .center
+            pageText.numberOfLines = 0
             pageText.lineBreakMode = .byWordWrapping
-            pageText.backgroundColor = UIColor.white // これは後で無くす
             page.addSubview(pageText)
             
             // ページテキストの制約を設定
             pageText.translatesAutoresizingMaskIntoConstraints = false
             pageText.topAnchor.constraint(equalTo: pageImage.bottomAnchor, constant: 56).isActive = true
             pageText.bottomAnchor.constraint(equalTo: page.bottomAnchor, constant: -128).isActive = true
+            pageText.leadingAnchor.constraint(equalTo: page.leadingAnchor, constant: 36).isActive = true
+            pageText.trailingAnchor.constraint(equalTo: page.trailingAnchor, constant: -36).isActive = true
             pageText.centerXAnchor.constraint(equalTo: page.centerXAnchor).isActive = true
-            pageText.widthAnchor.constraint(equalToConstant: 196).isActive = true
         }
         
         // ページ数
@@ -91,7 +92,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         getStartedButton.setTitle("GET STARTED", for: .normal)
         getStartedButton.setBackgroundColor(UIColor.white)
         getStartedButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        getStartedButton.setTitleColor(MDCPalette.blue.tint500, for: .normal)
+        getStartedButton.setTitleColor(MDCPalette.orange.tint500, for: .normal)
         getStartedButton.addTarget(self, action: #selector(getStarted), for: .touchUpInside)
         view.addSubview(getStartedButton)
         
