@@ -125,6 +125,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         window?.rootViewController = initialViewController
         // MainVCを表示
         window?.makeKeyAndVisible()
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

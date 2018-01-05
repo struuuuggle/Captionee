@@ -28,9 +28,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var textField: MDCTextField!
     var editCompleteButton: MDCRaisedButton!
     var editCancelButton: MDCRaisedButton!
-    var menuNumber: Int = 0
-    let viewController = SideMenuController()
-    
+    let sideMenuController = SideMenuController()
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -83,7 +81,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         )
         
         // スワイプ認識
-        let directionList:[UISwipeGestureRecognizerDirection] = [.right, .left]
+        let directionList:[UISwipeGestureRecognizerDirection] = [.right]
         for direction in directionList {
             let menuSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.swipeGesture(sender:)))
             menuSwipe.direction = direction
@@ -138,51 +136,39 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         editCancelButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
         editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
-        viewController.view.isHidden = true
+        navigationController?.view.addSubview(sideMenuController.view)
+        sideMenuController.view.frame = CGRect(x: -view.frame.width, y: 0, width: sideMenuController.view.frame.width, height: sideMenuController.view.frame.height)
     }
     
     /* MenuButtonが押されたとき */
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
-        
-        if(menuNumber == 0) {
-            print("SideMenu opened.")
-            viewController.beginAppearanceTransition(true, animated: true)
-            viewController.view.isHidden = false
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            }, completion: {_ in
-                self.viewController.endAppearanceTransition()
+    
+        sideMenuController.beginAppearanceTransition(true, animated: true)
+        sideMenuController.view.frame = sideMenuController.view.frame.offsetBy(dx: -sideMenuController.view.frame.size.width, dy: 0)
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            let bounds = self.sideMenuController.view.bounds
+            self.sideMenuController.view.frame = CGRect(x:0, y:0, width:bounds.size.width, height:bounds.size.height)
+        }, completion: {_ in
+            self.sideMenuController.endAppearanceTransition()
         })
 
-            view.addSubview(viewController.view)
-            menuNumber = 1
-            return
-        } else {
-            print("SideMenu closed.")
-            viewController.beginAppearanceTransition(false, animated: true)
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            }, completion: {_ in
-                self.viewController.view.isHidden = true
-                self.viewController.endAppearanceTransition()
-            })
-            viewController.view.isHidden = true
-
-            menuNumber = 0
-            return
-        }
     }
     
     /* 以下は UITextFieldDelegate のメソッド */
     @objc func swipeGesture(sender: UISwipeGestureRecognizer){
         print("スワイプ")
-        
-        //スワイプした方向をラベルに表示する。
-        switch(sender.direction){
-        case UISwipeGestureRecognizerDirection.right:
-            print("右")
-        default:
-            print("左")
-        }
+
+        print("右")
+        sideMenuController.beginAppearanceTransition(true, animated: true)
+        //sideMenuController.view.isHidden = false
+        sideMenuController.view.frame = sideMenuController.view.frame.offsetBy(dx: -sideMenuController.view.frame.size.width, dy: 0)
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            let bounds = self.sideMenuController.view.bounds
+            self.sideMenuController.view.frame = CGRect(x:0, y:0, width:bounds.size.width, height:bounds.size.height)
+        }, completion: {_ in
+            self.sideMenuController.endAppearanceTransition()
+        })
     }
     
     /* 編集が完了されたとき */
