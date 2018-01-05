@@ -57,9 +57,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         print("MainViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
-        //let onboarding = OnboadingViewController()
-        //present(onboarding, animated: true, completion: nil)
-        
         // NavigationBarの左側にMenuButtonを設置
         let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
                                      style: .plain,
@@ -271,18 +268,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     // Documentに動画を保存
                     asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")})
                     
-                    /*
                     // MP4をサーバにアップロード
-                    self.uploadFileToServer(self.videoMp4URL!)
+                    self.uploadFileToServer(URL(fileURLWithPath: path))
                     
                     // WAVをサーバからダウンロード
-                    self.audioWavURL = self.downloadFileFromServer(name)
-                    if let audioWavURL = self.audioWavURL {
+                    let audioWavURL = self.downloadFileFromServer(name)
+                    if let audioWavURL = audioWavURL {
                         print("---> WAV URL")
                         print(audioWavURL)
                         print("<--- WAV URL")
                     }
-                    */
                     
                     // メインスレッドで実行
                     DispatchQueue.main.async {
