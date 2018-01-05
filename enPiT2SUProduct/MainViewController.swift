@@ -268,18 +268,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     // Documentに動画を保存
                     asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")})
                     
-                    /*
                     // MP4をサーバにアップロード
-                    self.uploadFileToServer(self.videoMp4URL!)
+                    self.uploadFileToServer(URL(fileURLWithPath: path))
                     
                     // WAVをサーバからダウンロード
-                    self.audioWavURL = self.downloadFileFromServer(name)
-                    if let audioWavURL = self.audioWavURL {
+                    let audioWavURL = self.downloadFileFromServer(name)
+                    if let audioWavURL = audioWavURL {
                         print("---> WAV URL")
                         print(audioWavURL)
                         print("<--- WAV URL")
                     }
-                    */
                     
                     // メインスレッドで実行
                     DispatchQueue.main.async {
@@ -366,6 +364,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // AlertAction用ハンドラ
         let handler: MDCActionHandler = { (action) -> Void in
+            self.appDelegate.videos[self.appDelegate.videos.count-1].language = action.title!
             self.languageKey = action.title!
         }
         
@@ -652,7 +651,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             // 値の受け渡し
             subVC.receivedVideoInfo = selectedVideoInfo
-            subVC.sourceLanguageKey = self.languageKey
         }
     }
     

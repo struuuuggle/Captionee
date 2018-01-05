@@ -9,7 +9,6 @@ target 'enPiT2SUProduct' do
   pod 'KRProgressHUD'
   pod 'DZNEmptyDataSet'
   pod 'MaterialComponents'
-  pod 'Presentation'
   pod 'SwiftReorder'
   pod 'Alamofire'
   pod 'DKImagePickerController'

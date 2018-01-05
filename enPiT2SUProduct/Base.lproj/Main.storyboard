@@ -119,7 +119,7 @@
                                     <outlet property="delegate" destination="Z6o-d9-NA3" id="9LF-z6-gNS"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
                                 <rect key="frame" x="303" y="595" width="56" height="56"/>
                                 <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
                                 <constraints>

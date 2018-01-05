@@ -40,7 +40,7 @@ class SubViewController: UIViewController, ItemDelegate {
     }
     
     // 翻訳元と翻訳先の言語
-    var sourceLanguageKey: String = ""
+    var sourceLanguageKey: String!
     var targetLanguageKey = "English" {
         didSet {
             print("targetLanguage is \(targetLanguageKey).")
@@ -48,6 +48,12 @@ class SubViewController: UIViewController, ItemDelegate {
             // 字幕を翻訳
             if self.sourceLanguageKey != self.targetLanguageKey {
                 translation()
+            } else {
+                if let captions = receivedVideoInfo.caption {
+                    for caption in captions.sentences {
+                        caption.foreign = caption.original
+                    }
+                }
             }
         }
     }
@@ -63,7 +69,7 @@ class SubViewController: UIViewController, ItemDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
+        print("SubViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // DocumentDirectoryのPath
         let documentPath: String = FileManager.documentDir
@@ -204,6 +210,7 @@ class SubViewController: UIViewController, ItemDelegate {
                                          action: #selector(itemButtonTapped))
         navigationItem.rightBarButtonItem = itemButton
         
+        sourceLanguageKey = receivedVideoInfo.language
         print("sourceLanguage is \(sourceLanguageKey)")
         print("targetLanguage is \(targetLanguageKey)")
     }
@@ -283,6 +290,33 @@ class SubViewController: UIViewController, ItemDelegate {
         selectLanguage()
     }
     
+    /* 翻訳言語の選択用ダイアログを表示する */
+    func selectLanguage() {
+        // AlertControllerを作成
+        let alert = MDCAlertController(title: "言語選択", message: "翻訳する言語を選択してください")
+        
+        // AlertAction用ハンドラ
+        let handler: MDCActionHandler = { (action) -> Void in
+            self.targetLanguageKey = action.title!
+        }
+        
+        // AlertActionを作成
+        let Japanese = MDCAlertAction(title: "日本語", handler: handler)
+        let Chinese = MDCAlertAction(title: "中文", handler: handler)
+        let Korean = MDCAlertAction(title: "한국어", handler: handler)
+        let English = MDCAlertAction(title: "English", handler: handler)
+        
+        // 選択肢をAlertに追加
+        // ダイアログ上では、先に追加したAlertActionほど下に表示される
+        alert.addAction(English)
+        alert.addAction(Korean)
+        alert.addAction(Chinese)
+        alert.addAction(Japanese)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+    }
+    
     /* 字幕を翻訳する */
     func translation() {
         print("翻訳")
@@ -290,10 +324,10 @@ class SubViewController: UIViewController, ItemDelegate {
         // サポートされている翻訳言語の辞書
         let languages = [
             "日本語": "ja",
-            "English": "en",
-            "한국어": "ko",
             "中文": "zh-CN",
-            ]
+            "한국어": "ko",
+            "English": "en",
+        ]
         
         let queue = DispatchQueue.global(qos: .default)
         let translator = Translation(languages[sourceLanguageKey]!, languages[targetLanguageKey]!)
@@ -377,11 +411,6 @@ class SubViewController: UIViewController, ItemDelegate {
         present(tutorial3, animated: true, completion: nil)
     }
     
-    /* Stepperの値が変わったとき */
-    @objc func stepperValueChanged(sender: UIStepper) {
-        caption.font = MDCTypography.body1Font().withSize(CGFloat(sender.value))
-    }
-    
     /* 動画を再生する */
     func play() {
         print("再生")
@@ -400,6 +429,11 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // ボタンの画像をPlayに変える
         playButton.setImage(UIImage(named: "Play"), for: .normal)
+    }
+    
+    /* Stepperの値が変わったとき */
+    @objc func stepperValueChanged(sender: UIStepper) {
+        caption.font = MDCTypography.body1Font().withSize(CGFloat(sender.value))
     }
     
     /* スライダーの値が変わったとき */
@@ -462,46 +496,19 @@ class SubViewController: UIViewController, ItemDelegate {
         }
     }
     
-    /* 翻訳言語の選択用ダイアログを表示する */
-    func selectLanguage() {
-        // AlertControllerを作成
-        let alert = MDCAlertController(title: "言語選択", message: "翻訳する言語を選択してください")
-        
-        // AlertAction用ハンドラ
-        let handler: MDCActionHandler = { (action) -> Void in
-            self.targetLanguageKey = action.title!
-        }
-        
-        // AlertActionを作成
-        let Japanese = MDCAlertAction(title: "日本語", handler: handler)
-        let Korean = MDCAlertAction(title: "한국어", handler: handler)
-        let Chinese = MDCAlertAction(title: "中文", handler: handler)
-        let English = MDCAlertAction(title: "English", handler: handler)
-
-        // 選択肢をAlertに追加
-        // ダイアログ上では、先に追加したAlertActionほど下に表示される
-        alert.addAction(Japanese)
-        alert.addAction(Korean)
-        alert.addAction(Chinese)
-        alert.addAction(English)
-
-        // Alertを表示
-        present(alert, animated: true, completion: nil)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("ViewController/viewWillAppear/画面が表示される直前")
+        print("SubViewController/viewWillAppear/画面が表示される直前")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("ViewController/viewDidAppear/画面が表示された直後")
+        print("SubViewController/viewDidAppear/画面が表示された直後")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("ViewController/viewWillDisappear/別の画面に遷移する直前")
+        print("SubViewController/viewWillDisappear/別の画面に遷移する直前")
         
         // 動画の再生を止める
         player.pause()
@@ -512,11 +519,11 @@ class SubViewController: UIViewController, ItemDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("ViewController/viewDidDisappear/別の画面に遷移した直後")
+        print("SubViewController/viewDidDisappear/別の画面に遷移した直後")
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        print("ViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
+        print("SubViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
 }

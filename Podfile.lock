@@ -351,10 +351,6 @@ PODS:
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
   - MotionTransitioning (5.0.0)
-  - Pages (2.0.2)
-  - Presentation (4.0.0):
-    - Cartography (~> 2.0)
-    - Pages (~> 2.0)
   - SwiftReorder (3.2.0)
 
 DEPENDENCIES:
@@ -363,7 +359,6 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - KRProgressHUD
   - MaterialComponents
-  - Presentation
   - SwiftReorder
 
 SPEC CHECKSUMS:
@@ -379,8 +374,6 @@ SPEC CHECKSUMS:
   MotionAnimator: 8af077dac084b7880a4d2ddae31a26171087bd87
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
-  Pages: 5564ac6035c48fef7a837049314f57507d263b11
-  Presentation: 7466d794a88359a3b193835d12c7b053407f83d5
   SwiftReorder: 27d737099efd6125339d5e8cb090e46c67341143
 
 PODFILE CHECKSUM: 3ddb5d5e382b77b8fd96d22137e5926cce0a03d3
