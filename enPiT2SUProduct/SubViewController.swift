@@ -301,17 +301,17 @@ class SubViewController: UIViewController, ItemDelegate {
         }
         
         // AlertActionを作成
-        let Japanese = MDCAlertAction(title: "日本語", handler: handler)
-        let Chinese = MDCAlertAction(title: "中文", handler: handler)
-        let Korean = MDCAlertAction(title: "한국어", handler: handler)
-        let English = MDCAlertAction(title: "English", handler: handler)
+        let english = MDCAlertAction(title: "English", handler: handler)
+        let korean = MDCAlertAction(title: "한국어", handler: handler)
+        let chinese = MDCAlertAction(title: "中文", handler: handler)
+        let japanese = MDCAlertAction(title: "日本語", handler: handler)
         
         // 選択肢をAlertに追加
         // ダイアログ上では、先に追加したAlertActionほど下に表示される
-        alert.addAction(English)
-        alert.addAction(Korean)
-        alert.addAction(Chinese)
-        alert.addAction(Japanese)
+        alert.addAction(english)
+        alert.addAction(korean)
+        alert.addAction(chinese)
+        alert.addAction(japanese)
         
         // Alertを表示
         present(alert, animated: true, completion: nil)

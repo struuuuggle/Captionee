@@ -18,8 +18,7 @@ import Alamofire
 import DKImagePickerController
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,
-    DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     var window: UIWindow?
     var speechToText: SpeechToText!
@@ -29,6 +28,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var editCompleteButton: MDCRaisedButton!
     var editCancelButton: MDCRaisedButton!
     let sideMenuController = SideMenuController()
+    
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -69,10 +69,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.emptyDataSetSource = self;
         tableView.emptyDataSetDelegate = self;
         
+        tableView.reorder.delegate = self
+        
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
         
-        tableView.reloadData()
+        //tableView.reloadData()
         
         // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
@@ -87,8 +89,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             menuSwipe.direction = direction
             view.addGestureRecognizer(menuSwipe)
         }
-            
-        tableView.reorder.delegate = self
         
         // TextFieldの設定
         textField = MDCTextField()
@@ -356,15 +356,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // AlertActionを作成
         let chinese = MDCAlertAction(title: "中文", handler: handler)
-        let ukEnglish = MDCAlertAction(title: "UK English", handler: handler)
-        let usEnglish = MDCAlertAction(title: "English", handler: handler)
+        let english = MDCAlertAction(title: "English", handler: handler)
         let japanese = MDCAlertAction(title: "日本語", handler: handler)
         
         // 選択肢をAlertに追加
         // ダイアログ上では、以下のコードで先に追加したAlertActionほど下に表示される
         alert.addAction(chinese)
-        alert.addAction(ukEnglish)
-        alert.addAction(usEnglish)
+        alert.addAction(english)
         alert.addAction(japanese)
         
         // Alertを表示
