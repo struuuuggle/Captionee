@@ -262,6 +262,8 @@ class SubViewController: UIViewController, ItemDelegate {
     @objc func editCompleteButtonTapped() {
         print("編集完了")
         
+        view.endEditing(true)
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -273,6 +275,8 @@ class SubViewController: UIViewController, ItemDelegate {
     /* 編集がキャンセルされたとき */
     @objc func editCancelButtonTapped() {
         print("編集キャンセル")
+        
+        view.endEditing(true)
         
         textField.isHidden = true
         editCompleteButton.isHidden = true

@@ -143,7 +143,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* MenuButtonが押されたとき */
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
-    
+        
         sideMenuController.beginAppearanceTransition(true, animated: true)
         sideMenuController.view.frame = sideMenuController.view.frame.offsetBy(dx: -sideMenuController.view.frame.size.width, dy: 0)
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
@@ -152,7 +152,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }, completion: {_ in
             self.sideMenuController.endAppearanceTransition()
         })
-
     }
     
     /* 以下は UITextFieldDelegate のメソッド */
@@ -173,6 +172,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* 編集が完了されたとき */
     @objc func editCompleteButtonTapped() {
+        view.endEditing(true)
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -187,6 +188,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     /* 編集がキャンセルされたとき */
     @objc func editCancelButtonTapped() {
+        view.endEditing(true)
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -513,7 +516,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // MP4とM4aのファイルを削除
         do {
             try FileManager.default.removeItem(atPath: filePath + ".mp4")
-            try FileManager.default.removeItem(atPath: filePath + ".m4a")
+            try FileManager.default.removeItem(atPath: filePath + ".wav")
         } catch {
             print("\(fileName)は既に削除済み")
         }
@@ -524,8 +527,25 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // それからテーブルの更新
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
+        
+        print("Snackbar Message")
+        
+        let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました")
+        
+        let action = MDCSnackbarMessageAction()
+        let actionHandler = {() in
+        let answerMessage = MDCSnackbarMessage()
+            answerMessage.text = "Fascinating"
+            MDCSnackbarManager.show(answerMessage)
+        }
+        action.handler = actionHandler
+        action.title = "元に戻す"
+         
+        message.action = action
+        message.duration = 5.0
+        
+        MDCSnackbarManager.show(message)
     }
-    
     
     /* 移動可能なCellを設定 */
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
