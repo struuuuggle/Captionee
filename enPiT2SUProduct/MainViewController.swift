@@ -10,7 +10,6 @@ import UIKit
 import AVKit
 import Photos
 import DZNEmptyDataSet
-import KRProgressHUD
 import MaterialComponents
 import SpeechToTextV1
 import SwiftReorder
@@ -36,12 +35,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     
     var languageKey = "日本語" {
         willSet {
-            // KRProgressHUDの開始
-            KRProgressHUD.show(withMessage: "Uploading...")
+            print("Language is \(newValue).")
         }
         didSet {
-            print("Language is \(languageKey).")
-            
             // 字幕を生成
             generateCaption()
         }
@@ -441,8 +437,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 音声認識に失敗したときの処理
         let failure = { (error: Error) in
             print(error)
-            
-            self.failure()
         }
         
         // 音声認識に成功したときの処理
@@ -456,8 +450,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("<--- Caption")
             
             self.appDelegate.videos[self.appDelegate.videos.count-1].caption = captions
-            
-            self.success()
         }
         
         // 音声認識の言語モデルの辞書
@@ -472,19 +464,14 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                customizationID: nil, learningOptOut: true, failure: failure, success: success)
     }
     
-    
     /* 動画のアップロードに成功したとき */
     func success() {
-        KRProgressHUD.dismiss() {
-            KRProgressHUD.showSuccess(withMessage: "Successfully uploaded!")
-        }
+        print("Speech recognition success!")
     }
     
     /* 動画のアップロードに失敗したとき */
     func failure() {
-        KRProgressHUD.dismiss() {
-            KRProgressHUD.showError(withMessage: "Uploading failed.")
-        }
+        print("Speech recognition failure...")
     }
     
     /* 編集モードの変更 */
