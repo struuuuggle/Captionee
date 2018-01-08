@@ -50,7 +50,7 @@ class SettingViewController: FormViewController {
         
         // Formを設定
         form
-            +++ Section(footer: "聴覚障害者モードをオンにすると動画の再生時に音声が出なくなります。")
+            +++ Section(header: "", footer: "聴覚障害者モードをオンにすると動画の再生時に音声が出なくなります。")
             // 表示言語
             <<< PushRow<String>() {
                 $0.title = "表示言語"
