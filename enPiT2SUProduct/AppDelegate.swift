@@ -14,9 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var themeColor = "Orange"
-    let color = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
+    let colors = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
                  "Yellow": MDCPalette.yellow.tint500, "Green": MDCPalette.green.tint500,
                  "Blue": MDCPalette.blue.tint500]
+    var language = "日本語"
+    let languages = ["日本語", "中文", "한국어", "English"]
     var videos = [VideoInfo]()
     let userDefault = UserDefaults.standard
     
@@ -25,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // NavigationBarの設定
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barTintColor = color[themeColor]
+        UINavigationBar.appearance().barTintColor = colors[themeColor]
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: MDCTypography.titleFont()

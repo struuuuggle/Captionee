@@ -11,4 +11,5 @@ target 'enPiT2SUProduct' do
   pod 'SwiftReorder'
   pod 'Alamofire'
   pod 'DKImagePickerController'
+  pod 'Eureka'
 end

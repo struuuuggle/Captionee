@@ -53,9 +53,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // NavigationBarの左側にMenuButtonを設置
         let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(menuButtonTapped))
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
         // Viewの背景色を設定
@@ -154,7 +154,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func swipeGesture(sender: UISwipeGestureRecognizer){
         print("スワイプ")
 
-        print("右")
         sideMenuController.beginAppearanceTransition(true, animated: true)
         //sideMenuController.view.isHidden = false
         sideMenuController.view.frame = sideMenuController.view.frame.offsetBy(dx: -sideMenuController.view.frame.size.width, dy: 0)

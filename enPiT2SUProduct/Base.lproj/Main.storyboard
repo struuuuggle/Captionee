@@ -15,42 +15,6 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Setting-->
-        <scene sceneID="FXX-or-jCW">
-            <objects>
-                <viewController title="Setting" id="R3h-QI-D0b" customClass="SettingViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nlt-nt-ZyM"/>
-                        <viewControllerLayoutGuide type="bottom" id="IWh-kH-ILL"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ch9-0J-ErS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xW3-1d-H2a">
-                                <rect key="frame" x="137.5" y="318.5" width="100" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="ufa-va-FXx"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="xW3-1d-H2a" firstAttribute="centerY" secondItem="Ch9-0J-ErS" secondAttribute="centerY" id="OeS-Bf-Etn"/>
-                            <constraint firstItem="xW3-1d-H2a" firstAttribute="centerX" secondItem="Ch9-0J-ErS" secondAttribute="centerX" id="XMu-Ab-Ju9"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="textField" destination="xW3-1d-H2a" id="RWg-x0-gPJ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="928.79999999999995" y="-690.40479760119945"/>
-        </scene>
         <!--Captionee-->
         <scene sceneID="7ht-LL-fkl">
             <objects>

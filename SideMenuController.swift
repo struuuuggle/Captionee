@@ -2,7 +2,7 @@
 //  SideMenuController.swift
 //  enPiT2SUProduct
 //
-//  Created by 佐々木友哉 on 2017/12/22.
+//  Created by team-E on 2017/12/22.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
@@ -21,7 +21,6 @@ class SideMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         let width = view.frame.width * 2 / 3
         let height = view.frame.height / 4
         
@@ -93,40 +92,43 @@ class SideMenuController: UIViewController {
         view.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         view.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
     }
-    
-    @objc func tapGesture(_ sender: UITapGestureRecognizer){
-        print("Tapped.")
-        
-        //shadowView.isHidden = true
-        view.frame.size = CGSize(width: UIScreen.main.bounds.width*2/3, height: UIScreen.main.bounds.height)
-        beginAppearanceTransition(false, animated: true)
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            self.view.frame = self.view.frame.offsetBy(dx: -UIScreen.main.bounds.size.width, dy: 0)
-        }, completion: {_ in
-            self.endAppearanceTransition()
-            self.view.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            //self.shadowView.isHidden = false
-        })
-    }
 
     /* 設定ボタンが押されたとき */
     @objc func editButtonTapped() {
         print("設定")
+        
+        close()
+        
+        let settingViewController = SettingViewController()
+        let navigationController = UINavigationController(rootViewController: settingViewController)
+        present(navigationController, animated: true, completion: nil)
     }
     
     /* チュートリアルボタンが押されたとき */
     @objc func translateButtonTapped() {
         print("チュートリアル")
+        
+        close()
     }
     
     /* フィードバックボタンが押されたとき */
     @objc func tutorialButtonTapped() {
         print("フィードバック")
+        
+        close()
     }
     
     /* ヘルプボタンが押されたとき */
     @objc func cancelButtonTapped() {
         print("ヘルプ")
+        
+        close()
+    }
+    
+    @objc func tapGesture(_ sender: UITapGestureRecognizer){
+        print("ShadowView Tapped.")
+        
+        close()
     }
     
     @objc func panGesture(sender: UIPanGestureRecognizer) {
@@ -152,17 +154,7 @@ class SideMenuController: UIViewController {
                 if(view.frame.origin.x + view.frame.width/2 < UIScreen.main.bounds.width/3) {
                     print("閉じる")
                     
-                    //shadowView.isHidden = true
-                    view.frame.size = CGSize(width: UIScreen.main.bounds.width*2/3, height: UIScreen.main.bounds.height)
-                    beginAppearanceTransition(false, animated: true)
-                    UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                        self.view.frame = self.view.frame.offsetBy(dx: -UIScreen.main.bounds.size.width, dy: 0)
-                    }, completion: {_ in
-                        self.endAppearanceTransition()
-                        self.view.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                        //self.shadowView.isHidden = false
-                    })
-                    
+                    close()
                 } else {
                     print("戻す")
                     
@@ -201,7 +193,6 @@ class SideMenuController: UIViewController {
                 sideView.frame.origin.x += move.x
                 let closeValue = sideView.frame.origin.x / (UIScreen.main.bounds.width * 2 / 3)
                 view.backgroundColor = UIColor(white: 0.2, alpha: 0.3*closeValue)
-                print("aa")
                 
                 //移動量をリセットする。
                 sender.setTranslation(CGPoint.zero, in: view)
@@ -212,8 +203,20 @@ class SideMenuController: UIViewController {
             break
         }
     }
+    
+    func close() {
+        //shadowView.isHidden = true
+        view.frame.size = CGSize(width: UIScreen.main.bounds.width*2/3, height: UIScreen.main.bounds.height)
+        beginAppearanceTransition(false, animated: true)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.view.frame = self.view.frame.offsetBy(dx: -UIScreen.main.bounds.size.width, dy: 0)
+        }, completion: {_ in
+            self.endAppearanceTransition()
+            self.view.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            //self.shadowView.isHidden = false
+        })
+    }
 
-}
 
     /*
     // MARK: - Navigation
@@ -224,4 +227,5 @@ class SideMenuController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
