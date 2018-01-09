@@ -507,6 +507,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* フィードバックボタンが押されたとき */
     func feedbackButtonTapped() {
         print("フィードバック")
+        
+        // AlertControllerを作成
+        let alert = MDCAlertController(title: "どんなエラーが起きましたか？",
+                                       message: "今起きた問題について簡単に説明してください。後ほど詳しいことをお聞きします。")
+        
+        // AlertActionを作成
+        let send = MDCAlertAction(title: "SEND", handler: { (action) -> Void in
+            print("フィードバックを送信")
+        })
+        let cancel = MDCAlertAction(title: "CANCEL", handler: nil)
+        
+        // 選択肢をAlertに追加
+        alert.addAction(send)
+        alert.addAction(cancel)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
     }
     
     /* ヘルプボタンが押されたとき */
