@@ -81,13 +81,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             password: Credentials.SpeechToTextPassword
         )
         
-        // スワイプ認識
-        let directionList:[UISwipeGestureRecognizerDirection] = [.right]
-        for direction in directionList {
-            let menuSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MainViewController.swipeGesture(sender:)))
-            menuSwipe.direction = direction
-            view.addGestureRecognizer(menuSwipe)
-        }
+        // エッジのドラッグ認識
+        let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(edgePanGesture))
+        edgePanGestureRecognizer.edges = .left
+        view.addGestureRecognizer(edgePanGestureRecognizer)
         
         // TextFieldの設定
         textField = MDCTextField()
@@ -136,36 +133,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         navigationController?.view.addSubview(sideMenuController.view)
-        sideMenuController.view.frame = CGRect(x: -view.frame.width, y: 0, width: sideMenuController.view.frame.width, height: sideMenuController.view.frame.height)
     }
     
     /* MenuButtonが押されたとき */
     @objc func menuButtonTapped(_ sender: UIBarButtonItem) {
         print("Menu button tapped.")
         
-        sideMenuController.beginAppearanceTransition(true, animated: true)
-        sideMenuController.view.frame = sideMenuController.view.frame.offsetBy(dx: -sideMenuController.view.frame.size.width, dy: 0)
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let bounds = self.sideMenuController.view.bounds
-            self.sideMenuController.view.frame = CGRect(x:0, y:0, width:bounds.size.width, height:bounds.size.height)
-        }, completion: {_ in
-            self.sideMenuController.endAppearanceTransition()
-        })
+        sideMenuController.open()
     }
     
-    /* 以下は UITextFieldDelegate のメソッド */
-    @objc func swipeGesture(sender: UISwipeGestureRecognizer){
-        print("スワイプ")
-
-        sideMenuController.beginAppearanceTransition(true, animated: true)
-        //sideMenuController.view.isHidden = false
-        sideMenuController.view.frame = sideMenuController.view.frame.offsetBy(dx: -sideMenuController.view.frame.size.width, dy: 0)
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let bounds = self.sideMenuController.view.bounds
-            self.sideMenuController.view.frame = CGRect(x:0, y:0, width:bounds.size.width, height:bounds.size.height)
-        }, completion: {_ in
-            self.sideMenuController.endAppearanceTransition()
-        })
+    /* 画面の左端がドラッグされたとき */
+    @objc func edgePanGesture(sender: UIScreenEdgePanGestureRecognizer){
+        sideMenuController.dragging(sender.state, sender.translation(in: view))
+        
+        //移動量をリセットする。
+        sender.setTranslation(CGPoint.zero, in: view)
     }
     
     /* 編集が完了されたとき */

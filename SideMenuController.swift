@@ -15,41 +15,48 @@ class SideMenuController: UIViewController {
     weak var delegate: SideMenuDelegate? = nil
     
     var sideView: UIView!
-    //var shadowView: UIView!
+    var shadowView: UIView!
     var settingsButton: MDCFlatButton!
     var tutorialButton: MDCFlatButton!
     var feedbackButton: MDCFlatButton!
     var helpButton: MDCFlatButton!
     
+    // 画面の横のサイズ
+    let screenWidth = UIScreen.main.bounds.width
+    // 画面の縦のサイズ
+    let screenHeight = UIScreen.main.bounds.height
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let width = view.frame.width * 2 / 3
-        let height = view.frame.height / 4
         
-        sideView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: UIScreen.main.bounds.height))
+        // SideViewの横のサイズ
+        let width = screenWidth * 2 / 3
+        // HeaderViewの縦のサイズ
+        let height = screenHeight / 4
+        
+        view.frame = CGRect(x: -screenWidth, y:0, width: screenWidth, height: screenHeight)
+        view.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
+        
+        shadowView = UIView(frame: CGRect(x: width, y: 0, width: screenWidth/3, height: screenHeight))
+        shadowView.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
+        view.addSubview(shadowView)
+        
+        sideView = UIView(frame: CGRect(x: -width, y: 0, width: width, height: screenHeight))
         view.addSubview(sideView)
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         headerView.backgroundColor = UIColor.orange
         sideView.addSubview(headerView)
         
-        let buttonView = UIView(frame: CGRect(x: 0, y: height, width: width, height: UIScreen.main.bounds.height-height))
+        let buttonView = UIView(frame: CGRect(x: 0, y: height, width: width, height: screenHeight-height))
         buttonView.backgroundColor = UIColor.white
         sideView.addSubview(buttonView)
         
         let singleTapped = UITapGestureRecognizer(target: self, action: #selector(tapGesture))
-        view.addGestureRecognizer(singleTapped)
+        shadowView.addGestureRecognizer(singleTapped)
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGesture))
         view.addGestureRecognizer(panGestureRecognizer)
-        
-        /*
-        shadowView = UIView(frame: CGRect(x: headerView.frame.width, y: 0, width: UIScreen.main.bounds.width-width, height: UIScreen.main.bounds.height))
-        shadowView.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
-        shadowView.addGestureRecognizer(singleTapped)
-        view.addSubview(shadowView)
-        */
         
         // Itemの高さ
         let itemHeight: CGFloat = 48
@@ -60,40 +67,35 @@ class SideMenuController: UIViewController {
         settingsButton.titleLabel?.font = MDCTypography.buttonFont()
         settingsButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
         settingsButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(settingsButton)
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+        buttonView.addSubview(settingsButton)
         
         // チュートリアルボタンの設定
-        tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: view.frame.width*2/3, height: itemHeight))
+        tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: width, height: itemHeight))
         tutorialButton.setTitle("チュートリアル", for: .normal)
         tutorialButton.titleLabel?.font = MDCTypography.buttonFont()
         tutorialButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
         tutorialButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(tutorialButton)
         tutorialButton.addTarget(self, action: #selector(tutorialButtonTapped), for: .touchUpInside)
+        buttonView.addSubview(tutorialButton)
         
         // フィードバックボタンの設定
-        feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: view.frame.width*2/3, height: itemHeight))
+        feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: width, height: itemHeight))
         feedbackButton.setTitle("フィードバックを送信", for: .normal)
         feedbackButton.titleLabel?.font = MDCTypography.buttonFont()
         feedbackButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
         feedbackButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(feedbackButton)
         feedbackButton.addTarget(self, action: #selector(feedbackButtonTapped), for: .touchUpInside)
+        buttonView.addSubview(feedbackButton)
         
         // ヘルプの設定
-        helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: view.frame.width * 2/3, height: itemHeight))
+        helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: width, height: itemHeight))
         helpButton.setTitle("ヘルプ", for: .normal)
         helpButton.titleLabel?.font = MDCTypography.buttonFont()
         helpButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
         helpButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(helpButton)
         helpButton.addTarget(self, action: #selector(helpButtonTapped), for: .touchUpInside)
-        
-        
-        // Viewの大きさを設定
-        view.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        view.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
+        buttonView.addSubview(helpButton)
     }
 
     /* 設定ボタンが押されたとき */
@@ -124,96 +126,72 @@ class SideMenuController: UIViewController {
         delegate?.helpButtonTapped()
     }
     
+    /* SideMenuの外がタップされたとき */
     @objc func tapGesture(_ sender: UITapGestureRecognizer){
         print("ShadowView Tapped.")
         
         close()
     }
     
+    /* SideMenuがドラッグされたとき */
     @objc func panGesture(sender: UIPanGestureRecognizer) {
-        // 指が離れた時（sender.state = .ended）だけ処理をする
-        switch sender.state {
-            
-            case .ended:
-                /*
-            // タップ開始地点からの移動量を取得
-            let position = sender.translation(in: view)
-            tapEndPosX = position.x     // x方向の移動量
-            // 上下左右のフリック方向を判別する
-            // xがプラスの場合（右方向）とマイナスの場合（左方向）で場合分け
-            if tapEndPosX > 0 {
-                // 右方向へのフリック
-                print("右フリック")
+        dragging(sender.state, sender.translation(in: view))
+        
+        //移動量をリセットする。
+        sender.setTranslation(CGPoint.zero, in: view)
+    }
+    
+    /* SideMenuを開く */
+    func open() {
+        print("開く")
+        
+        view.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
+        view.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
+        beginAppearanceTransition(true, animated: true)
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
+            self.sideView.frame = CGRect(x: 0, y: 0, width: self.sideView.frame.width, height: self.screenHeight)
+        }, completion: { _ in
+            self.endAppearanceTransition()
+        })
+    }
+    
+    /* SideMenuを閉じる */
+    func close() {
+        print("閉じる")
+        
+        view.backgroundColor = UIColor(white: 0.2, alpha: 0.0)
+        beginAppearanceTransition(false, animated: true)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.sideView.frame = CGRect(x: -self.sideView.frame.width, y: 0, width: self.sideView.frame.width, height: self.screenHeight)
+        }, completion: {_ in
+            self.endAppearanceTransition()
+            self.view.frame = CGRect(x: -self.screenWidth, y: 0, width: self.screenWidth, height: self.screenHeight)
+        })
+    }
+    
+    /* SideMenuをドラッグ中 */
+    func dragging(_ state: UIGestureRecognizerState, _ move: CGPoint) {
+        switch state {
+        case .ended:
+            if sideView.frame.origin.x + sideView.frame.width > screenWidth / 3 {
+                open()
             } else {
-                // 左方向
-                print("左フリック")
+                close()
             }
-            */
-                
-                if(view.frame.origin.x + view.frame.width/2 < UIScreen.main.bounds.width/3) {
-                    print("閉じる")
-                    
-                    close()
-                } else {
-                    print("戻す")
-                    
-                    /*ドラッグの距離が画面幅の1/2以下の場合はそのままメニューを右に戻す。
-                    UIView.animate(withDuration: 0.8, animations: {
-                        self.view.frame = CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                    }, completion:nil)
- */
-                    beginAppearanceTransition(true, animated: true)
-                    view.frame = view.frame.offsetBy(dx: -self.view.frame.size.width, dy: 0)
-                    UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                        let bounds = self.view.bounds
-                        self.view.frame = CGRect(x:0, y:0, width:bounds.size.width, height:bounds.size.height)
-                    }, completion: {_ in
-                        self.endAppearanceTransition()
-                    })
-                    
-            }
-                
-            
-            
         case .changed:
             print("ドラッグ中")
             
-            //移動量を取得する。
-            let move: CGPoint = sender.translation(in: view)
-            
-            //画面の端からの移動量
-            view.frame.origin.x += move.x
-            
-            //移動量をリセットする。
-            sender.setTranslation(CGPoint.zero, in: view)
-            
+            view.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
             if sideView.frame.origin.x + move.x <= 0 {
                 //画面の端からの移動量
                 sideView.frame.origin.x += move.x
-                let closeValue = sideView.frame.origin.x / (UIScreen.main.bounds.width * 2 / 3)
-                view.backgroundColor = UIColor(white: 0.2, alpha: 0.3*closeValue)
                 
-                //移動量をリセットする。
-                sender.setTranslation(CGPoint.zero, in: view)
+                let closeValue = (sideView.frame.origin.x + sideView.frame.width) / (sideView.frame.width)
+                view.backgroundColor = UIColor(white: 0.2, alpha: min(0.3, 0.3*closeValue))
             }
-            
-           
         default:
             break
         }
-    }
-    
-    func close() {
-        //shadowView.isHidden = true
-        view.frame.size = CGSize(width: UIScreen.main.bounds.width*2/3, height: UIScreen.main.bounds.height)
-        beginAppearanceTransition(false, animated: true)
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            self.view.frame = self.view.frame.offsetBy(dx: -UIScreen.main.bounds.size.width, dy: 0)
-        }, completion: {_ in
-            self.endAppearanceTransition()
-            self.view.frame.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            //self.shadowView.isHidden = false
-        })
     }
 
 
