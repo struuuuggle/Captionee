@@ -8,6 +8,7 @@
 
 import UIKit
 import MaterialComponents
+import SafariServices
 
 class SideMenuController: UIViewController {
     
@@ -123,6 +124,14 @@ class SideMenuController: UIViewController {
         print("ヘルプ")
         
         close()
+        
+        let url = URL(string: "https://struuuuggle.github.io/Captionee/")
+        if let url = url {
+            print("Open safari success!")
+            
+            let safariViewController = SFSafariViewController(url: url)
+            view.window?.rootViewController?.present(safariViewController, animated: true, completion: nil)
+        }
     }
     
     @objc func tapGesture(_ sender: UITapGestureRecognizer){
