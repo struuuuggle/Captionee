@@ -15,9 +15,10 @@ import SpeechToTextV1
 import SwiftReorder
 import Alamofire
 import DKImagePickerController
+import SafariServices
 
 /* メイン画面のController */
-class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, SideMenuDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     var window: UIWindow?
     var speechToText: SpeechToText!
@@ -66,6 +67,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.emptyDataSetDelegate = self;
         
         tableView.reorder.delegate = self
+        
+        sideMenuController.delegate = self
         
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
@@ -436,6 +439,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // 音声認識に失敗したときの処理
         let failure = { (error: Error) in
             print(error)
+            
+            self.failure()
         }
         
         // 音声認識に成功したときの処理
@@ -449,6 +454,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("<--- Caption")
             
             self.appDelegate.videos[self.appDelegate.videos.count-1].caption = captions
+            
+            self.success()
         }
         
         // 音声認識の言語モデルの辞書
@@ -471,6 +478,48 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* 動画のアップロードに失敗したとき */
     func failure() {
         print("Speech recognition failure...")
+    }
+    
+    /* 設定ボタンが押されたとき */
+    func settingsButtonTapped() {
+        print("設定")
+        
+        let settingsViewController = SettingsViewController()
+        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        present(navigationController, animated: true, completion: nil)
+    }
+    
+    /* チュートリアルボタンが押されたとき */
+    func tutorialButtonTapped() {
+        print("チュートリアル")
+        
+        let completion = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+        }
+        let tutorial = Tutorial.create(selectImageButton, "チュートリアル", "チュートリアルを再生します。", completion)
+        present(tutorial, animated: true, completion: nil)
+    }
+    
+    /* フィードバックボタンが押されたとき */
+    func feedbackButtonTapped() {
+        print("フィードバック")
+    }
+    
+    /* ヘルプボタンが押されたとき */
+    func helpButtonTapped() {
+        print("ヘルプ")
+        
+        let url = URL(string: "https://struuuuggle.github.io/Captionee/")
+        if let url = url {
+            print("Open safari success!")
+            
+            let safariViewController = SFSafariViewController(url: url)
+            view.window?.rootViewController?.present(safariViewController, animated: true, completion: nil)
+        }
     }
     
     /* 編集モードの変更 */

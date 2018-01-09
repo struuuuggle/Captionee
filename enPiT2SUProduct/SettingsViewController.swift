@@ -9,6 +9,7 @@
 import UIKit
 import MaterialComponents
 import Eureka
+import SafariServices
 
 enum Language: String {
     case japanese = "日本語"
@@ -24,7 +25,7 @@ enum Language: String {
     }
 }
 
-class SettingViewController: FormViewController {
+class SettingsViewController: FormViewController {
 
     var language: Language = .japanese
     var supportModeOn = false
@@ -36,7 +37,7 @@ class SettingViewController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("SettingViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
+        print("SettingsViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // ViewControllerのTitleを設定
         title = "設定"
@@ -61,23 +62,25 @@ class SettingViewController: FormViewController {
                     
                     row.deselect(animated: true)
                 }
-                $0.onChange{[unowned self] row in
-                    print("Language changed.")
-                    
+                $0.onChange { [unowned self] row in
                     if let value = row.value {
+                        print("Language changed.")
+                        
                         self.language = Language(rawValue: value) ?? Language.japanese
-                    } else {
-                        row.value = self.language.rawValue
                     }
                     
                     print("Language is \(self.language)")
+                    
+                    row.value = self.language.rawValue
+                    
+                    row.reload()
                 }
             }
             // 聴覚障害者モード
             <<< SwitchRow() {
                 $0.title = "聴覚障害者モード"
                 $0.value = false
-                $0.onChange{ [unowned self] row in
+                $0.onChange { [unowned self] row in
                     print("Support mode changed.")
                     
                     self.supportModeOn = row.value ?? false
@@ -153,11 +156,12 @@ class SettingViewController: FormViewController {
     
     /* Safariを開く */
     func openSafari(_ urlString: String) {
-        let url = URL(fileURLWithPath: urlString)
-        if UIApplication.shared.canOpenURL(url) {
+        let url = URL(string: urlString)
+        if let url = url {
             print("Open safari success!")
             
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            let safariViewController = SFSafariViewController(url: url)
+            view.window?.rootViewController?.present(safariViewController, animated: true, completion: nil)
         }
     }
     
@@ -168,27 +172,27 @@ class SettingViewController: FormViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("SettingViewController/viewWillAppear/画面が表示される直前")
+        print("SettingsViewController/viewWillAppear/画面が表示される直前")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("SettingViewController/viewDidAppear/画面が表示された直後")
+        print("SettingsViewController/viewDidAppear/画面が表示された直後")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("SettingViewController/viewWillDisappear/別の画面に遷移する直前")
+        print("SettingsViewController/viewWillDisappear/別の画面に遷移する直前")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("SettingViewController/viewDidDisappear/別の画面に遷移した直後")
+        print("SettingsViewController/viewDidDisappear/別の画面に遷移した直後")
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        print("SettingViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
+        print("SettingsViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
     
 

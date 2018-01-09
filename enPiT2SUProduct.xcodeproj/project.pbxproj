@@ -15,7 +15,7 @@
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
 		705DE6BE1FAAB913001EBBE4 /* SpeechToTextV1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */; };
 		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
-		70A5660D1FCFDBE600694683 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A5660C1FCFDBE600694683 /* SettingViewController.swift */; };
+		70A5660D1FCFDBE600694683 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A5660C1FCFDBE600694683 /* SettingsViewController.swift */; };
 		70A5660F1FD045A800694683 /* Caption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A5660E1FD045A800694683 /* Caption.swift */; };
 		70E23B0C1FB560C3009D900C /* simple.wav in Resources */ = {isa = PBXBuildFile; fileRef = 70E23B0B1FB560C3009D900C /* simple.wav */; };
 		70F3B03C1FE91EB8009B8578 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F3B03B1FE91EB8009B8578 /* ItemViewController.swift */; };
@@ -38,7 +38,7 @@
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
 		705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechToTextV1.framework; path = Carthage/Build/iOS/SpeechToTextV1.framework; sourceTree = "<group>"; };
 		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		70A5660C1FCFDBE600694683 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		70A5660C1FCFDBE600694683 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		70A5660E1FD045A800694683 /* Caption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Caption.swift; sourceTree = "<group>"; };
 		70E23B0B1FB560C3009D900C /* simple.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = simple.wav; sourceTree = "<group>"; };
 		70F3B03B1FE91EB8009B8578 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 				15D4D5951FAF04FD006BC466 /* SubViewController.swift */,
 				70F3B03D1FE96D48009B8578 /* Tutorial.swift */,
 				70F3B03B1FE91EB8009B8578 /* ItemViewController.swift */,
-				70A5660C1FCFDBE600694683 /* SettingViewController.swift */,
+				70A5660C1FCFDBE600694683 /* SettingsViewController.swift */,
 				700A1B001FA9D977004C7782 /* Credentials.swift */,
 				70A5660E1FD045A800694683 /* Caption.swift */,
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
@@ -303,7 +303,7 @@
 				70F3B03E1FE96D48009B8578 /* Tutorial.swift in Sources */,
 				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */,
-				70A5660D1FCFDBE600694683 /* SettingViewController.swift in Sources */,
+				70A5660D1FCFDBE600694683 /* SettingsViewController.swift in Sources */,
 				70F3B03C1FE91EB8009B8578 /* ItemViewController.swift in Sources */,
 				70F3B0401FFA8DCD009B8578 /* OnboadingViewController.swift in Sources */,
 				70A5660F1FD045A800694683 /* Caption.swift in Sources */,

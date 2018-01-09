@@ -12,12 +12,14 @@ import SafariServices
 
 class SideMenuController: UIViewController {
     
+    weak var delegate: SideMenuDelegate? = nil
+    
     var sideView: UIView!
     //var shadowView: UIView!
-    var editButton: MDCFlatButton!
-    var translateButton: MDCFlatButton!
+    var settingsButton: MDCFlatButton!
     var tutorialButton: MDCFlatButton!
-    var cancelButton: MDCFlatButton!
+    var feedbackButton: MDCFlatButton!
+    var helpButton: MDCFlatButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +39,10 @@ class SideMenuController: UIViewController {
         sideView.addSubview(buttonView)
         
         let singleTapped = UITapGestureRecognizer(target: self, action: #selector(tapGesture))
-        self.view.addGestureRecognizer(singleTapped)
+        view.addGestureRecognizer(singleTapped)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGesture))
+        view.addGestureRecognizer(panGestureRecognizer)
         
         /*
         shadowView = UIView(frame: CGRect(x: headerView.frame.width, y: 0, width: UIScreen.main.bounds.width-width, height: UIScreen.main.bounds.height))
@@ -46,47 +51,44 @@ class SideMenuController: UIViewController {
         view.addSubview(shadowView)
         */
         
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGesture))
-        view.addGestureRecognizer(panGestureRecognizer)
-        
         // Itemの高さ
         let itemHeight: CGFloat = 48
         
         // 設定ボタンの設定
-        editButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: width, height: itemHeight))
-        editButton.setTitle("設定", for: .normal)
-        editButton.titleLabel?.font = MDCTypography.buttonFont()
-        editButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
-        editButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(editButton)
-        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        settingsButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: width, height: itemHeight))
+        settingsButton.setTitle("設定", for: .normal)
+        settingsButton.titleLabel?.font = MDCTypography.buttonFont()
+        settingsButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        settingsButton.contentHorizontalAlignment = .left
+        buttonView.addSubview(settingsButton)
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
         
         // チュートリアルボタンの設定
-        translateButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: view.frame.width*2/3, height: itemHeight))
-        translateButton.setTitle("チュートリアル", for: .normal)
-        translateButton.titleLabel?.font = MDCTypography.buttonFont()
-        translateButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
-        translateButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(translateButton)
-        translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
-        
-        // フィードバックボタンの設定
-        tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: view.frame.width*2/3, height: itemHeight))
-        tutorialButton.setTitle("フィードバックを送信", for: .normal)
+        tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: view.frame.width*2/3, height: itemHeight))
+        tutorialButton.setTitle("チュートリアル", for: .normal)
         tutorialButton.titleLabel?.font = MDCTypography.buttonFont()
         tutorialButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
         tutorialButton.contentHorizontalAlignment = .left
         buttonView.addSubview(tutorialButton)
         tutorialButton.addTarget(self, action: #selector(tutorialButtonTapped), for: .touchUpInside)
         
+        // フィードバックボタンの設定
+        feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: view.frame.width*2/3, height: itemHeight))
+        feedbackButton.setTitle("フィードバックを送信", for: .normal)
+        feedbackButton.titleLabel?.font = MDCTypography.buttonFont()
+        feedbackButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        feedbackButton.contentHorizontalAlignment = .left
+        buttonView.addSubview(feedbackButton)
+        feedbackButton.addTarget(self, action: #selector(feedbackButtonTapped), for: .touchUpInside)
+        
         // ヘルプの設定
-        cancelButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: view.frame.width * 2/3, height: itemHeight))
-        cancelButton.setTitle("ヘルプ", for: .normal)
-        cancelButton.titleLabel?.font = MDCTypography.buttonFont()
-        cancelButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
-        cancelButton.contentHorizontalAlignment = .left
-        buttonView.addSubview(cancelButton)
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: view.frame.width * 2/3, height: itemHeight))
+        helpButton.setTitle("ヘルプ", for: .normal)
+        helpButton.titleLabel?.font = MDCTypography.buttonFont()
+        helpButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        helpButton.contentHorizontalAlignment = .left
+        buttonView.addSubview(helpButton)
+        helpButton.addTarget(self, action: #selector(helpButtonTapped), for: .touchUpInside)
         
         
         // Viewの大きさを設定
@@ -95,43 +97,31 @@ class SideMenuController: UIViewController {
     }
 
     /* 設定ボタンが押されたとき */
-    @objc func editButtonTapped() {
-        print("設定")
-        
+    @objc func settingsButtonTapped() {
         close()
         
-        let settingViewController = SettingViewController()
-        let navigationController = UINavigationController(rootViewController: settingViewController)
-        present(navigationController, animated: true, completion: nil)
+        delegate?.settingsButtonTapped()
     }
     
     /* チュートリアルボタンが押されたとき */
-    @objc func translateButtonTapped() {
-        print("チュートリアル")
-        
+    @objc func tutorialButtonTapped() {
         close()
+        
+        delegate?.tutorialButtonTapped()
     }
     
     /* フィードバックボタンが押されたとき */
-    @objc func tutorialButtonTapped() {
-        print("フィードバック")
-        
+    @objc func feedbackButtonTapped() {
         close()
+        
+        delegate?.feedbackButtonTapped()
     }
     
     /* ヘルプボタンが押されたとき */
-    @objc func cancelButtonTapped() {
-        print("ヘルプ")
-        
+    @objc func helpButtonTapped() {
         close()
         
-        let url = URL(string: "https://struuuuggle.github.io/Captionee/")
-        if let url = url {
-            print("Open safari success!")
-            
-            let safariViewController = SFSafariViewController(url: url)
-            view.window?.rootViewController?.present(safariViewController, animated: true, completion: nil)
-        }
+        delegate?.helpButtonTapped()
     }
     
     @objc func tapGesture(_ sender: UITapGestureRecognizer){
@@ -236,5 +226,17 @@ class SideMenuController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
+
+/* SideMenuControllerのdelegate */
+protocol SideMenuDelegate: class {
+    // 設定ボタン用
+    func settingsButtonTapped()
+    // チュートリアルボタン用
+    func tutorialButtonTapped()
+    // フィードバックボタン用
+    func feedbackButtonTapped()
+    // ヘルプボタン用
+    func helpButtonTapped()
 }
 
