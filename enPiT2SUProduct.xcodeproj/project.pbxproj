@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		154368D71FD3D479007E7618 /* Translation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154368D61FD3D479007E7618 /* Translation.swift */; };
 		15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4D5951FAF04FD006BC466 /* SubViewController.swift */; };
-		2FDF183BF6FA1DDCF9D584D8 /* Pods_enPiT2SUProduct.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362A71D95EA3241A8C66A132 /* Pods_enPiT2SUProduct.framework */; };
 		700A1B011FA9D977004C7782 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A1B001FA9D977004C7782 /* Credentials.swift */; };
 		701FB1F61FA5711700BBFCB0 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1F51FA5711700BBFCB0 /* FileManager.swift */; };
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
@@ -21,6 +20,7 @@
 		70F3B03C1FE91EB8009B8578 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F3B03B1FE91EB8009B8578 /* ItemViewController.swift */; };
 		70F3B03E1FE96D48009B8578 /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F3B03D1FE96D48009B8578 /* Tutorial.swift */; };
 		70F3B0401FFA8DCD009B8578 /* OnboadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F3B03F1FFA8DCD009B8578 /* OnboadingViewController.swift */; };
+		766CBA576230FE3117891058 /* Pods_enPiT2SUProduct.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E442DCF3E6D42B3DE214FB6B /* Pods_enPiT2SUProduct.framework */; };
 		C0F7E2651F6B7FC90038357B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7E2641F6B7FC90038357B /* AppDelegate.swift */; };
 		C0F7E26A1F6B7FC90038357B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E2681F6B7FC90038357B /* Main.storyboard */; };
 		C0F7E26C1F6B7FC90038357B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0F7E26B1F6B7FC90038357B /* Assets.xcassets */; };
@@ -31,8 +31,8 @@
 /* Begin PBXFileReference section */
 		154368D61FD3D479007E7618 /* Translation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translation.swift; sourceTree = "<group>"; };
 		15D4D5951FAF04FD006BC466 /* SubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubViewController.swift; sourceTree = "<group>"; };
-		362A71D95EA3241A8C66A132 /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		652403D03E968425BBC93EBB /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
+		3A7FBAE2BA0769D91B89A609 /* Pods-enPiT2SUProduct.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.debug.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.debug.xcconfig"; sourceTree = "<group>"; };
+		6D0662C7A541057EA38F7248 /* Pods-enPiT2SUProduct.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.release.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.release.xcconfig"; sourceTree = "<group>"; };
 		700A1B001FA9D977004C7782 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		701FB1F51FA5711700BBFCB0 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 		C0F7E26B1F6B7FC90038357B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0F7E26E1F6B7FC90038357B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0F7E2701F6B7FC90038357B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C92292339A9351118EF0EFD3 /* Pods-enPiT2SUProduct.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enPiT2SUProduct.debug.xcconfig"; path = "Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct.debug.xcconfig"; sourceTree = "<group>"; };
+		E442DCF3E6D42B3DE214FB6B /* Pods_enPiT2SUProduct.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enPiT2SUProduct.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACF676B1FECEB8A0003F3A6 /* SideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SideMenuController.swift; path = ../SideMenuController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,7 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				705DE6BE1FAAB913001EBBE4 /* SpeechToTextV1.framework in Frameworks */,
-				2FDF183BF6FA1DDCF9D584D8 /* Pods_enPiT2SUProduct.framework in Frameworks */,
+				766CBA576230FE3117891058 /* Pods_enPiT2SUProduct.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,16 +71,16 @@
 			isa = PBXGroup;
 			children = (
 				705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */,
-				362A71D95EA3241A8C66A132 /* Pods_enPiT2SUProduct.framework */,
+				E442DCF3E6D42B3DE214FB6B /* Pods_enPiT2SUProduct.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		ACF30C222E7A98D34D05E669 /* Pods */ = {
+		B78C7C855521D484343B2F1B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C92292339A9351118EF0EFD3 /* Pods-enPiT2SUProduct.debug.xcconfig */,
-				652403D03E968425BBC93EBB /* Pods-enPiT2SUProduct.release.xcconfig */,
+				3A7FBAE2BA0769D91B89A609 /* Pods-enPiT2SUProduct.debug.xcconfig */,
+				6D0662C7A541057EA38F7248 /* Pods-enPiT2SUProduct.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -91,7 +91,7 @@
 				C0F7E2631F6B7FC90038357B /* enPiT2SUProduct */,
 				C0F7E2621F6B7FC90038357B /* Products */,
 				5F9D6195D972AD733E83CF0F /* Frameworks */,
-				ACF30C222E7A98D34D05E669 /* Pods */,
+				B78C7C855521D484343B2F1B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,13 +135,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0F7E2731F6B7FC90038357B /* Build configuration list for PBXNativeTarget "enPiT2SUProduct" */;
 			buildPhases = (
-				7B2969C7B05ED06932CBBE6C /* [CP] Check Pods Manifest.lock */,
+				BC970A3D4E1395AA06601179 /* [CP] Check Pods Manifest.lock */,
 				C0F7E25D1F6B7FC90038357B /* Sources */,
 				C0F7E25E1F6B7FC90038357B /* Frameworks */,
 				C0F7E25F1F6B7FC90038357B /* Resources */,
 				705DE6BF1FAAB926001EBBE4 /* ShellScript */,
-				64F5A689D06B406549EC7B32 /* [CP] Embed Pods Frameworks */,
-				2901A084309F88112640837C /* [CP] Copy Pods Resources */,
+				916A092AB153499C0730B5E6 /* [CP] Embed Pods Frameworks */,
+				9879A300095365ADABADDA10 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -203,22 +203,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2901A084309F88112640837C /* [CP] Copy Pods Resources */ = {
+		705DE6BF1FAAB926001EBBE4 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SpeechToTextV1.framework",
 			);
-			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct-resources.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
-		64F5A689D06B406549EC7B32 /* [CP] Embed Pods Frameworks */ = {
+		916A092AB153499C0730B5E6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,21 +255,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		705DE6BF1FAAB926001EBBE4 /* ShellScript */ = {
+		9879A300095365ADABADDA10 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SpeechToTextV1.framework",
 			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-enPiT2SUProduct/Pods-enPiT2SUProduct-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
-		7B2969C7B05ED06932CBBE6C /* [CP] Check Pods Manifest.lock */ = {
+		BC970A3D4E1395AA06601179 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -440,7 +440,7 @@
 		};
 		C0F7E2741F6B7FC90038357B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C92292339A9351118EF0EFD3 /* Pods-enPiT2SUProduct.debug.xcconfig */;
+			baseConfigurationReference = 3A7FBAE2BA0769D91B89A609 /* Pods-enPiT2SUProduct.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = U48PC58DNS;
@@ -460,7 +460,7 @@
 		};
 		C0F7E2751F6B7FC90038357B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 652403D03E968425BBC93EBB /* Pods-enPiT2SUProduct.release.xcconfig */;
+			baseConfigurationReference = 6D0662C7A541057EA38F7248 /* Pods-enPiT2SUProduct.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = U48PC58DNS;

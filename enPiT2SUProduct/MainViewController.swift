@@ -237,6 +237,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     // Documentに動画を保存
                     asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")})
                     
+                    ///////// TODO: sleepを使わずに実装(dispatchQueueとか使って)   /////////////
+                    sleep(3)
+                    ////////////////////////////////////////////////////////////////////////////
+                    
                     // MP4をサーバにアップロード
                     self.uploadFileToServer(URL(fileURLWithPath: path))
                     
@@ -358,9 +362,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         Alamofire.upload(
             multipartFormData: { multipartFormData in
-                multipartFormData.append(fileURL, withName: "input", fileName: "input.mp4", mimeType: "video/mp4")
+                // サーバサイドでは、withName は $_FILES["uploaded_file"]["tmp_name"] のように使われる
+                multipartFormData.append(fileURL, withName: "uploaded_file", fileName: "input.mp4", mimeType: "video/mp4")
             },
-            to: "http://captionee.ddns.net/encoder/uploader.php",
+            to: "http://captionee.ddns.net/encoder/encoder.php",
             encodingCompletion: { encodingResult in
                 switch encodingResult {
                 case .success(let upload, _, _):
