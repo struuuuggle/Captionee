@@ -236,22 +236,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     let path = FileManager.documentDir + "/" + name + ".mp4"
                     
                     // Documentに動画を保存
-                    asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")})
-                    
-                    ///////// TODO: sleepを使わずに実装(dispatchQueueとか使って)   /////////////
-                    sleep(3)
-                    ////////////////////////////////////////////////////////////////////////////
-                    
-                    // MP4をサーバにアップロード
-                    self.uploadFileToServer(URL(fileURLWithPath: path))
-                    
-                    // WAVをサーバからダウンロード
-                    let audioWavURL = self.downloadFileFromServer(name)
-                    if let audioWavURL = audioWavURL {
-                        print("---> WAV URL")
-                        print(audioWavURL)
-                        print("<--- WAV URL")
-                    }
+                    asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")
+                        
+                        self.uploadFileToServer(name)
+                    })
                     
                     // メインスレッドで実行
                     DispatchQueue.main.async {
@@ -358,13 +346,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* ファイルをサーバにアップロードする */
-    func uploadFileToServer(_ fileURL: URL) {
+    func uploadFileToServer(_ fileName: String) {
         print("ファイルをサーバにアップロード")
         
         Alamofire.upload(
             multipartFormData: { multipartFormData in
+                // ファイルのパス
+                let path = FileManager.documentDir + "/" + fileName + ".mp4"
+                let url = URL(fileURLWithPath: path)
+                
                 // サーバサイドでは、withName は $_FILES["uploaded_file"]["tmp_name"] のように使われる
-                multipartFormData.append(fileURL, withName: "uploaded_file", fileName: "input.mp4", mimeType: "video/mp4")
+                multipartFormData.append(url, withName: "uploaded_file", fileName: "input.mp4", mimeType: "video/mp4")
             },
             to: "http://captionee.ddns.net/encoder/encoder.php",
             encodingCompletion: { encodingResult in
@@ -375,6 +367,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     upload.responseString { response in
                         debugPrint(response)
                     }
+                    
+                    _ = self.downloadFileFromServer(fileName)
                 case .failure(let encodingError):
                     print("Upload failure...")
                     print(encodingError)
