@@ -119,13 +119,8 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         // MainViewcontrollerを指定
         let initialViewController = storyboard.instantiateInitialViewController()
-        // windowを作成
-        window = UIWindow(frame: UIScreen.main.bounds)
-        // rootViewControllerに入れる
-        window?.rootViewController = initialViewController
-        // MainVCを表示
-        window?.makeKeyAndVisible()
-        
+        // MainViewControllerを表示
+        present(initialViewController!, animated: true, completion: nil)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

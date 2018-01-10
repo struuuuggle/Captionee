@@ -76,8 +76,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // TableViewの背景色を設定
         tableView.backgroundColor = MDCPalette.grey.tint100
         
-        //tableView.reloadData()
-        
         // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
             username: Credentials.SpeechToTextUsername,
@@ -565,13 +563,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
         
-        print("Snackbar Message")
-        
         let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました")
         
         let action = MDCSnackbarMessageAction()
-        let actionHandler = {() in
-        let answerMessage = MDCSnackbarMessage()
+        let actionHandler = { () in
+            let answerMessage = MDCSnackbarMessage()
             answerMessage.text = "Fascinating"
             MDCSnackbarManager.show(answerMessage)
         }
@@ -579,7 +575,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         action.title = "元に戻す"
          
         message.action = action
-        message.duration = 5.0
+        message.buttonTextColor = MDCPalette.indigo.tint200
         
         MDCSnackbarManager.show(message)
     }
