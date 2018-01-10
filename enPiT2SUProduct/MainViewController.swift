@@ -73,6 +73,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
         
+        // TableViewの背景色を設定
+        tableView.backgroundColor = MDCPalette.grey.tint100
+        
         //tableView.reloadData()
         
         // SpeechToTextのUsernameとPasswordを設定
