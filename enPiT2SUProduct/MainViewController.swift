@@ -28,6 +28,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var editCompleteButton: MDCRaisedButton!
     var editCancelButton: MDCRaisedButton!
     let sideMenuController = SideMenuController()
+    var fabOffset: CGFloat = 0
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -37,7 +38,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var languageKey = "日本語"
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var selectImageButton: MDCFloatingButton!
+    var selectImageButton: MDCFloatingButton!
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -91,6 +92,26 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         textField.widthAnchor.constraint(equalToConstant: view.frame.width*2/3).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
+        // StatusBarの高さ
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        // NavigationBarの高さ
+        let navigationBarHeight = navigationController?.navigationBar.frame.height
+        
+        // アップロードボタンのサイズ
+        let fabSize: CGFloat = 56
+        
+        // アップロードボタンの設定
+        selectImageButton = MDCFloatingButton(type: .roundedRect)
+        selectImageButton.frame = CGRect(x: UIScreen.main.bounds.width-fabSize-16,
+                                         y: UIScreen.main.bounds.height-statusBarHeight-navigationBarHeight!-fabSize-16,
+                                         width: fabSize,
+                                         height: fabSize)
+        selectImageButton.setImage(UIImage(named: "Add"), for: .normal)
+        selectImageButton.tintColor = UIColor.white
+        selectImageButton.backgroundColor = MDCPalette.yellow.tint600
+        selectImageButton.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
+        view.addSubview(selectImageButton)
+        
         // 編集完了ボタンの設定
         editCompleteButton = MDCRaisedButton()
         editCompleteButton.setTitle("SAVE", for: .normal)
@@ -126,6 +147,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         navigationController?.view.addSubview(sideMenuController.view)
+        
+        let manager = MDCOverlayObserver(for: nil)
+        manager?.addTarget(self, action: #selector(handleOverlayTransition))
     }
     
     /* MenuButtonが押されたとき */
@@ -173,7 +197,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* PhotoLibraryから動画を選択する */
-    @IBAction func selectImage(_ sender: Any) {
+    @objc func selectImage(_ sender: Any) {
         print("カメラロールから動画を選択")
         
         // 初回のみ実行
@@ -230,7 +254,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     // Documentに動画を保存
                     asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")
                         
-                        self.uploadFileToServer(name)
+                        // 動画をサーバにアップロードする
+                        // 長い動画をアップロードするときは極力ここをコメントアウトしてね
+                        // self.uploadFileToServer(name)
                     })
                     
                     // メインスレッドで実行
@@ -551,8 +577,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
         tableView.reloadData()
         
-        let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました")
-        
+        // 元に戻すボタンを生成
         let action = MDCSnackbarMessageAction()
         let actionHandler = { () in
             let answerMessage = MDCSnackbarMessage()
@@ -561,11 +586,42 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         action.handler = actionHandler
         action.title = "元に戻す"
-         
+        
+        // SnackBarを生成
+        let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました")
         message.action = action
         message.buttonTextColor = MDCPalette.indigo.tint200
         
+        // SnackBarを表示
         MDCSnackbarManager.show(message)
+    }
+    
+    /* SnackBarが表示・非表示するときに呼ばれる */
+    @objc func handleOverlayTransition(transition: MDCOverlayTransitioning) {
+        if fabOffset == 0 {
+            print("SnackBarを表示")
+        } else {
+            print("SnackBarを非表示")
+        }
+        
+        let bounds = view.bounds
+        let coveredRect = transition.compositeFrame(in: view)
+        
+        let boundedRect = bounds.intersection(coveredRect)
+        
+        var fabVerticalShift: CGFloat = 0
+        var distanceFromBottom: CGFloat = 0
+        
+        if !boundedRect.isEmpty {
+            distanceFromBottom = bounds.maxY - boundedRect.minY
+        }
+        
+        fabVerticalShift = fabOffset - distanceFromBottom
+        fabOffset = distanceFromBottom
+        
+        transition.animate(alongsideTransition: {
+            self.selectImageButton.center = CGPoint(x: self.selectImageButton.center.x, y: self.selectImageButton.center.y+fabVerticalShift)
+        })
     }
     
     /* 移動可能なCellを設定 */

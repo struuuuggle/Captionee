@@ -83,39 +83,17 @@
                                     <outlet property="delegate" destination="Z6o-d9-NA3" id="9LF-z6-gNS"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
-                                <rect key="frame" x="303" y="595" width="56" height="56"/>
-                                <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="56" id="2jk-F4-cQX"/>
-                                    <constraint firstAttribute="width" constant="56" id="yS9-ae-ROb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <state key="normal" image="Add"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="28"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="selectImage:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="j2B-Qw-VBB"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="IjN-qc-j9U" secondAttribute="trailing" constant="16" id="9dH-mE-KyH"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="top" secondItem="YeP-2x-JQh" secondAttribute="bottom" id="DwL-Ms-OQC"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="leading" secondItem="FMJ-NX-m0Y" secondAttribute="leading" id="LAd-oM-80B"/>
-                            <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="IjN-qc-j9U" secondAttribute="bottom" constant="16" id="aTy-nL-z0K"/>
                             <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="UgA-5K-BkH" secondAttribute="bottom" id="o6D-fc-4a1"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="trailing" secondItem="FMJ-NX-m0Y" secondAttribute="trailing" id="z4c-qb-OAy"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK"/>
                     <connections>
-                        <outlet property="selectImageButton" destination="IjN-qc-j9U" id="J18-dS-rmA"/>
                         <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
                         <segue destination="tI5-RB-fPo" kind="show" identifier="toSubViewController" id="e8m-EU-3v6"/>
                     </connections>
@@ -193,7 +171,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add" width="24" height="24"/>
         <image name="Play" width="36" height="36"/>
         <image name="Vertical" width="24" height="24"/>
     </resources>
