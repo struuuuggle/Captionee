@@ -34,15 +34,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    var languageKey = "日本語" {
-        willSet {
-            print("Language is \(newValue).")
-        }
-        didSet {
-            // 字幕を生成
-            //generateCaption()
-        }
-    }
+    var languageKey = "日本語"
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var selectImageButton: MDCFloatingButton!
