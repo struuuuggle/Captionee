@@ -9,13 +9,13 @@
 import UIKit
 import AVKit
 import Photos
+import SafariServices
+import SpeechToTextV1
 import DZNEmptyDataSet
 import MaterialComponents
-import SpeechToTextV1
 import SwiftReorder
 import Alamofire
 import DKImagePickerController
-import SafariServices
 
 /* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, SideMenuDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
@@ -40,7 +40,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
         didSet {
             // 字幕を生成
-            generateCaption()
+            //generateCaption()
         }
     }
     
@@ -368,7 +368,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                         debugPrint(response)
                     }
                     
-                    _ = self.downloadFileFromServer(fileName)
+                    self.downloadFileFromServer(fileName)
                 case .failure(let encodingError):
                     print("Upload failure...")
                     print(encodingError)
@@ -378,7 +378,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     /* ファイルをサーバからダウンロードする */
-    func downloadFileFromServer(_ fileName: String) -> URL? {
+    func downloadFileFromServer(_ fileName: String) {
         print("ファイルをサーバからダウンロード")
         
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
@@ -388,29 +388,26 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
         
-        var resultURL: URL? = nil
-        
         Alamofire.download("http://captionee.ddns.net/encoder/Output/output.wav", to: destination).response { response in
             if response.error == nil {
                 print("Download success!")
                 debugPrint(response)
                 
-                resultURL = response.destinationURL
+                if let resultURL = response.destinationURL {
+                    self.generateCaption(resultURL)
+                } else {
+                    print("Result url is nil")
+                }
             } else {
                 print("Download failure...")
                 print(response.error!)
             }
         }
-        
-        return resultURL
     }
     
     /* 字幕を生成する */
-    func generateCaption() {
+    func generateCaption(_ speechUrl: URL) {
         print("字幕を生成")
-        
-        // 対象ファイルのURL
-        let speechUrl = Bundle.main.url(forResource: "simple", withExtension: "wav")!
         
         // 音声認識の設定
         var settings = RecognitionSettings(contentType: .wav)
