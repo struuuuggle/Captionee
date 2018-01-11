@@ -58,6 +58,11 @@ class SubViewController: UIViewController, ItemDelegate {
         }
     }
     
+    // AppDelegateの変数にアクセスする用
+    var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
@@ -72,7 +77,7 @@ class SubViewController: UIViewController, ItemDelegate {
         print("SubViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // DocumentDirectoryのPath
-        let documentPath: String = FileManager.documentDir
+        let documentPath: String = appDelegate.documentDir
         
         // 動画のURL
         let url = URL(fileURLWithPath: documentPath + "/" + receivedVideoInfo.name + ".mp4")

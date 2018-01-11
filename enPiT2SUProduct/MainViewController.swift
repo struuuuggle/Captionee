@@ -249,7 +249,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     let label = self.convertFormat(name)
                     
                     // 動画のパス
-                    let path = FileManager.documentDir + "/" + name + ".mp4"
+                    let path = self.appDelegate.documentDir + "/" + name + ".mp4"
                     
                     // Documentに動画を保存
                     asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")
@@ -370,7 +370,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         Alamofire.upload(
             multipartFormData: { multipartFormData in
                 // ファイルのパス
-                let path = FileManager.documentDir + "/" + fileName + ".mp4"
+                let path = self.appDelegate.documentDir + "/" + fileName + ".mp4"
                 let url = URL(fileURLWithPath: path)
                 
                 // サーバサイドでは、withName は $_FILES["uploaded_file"]["tmp_name"] のように使われる
@@ -400,7 +400,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("ファイルをサーバからダウンロード")
         
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            let documentsURL = URL(fileURLWithPath: FileManager.documentDir)
+            let documentsURL = URL(fileURLWithPath: self.appDelegate.documentDir)
             let fileURL = documentsURL.appendingPathComponent("\(fileName).wav")
             
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
@@ -554,7 +554,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("Cell: \(indexPath.row) を削除")
         
         // DocumentDirectoryのPathを設定
-        let documentPath = FileManager.documentDir
+        let documentPath = appDelegate.documentDir
         
         // 削除するファイル名を設定
         let fileName = appDelegate.videos[indexPath.row].name

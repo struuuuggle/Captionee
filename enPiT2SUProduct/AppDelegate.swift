@@ -20,7 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var language = "日本語"
     let languages = ["日本語", "中文", "한국어", "English"]
     var videos = [VideoInfo]()
+    var trashVideos = [VideoInfo]()
     let userDefault = UserDefaults.standard
+    
+    /* DocumentDirectoryへのPath */
+    var documentDir: String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
