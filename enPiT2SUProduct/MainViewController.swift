@@ -166,6 +166,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             sender.endRefreshing()
         })
+        tableView.reloadData()
     }
     
     /* MenuButtonが押されたとき */
