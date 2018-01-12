@@ -151,6 +151,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         let manager = MDCOverlayObserver(for: nil)
         manager?.addTarget(self, action: #selector(handleOverlayTransition))
+        
+        //tableViewの更新
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.blue
+        let attstr: NSAttributedString? = NSMutableAttributedString(string: NSLocalizedString("Loading", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.blue, NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
+        refreshControl.attributedTitle = attstr
+
+        refreshControl.addTarget(self, action: #selector(MainViewController.refreshControlValueChanged(sender:)), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+    }
+    
+    @objc func refreshControlValueChanged(sender: UIRefreshControl) {
+        print("テーブルを下に引っ張った時に呼ばれる")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            sender.endRefreshing()
+        })
+        tableView.reloadData()
     }
     
     /* MenuButtonが押されたとき */
