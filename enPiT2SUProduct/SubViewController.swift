@@ -14,7 +14,6 @@ class SubViewController: UIViewController, ItemDelegate {
     
     var receivedVideoInfo: VideoInfo!
     var player: AVPlayer!
-    var timeSlider: MDCSlider!
     var timeObserverToken: Any!
     var isPlaying = false
     
@@ -29,7 +28,10 @@ class SubViewController: UIViewController, ItemDelegate {
         set {
             let newTime = CMTimeMakeWithSeconds(newValue, 1000)
             
+            print(newValue)
             player.seek(to: newTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+            elapsedTimeLabel.text = timeToString(newValue)
+            remainingTimeLabel.text = "-" + timeToString(duration-newValue)
         }
     }
     
@@ -66,11 +68,13 @@ class SubViewController: UIViewController, ItemDelegate {
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
-    
-    var textField: MDCMultilineTextField!
-    var editCompleteButton: MDCRaisedButton!
-    var editCancelButton: MDCRaisedButton!
-    var stepper: UIStepper!
+    var timeSlider = MDCSlider()
+    var textField = MDCMultilineTextField()
+    var editCompleteButton = MDCRaisedButton()
+    var editCancelButton = MDCRaisedButton()
+    var stepper = UIStepper()
+    var elapsedTimeLabel = UILabel()
+    var remainingTimeLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,29 +125,50 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        
+        // 経過時間Labelの設定
+        elapsedTimeLabel.text = "0:00"
+        elapsedTimeLabel.font = MDCTypography.captionFont()
+        elapsedTimeLabel.textAlignment = .right
+        view.addSubview(elapsedTimeLabel)
+        
+        // 経過時間Labelの制約を設定
+        elapsedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        elapsedTimeLabel.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
+        elapsedTimeLabel.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 10).isActive = true
+        elapsedTimeLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        elapsedTimeLabel.heightAnchor.constraint(equalToConstant: 10).isActive = true
 
         // スライダーの設定
-        timeSlider = MDCSlider()
         timeSlider.minimumValue = 0.0
         timeSlider.maximumValue = CGFloat(duration)
         timeSlider.isContinuous = true
         timeSlider.isThumbHollowAtStart = false
         timeSlider.color = MDCPalette.orange.tint500
-        view.addSubview(timeSlider)
-        
-        // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
         timeSlider.addTarget(self, action: #selector(timeSliderTapped), for: .touchUpInside)
+        view.addSubview(timeSlider)
         
         // スライダーの制約を設定
         timeSlider.translatesAutoresizingMaskIntoConstraints = false
-        timeSlider.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 10).isActive = true
-        timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        timeSlider.leadingAnchor.constraint(equalTo: elapsedTimeLabel.trailingAnchor, constant: 5).isActive = true
+        timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -55).isActive = true
         timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
+        // 残り時間Labelの設定
+        remainingTimeLabel.text = "-" + timeToString(duration)
+        remainingTimeLabel.font = MDCTypography.captionFont()
+        view.addSubview(remainingTimeLabel)
+        
+        // 残り時間Labelの制約を設定
+        remainingTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        remainingTimeLabel.leadingAnchor.constraint(equalTo: timeSlider.trailingAnchor, constant: 5).isActive = true
+        remainingTimeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        remainingTimeLabel.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
+        remainingTimeLabel.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        
         // TextFieldの設定
-        textField = MDCMultilineTextField()
         textField.isHidden = true
         view.addSubview(textField)
         
@@ -155,7 +180,6 @@ class SubViewController: UIViewController, ItemDelegate {
         textField.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
         
         // 編集完了ボタンの設定
-        editCompleteButton = MDCRaisedButton()
         editCompleteButton.setTitle("SAVE", for: .normal)
         editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
         editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
@@ -172,7 +196,6 @@ class SubViewController: UIViewController, ItemDelegate {
         editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // 編集キャンセルボタンの設定
-        editCancelButton = MDCRaisedButton()
         editCancelButton.setTitle("CANCEL", for: .normal)
         editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
         editCancelButton.backgroundColor = UIColor.white
@@ -189,7 +212,6 @@ class SubViewController: UIViewController, ItemDelegate {
         editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // Stepperの設定
-        stepper = UIStepper()
         stepper.minimumValue = 10
         stepper.maximumValue = 25
         stepper.value = Double(caption.font.pointSize)
@@ -484,9 +506,13 @@ class SubViewController: UIViewController, ItemDelegate {
                 wself.pause()
             }
             
+            print(wself.currentTime)
+            
             // Sliderの値を変える
             wself.timeSlider.setValue(CGFloat(wself.currentTime), animated: true)
-            print(wself.currentTime)
+            
+            wself.elapsedTimeLabel.text = wself.timeToString(wself.currentTime)
+            wself.remainingTimeLabel.text = "-" + wself.timeToString(wself.duration-wself.currentTime)
             
             // 字幕を適切なタイミングで表示
             if let captions = wself.receivedVideoInfo.caption {
@@ -502,6 +528,35 @@ class SubViewController: UIViewController, ItemDelegate {
                 wself.caption.text = "Caption is nil."
             }
         }
+    }
+    
+    // Doubleを時間形式のStringに変換
+    func timeToString(_ time: Double) -> String {
+        var totalSeconds = Int(time)
+        let hours = totalSeconds / 3600
+        totalSeconds %= 3600
+        let minutes = totalSeconds / 60
+        totalSeconds %= 60
+        let seconds = totalSeconds
+        
+        var timeString = ""
+        
+        if hours > 0 {
+            timeString += String(hours) + ":"
+            
+            if minutes < 10 {
+                timeString += "0"
+            }
+        }
+        
+        timeString += String(minutes) + ":"
+        
+        if seconds < 10 {
+            timeString += "0"
+        }
+        timeString += String(seconds)
+        
+        return timeString
     }
     
     override func viewWillAppear(_ animated: Bool) {
