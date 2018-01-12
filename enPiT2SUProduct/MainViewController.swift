@@ -532,7 +532,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("Open safari success!")
             
             let safariViewController = SFSafariViewController(url: url)
-            view.window?.rootViewController?.present(safariViewController, animated: true, completion: nil)
+            present(safariViewController, animated: true, completion: nil)
         }
     }
     
