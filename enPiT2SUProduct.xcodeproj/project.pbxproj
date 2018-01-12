@@ -13,6 +13,7 @@
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
 		703F16802007C04400D8695C /* TrashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703F167F2007C04400D8695C /* TrashViewController.swift */; };
 		703F168220087BD600D8695C /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703F168120087BD600D8695C /* Utility.swift */; };
+		703F16842009156E00D8695C /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703F16832009156E00D8695C /* CustomCell.swift */; };
 		705DE6BE1FAAB913001EBBE4 /* SpeechToTextV1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */; };
 		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
 		70A5660D1FCFDBE600694683 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A5660C1FCFDBE600694683 /* SettingsViewController.swift */; };
@@ -37,6 +38,7 @@
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
 		703F167F2007C04400D8695C /* TrashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashViewController.swift; sourceTree = "<group>"; };
 		703F168120087BD600D8695C /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		703F16832009156E00D8695C /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechToTextV1.framework; path = Carthage/Build/iOS/SpeechToTextV1.framework; sourceTree = "<group>"; };
 		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		70A5660C1FCFDBE600694683 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				EACF676B1FECEB8A0003F3A6 /* SideMenuController.swift */,
 				70F3B03B1FE91EB8009B8578 /* ItemViewController.swift */,
 				70F3B03D1FE96D48009B8578 /* Tutorial.swift */,
+				703F16832009156E00D8695C /* CustomCell.swift */,
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
 				70A5660E1FD045A800694683 /* Caption.swift */,
 				154368D61FD3D479007E7618 /* Translation.swift */,
@@ -301,6 +304,7 @@
 				15D4D5961FAF04FD006BC466 /* SubViewController.swift in Sources */,
 				154368D71FD3D479007E7618 /* Translation.swift in Sources */,
 				70F3B03E1FE96D48009B8578 /* Tutorial.swift in Sources */,
+				703F16842009156E00D8695C /* CustomCell.swift in Sources */,
 				7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */,
 				701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */,
 				70A5660D1FCFDBE600694683 /* SettingsViewController.swift in Sources */,

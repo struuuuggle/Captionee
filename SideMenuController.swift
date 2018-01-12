@@ -16,10 +16,6 @@ class SideMenuController: UIViewController {
     
     var sideView: UIView!
     var shadowView: UIView!
-    var settingsButton: MDCFlatButton!
-    var tutorialButton: MDCFlatButton!
-    var feedbackButton: MDCFlatButton!
-    var helpButton: MDCFlatButton!
     
     // 画面の横のサイズ
     let screenWidth = UIScreen.main.bounds.width
@@ -61,8 +57,26 @@ class SideMenuController: UIViewController {
         // Itemの高さ
         let itemHeight: CGFloat = 48
         
+        // メインボタンの設定
+        let mainButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: width, height: itemHeight))
+        mainButton.setTitle("メイン", for: .normal)
+        mainButton.titleLabel?.font = MDCTypography.buttonFont()
+        mainButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        mainButton.contentHorizontalAlignment = .left
+        mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
+        buttonView.addSubview(mainButton)
+        
+        // ゴミ箱ボタンの設定
+        let trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: width, height: itemHeight))
+        trashButton.setTitle("ゴミ箱", for: .normal)
+        trashButton.titleLabel?.font = MDCTypography.buttonFont()
+        trashButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        trashButton.contentHorizontalAlignment = .left
+        trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
+        buttonView.addSubview(trashButton)
+        
         // 設定ボタンの設定
-        settingsButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: width, height: itemHeight))
+        let settingsButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: width, height: itemHeight))
         settingsButton.setTitle("設定", for: .normal)
         settingsButton.titleLabel?.font = MDCTypography.buttonFont()
         settingsButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
@@ -71,7 +85,7 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(settingsButton)
         
         // チュートリアルボタンの設定
-        tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: width, height: itemHeight))
+        let tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: width, height: itemHeight))
         tutorialButton.setTitle("チュートリアル", for: .normal)
         tutorialButton.titleLabel?.font = MDCTypography.buttonFont()
         tutorialButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
@@ -80,7 +94,7 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(tutorialButton)
         
         // フィードバックボタンの設定
-        feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: width, height: itemHeight))
+        let feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*4, width: width, height: itemHeight))
         feedbackButton.setTitle("フィードバックを送信", for: .normal)
         feedbackButton.titleLabel?.font = MDCTypography.buttonFont()
         feedbackButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
@@ -89,13 +103,27 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(feedbackButton)
         
         // ヘルプの設定
-        helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: width, height: itemHeight))
+        let helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*5, width: width, height: itemHeight))
         helpButton.setTitle("ヘルプ", for: .normal)
         helpButton.titleLabel?.font = MDCTypography.buttonFont()
         helpButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
         helpButton.contentHorizontalAlignment = .left
         helpButton.addTarget(self, action: #selector(helpButtonTapped), for: .touchUpInside)
         buttonView.addSubview(helpButton)
+    }
+    
+    /* メインボタンが押されたとき */
+    @objc func mainButtonTapped() {
+        close()
+        
+        delegate?.mainButtonTapped()
+    }
+    
+    /* ゴミ箱が押されたとき */
+    @objc func trashButtonTapped() {
+        close()
+        
+        delegate?.trashButtonTapped()
     }
 
     /* 設定ボタンが押されたとき */
@@ -208,6 +236,10 @@ class SideMenuController: UIViewController {
 
 /* SideMenuControllerのdelegate */
 protocol SideMenuDelegate: class {
+    // メインボタン用
+    func mainButtonTapped()
+    // ゴミ箱ボタン用
+    func trashButtonTapped()
     // 設定ボタン用
     func settingsButtonTapped()
     // チュートリアルボタン用

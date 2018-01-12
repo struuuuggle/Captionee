@@ -22,14 +22,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
 
     var window: UIWindow?
     var speechToText: SpeechToText!
-    var selectedVideoInfo: VideoInfo?
-    var index: Int!
-    var textField: MDCTextField!
-    var editCompleteButton: MDCRaisedButton!
-    var editCancelButton: MDCRaisedButton!
+    var tableView = UITableView()
+    var selectImageButton = MDCFloatingButton(type: .roundedRect)
+    var textField = MDCTextField()
+    var editCompleteButton = MDCRaisedButton()
+    var editCancelButton = MDCRaisedButton()
     let sideMenuController = SideMenuController()
-    var fabOffset: CGFloat = 0
-    var removedVideoInfo: VideoInfo?
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -37,9 +35,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     var languageKey = "日本語"
-    
-    @IBOutlet weak var tableView: UITableView!
-    var selectImageButton: MDCFloatingButton!
+    var index: Int!
+    var fabOffset: CGFloat = 0
+    var removedVideoInfo: VideoInfo?
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -53,6 +51,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                                          action: #selector(menuButtonTapped))
         navigationItem.leftBarButtonItem = menuButton
         
+        navigationItem.title = "メイン"
+        
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
         
@@ -62,13 +62,24 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         tableView.reorder.delegate = self
         
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         sideMenuController.delegate = self
         
+        // CustomCellをTableViewに登録
+        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
-        
         // TableViewの背景色を設定
         tableView.backgroundColor = MDCPalette.grey.tint100
+        view.addSubview(tableView)
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         // SpeechToTextのUsernameとPasswordを設定
         speechToText = SpeechToText(
@@ -82,7 +93,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         view.addGestureRecognizer(edgePanGestureRecognizer)
         
         // TextFieldの設定
-        textField = MDCTextField()
         textField.isHidden = true
         view.addSubview(textField)
         
@@ -102,7 +112,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let fabSize: CGFloat = 56
         
         // アップロードボタンの設定
-        selectImageButton = MDCFloatingButton(type: .roundedRect)
         selectImageButton.frame = CGRect(x: UIScreen.main.bounds.width-fabSize-16,
                                          y: UIScreen.main.bounds.height-statusBarHeight-navigationBarHeight!-fabSize-16,
                                          width: fabSize,
@@ -114,7 +123,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         view.addSubview(selectImageButton)
         
         // 編集完了ボタンの設定
-        editCompleteButton = MDCRaisedButton()
         editCompleteButton.setTitle("SAVE", for: .normal)
         editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
         editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
@@ -131,7 +139,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // 編集キャンセルボタンの設定
-        editCancelButton = MDCRaisedButton()
         editCancelButton.setTitle("CANCEL", for: .normal)
         editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
         editCancelButton.backgroundColor = UIColor.white
@@ -157,8 +164,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         refreshControl.tintColor = UIColor.blue
         let attstr: NSAttributedString? = NSMutableAttributedString(string: NSLocalizedString("Loading", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.blue, NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
         refreshControl.attributedTitle = attstr
-
-        refreshControl.addTarget(self, action: #selector(MainViewController.refreshControlValueChanged(sender:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.addSubview(refreshControl)
     }
     
@@ -495,6 +501,20 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("Speech recognition failure...")
     }
     
+    /* メインボタンが押されたとき */
+    func mainButtonTapped() {
+        print("メイン")
+    }
+    
+    /* ゴミ箱が押されたとき */
+    func trashButtonTapped() {
+        print("ゴミ箱")
+        
+        let trashViewController = TrashViewController()
+        modalTransitionStyle = .crossDissolve
+        navigationController?.pushViewController(trashViewController, animated: true)
+    }
+    
     /* 設定ボタンが押されたとき */
     func settingsButtonTapped() {
         print("設定")
@@ -592,6 +612,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // 削除されたセルを一時退避
         removedVideoInfo = appDelegate.videos[indexPath.row]
+        appDelegate.trashVideos.append(appDelegate.videos[indexPath.row])
         
         // セルを削除
         appDelegate.videos.remove(at: indexPath.row)
@@ -610,7 +631,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         action.title = "元に戻す"
         
         // SnackBarを生成
-        let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました")
+        let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました。")
         message.action = action
         message.buttonTextColor = MDCPalette.indigo.tint200
         
@@ -659,7 +680,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* Cellに値を設定 */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Cellの指定
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath)
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath)
         
         // Cellのサムネイル画像を設定
         let imageView = cell.viewWithTag(1) as! UIImageView
@@ -701,11 +722,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print(appDelegate.videos[indexPath.row].name)
         print("<--- VideoName")
         
-        // 選択されたセルの動画情報をprepareメソッドに渡すためにselectedVideoInfoに一時保管
-        selectedVideoInfo = appDelegate.videos[indexPath.row]
-        
-        // SubViewController へ遷移するために Segue を呼び出す
-        performSegue(withIdentifier: "toSubViewController", sender: nil)
+        // SubViewに遷移
+        let subViewController = SubViewController()
+        subViewController.receivedVideoInfo = appDelegate.videos[indexPath.row]
+        navigationController?.pushViewController(subViewController, animated: true)
         
         // Cellの選択状態を解除
         tableView.deselectRow(at: indexPath, animated: true)
@@ -735,26 +755,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         selectImageButton.isEnabled = false
         tableView.allowsSelection = false
-    }
-    
-    /* Segueの準備 */
-    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
-        if (segue.identifier == "toSubViewController") {
-            /*
-            if let cell = sender as? UITableViewCell {
-                print("prepare")
-                let indexPath = self.tableView.indexPath(for: cell)!
-                let subVC = segue.destination as! SubViewController
-                subVC.receivedVideoInfo = self.appDelegate.videos[indexPath.row]
-            }
-            */
-            
-            // 遷移先のViewControllerを設定
-            let subVC = segue.destination as! SubViewController
-            
-            // 値の受け渡し
-            subVC.receivedVideoInfo = selectedVideoInfo
-        }
     }
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
