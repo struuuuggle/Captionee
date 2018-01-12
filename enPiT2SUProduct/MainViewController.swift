@@ -29,6 +29,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var editCancelButton: MDCRaisedButton!
     let sideMenuController = SideMenuController()
     var fabOffset: CGFloat = 0
+    var removedVideoInfo: VideoInfo?
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -553,6 +554,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                    commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         print("Cell: \(indexPath.row) を削除")
         
+        /*
         // DocumentDirectoryのPathを設定
         let documentPath = Utility.documentDir
         
@@ -569,20 +571,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         } catch {
             print("\(fileName)は既に削除済み")
         }
+        */
         
-        // 先にデータを更新する
+        // 削除されたセルを一時退避
+        removedVideoInfo = appDelegate.videos[indexPath.row]
+        
+        // セルを削除
         appDelegate.videos.remove(at: indexPath.row)
-        
-        // それからテーブルの更新
-        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-        tableView.reloadData()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
         
         // 元に戻すボタンを生成
         let action = MDCSnackbarMessageAction()
         let actionHandler = { () in
-            let answerMessage = MDCSnackbarMessage()
-            answerMessage.text = "Fascinating"
-            MDCSnackbarManager.show(answerMessage)
+            // セルを戻す
+            self.appDelegate.videos.insert(self.removedVideoInfo!, at: indexPath.row)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         action.handler = actionHandler
         action.title = "元に戻す"
