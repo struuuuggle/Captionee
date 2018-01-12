@@ -77,7 +77,7 @@ class SubViewController: UIViewController, ItemDelegate {
         print("SubViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // DocumentDirectoryのPath
-        let documentPath: String = appDelegate.documentDir
+        let documentPath: String = Utility.documentDir
         
         // 動画のURL
         let url = URL(fileURLWithPath: documentPath + "/" + receivedVideoInfo.name + ".mp4")
@@ -98,7 +98,6 @@ class SubViewController: UIViewController, ItemDelegate {
         // AVPlayerViewControllerの制約を設定
         playerViewController.view.translatesAutoresizingMaskIntoConstraints = false
         playerViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        //playerViewController.view.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         playerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         playerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         playerViewController.view.heightAnchor.constraint(equalToConstant: view.frame.width*9/16).isActive = true

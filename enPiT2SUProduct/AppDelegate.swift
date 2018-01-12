@@ -21,12 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let languages = ["日本語", "中文", "한국어", "English"]
     var videos = [VideoInfo]()
     var trashVideos = [VideoInfo]()
-    let userDefault = UserDefaults.standard
-    
-    /* DocumentDirectoryへのPath */
-    var documentDir: String {
-        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -44,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         sleep(1)
         
         let dict = ["firstLaunch": true]
-        self.userDefault.register(defaults: dict)
+        Utility.userDefault.register(defaults: dict)
         
         // 初回起動時のみに行うための処理をここに書く
         
@@ -52,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         playWalkthrough()
     
         // UserDefaultに保存されたデータを読み込む
-        if let storedData = userDefault.object(forKey: "Videos") as? Data {
+        if let storedData = Utility.userDefault.object(forKey: "Videos") as? Data {
             if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
                 print("動画をロード")
                 
@@ -94,8 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("AppDelegate/DidEnterBackground/アプリを閉じた時")
         
         let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
-        userDefault.set(archiveData, forKey: "Videos")
-        userDefault.synchronize()
+        Utility.userDefault.set(archiveData, forKey: "Videos")
+        Utility.userDefault.synchronize()
         
     }
 
@@ -116,8 +110,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("AppDelegate/WillTerminate/アプリ終了時(フリック)")
         
         let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
-        userDefault.set(archiveData, forKey: "Videos")
-        userDefault.synchronize()
+        Utility.userDefault.set(archiveData, forKey: "Videos")
+        Utility.userDefault.synchronize()
         
     }
 

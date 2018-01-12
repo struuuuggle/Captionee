@@ -12,6 +12,7 @@
 		700A1B011FA9D977004C7782 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700A1B001FA9D977004C7782 /* Credentials.swift */; };
 		701FB1FC1FA705AF00BBFCB0 /* VideoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */; };
 		703F16802007C04400D8695C /* TrashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703F167F2007C04400D8695C /* TrashViewController.swift */; };
+		703F168220087BD600D8695C /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703F168120087BD600D8695C /* Utility.swift */; };
 		705DE6BE1FAAB913001EBBE4 /* SpeechToTextV1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */; };
 		7068FE0F1F98BD1F00C814FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7068FE0E1F98BD1F00C814FA /* MainViewController.swift */; };
 		70A5660D1FCFDBE600694683 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A5660C1FCFDBE600694683 /* SettingsViewController.swift */; };
@@ -35,6 +36,7 @@
 		700A1B001FA9D977004C7782 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoInfo.swift; sourceTree = "<group>"; };
 		703F167F2007C04400D8695C /* TrashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashViewController.swift; sourceTree = "<group>"; };
+		703F168120087BD600D8695C /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		705DE6BD1FAAB913001EBBE4 /* SpeechToTextV1.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechToTextV1.framework; path = Carthage/Build/iOS/SpeechToTextV1.framework; sourceTree = "<group>"; };
 		7068FE0E1F98BD1F00C814FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		70A5660C1FCFDBE600694683 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				701FB1FB1FA705AF00BBFCB0 /* VideoInfo.swift */,
 				154368D61FD3D479007E7618 /* Translation.swift */,
 				EACF676B1FECEB8A0003F3A6 /* SideMenuController.swift */,
+				703F168120087BD600D8695C /* Utility.swift */,
 				C0F7E2681F6B7FC90038357B /* Main.storyboard */,
 				C0F7E26B1F6B7FC90038357B /* Assets.xcassets */,
 				C0F7E26D1F6B7FC90038357B /* LaunchScreen.storyboard */,
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				703F168220087BD600D8695C /* Utility.swift in Sources */,
 				700A1B011FA9D977004C7782 /* Credentials.swift in Sources */,
 				703F16802007C04400D8695C /* TrashViewController.swift in Sources */,
 				EACF676C1FECEB8A0003F3A6 /* SideMenuController.swift in Sources */,
