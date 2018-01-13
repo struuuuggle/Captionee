@@ -6,9 +6,10 @@ target 'enPiT2SUProduct' do
   use_frameworks!
 
   # Pods for enPiT2SUProduct
-  pod 'KRProgressHUD'
   pod 'DZNEmptyDataSet'
   pod 'MaterialComponents'
-  pod 'Onboard'
   pod 'SwiftReorder'
+  pod 'Alamofire'
+  pod 'DKImagePickerController'
+  pod 'Eureka'
 end

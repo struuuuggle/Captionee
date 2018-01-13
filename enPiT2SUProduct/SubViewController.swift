@@ -13,9 +13,7 @@ import MaterialComponents
 class SubViewController: UIViewController, ItemDelegate {
     
     var receivedVideoInfo: VideoInfo!
-    
     var player: AVPlayer!
-    var timeSlider: MDCSlider!
     var timeObserverToken: Any!
     var isPlaying = false
     
@@ -30,7 +28,10 @@ class SubViewController: UIViewController, ItemDelegate {
         set {
             let newTime = CMTimeMakeWithSeconds(newValue, 1000)
             
+            print(newValue)
             player.seek(to: newTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+            elapsedTimeLabel.text = timeToString(newValue)
+            remainingTimeLabel.text = "-" + timeToString(duration-newValue)
         }
     }
     
@@ -40,20 +41,47 @@ class SubViewController: UIViewController, ItemDelegate {
         return CMTimeGetSeconds(currentItem.asset.duration)
     }
     
+    // 翻訳元と翻訳先の言語
+    var sourceLanguageKey: String!
+    var targetLanguageKey = "English" {
+        didSet {
+            print("targetLanguage is \(targetLanguageKey).")
+            
+            // 字幕を翻訳
+            if self.sourceLanguageKey != self.targetLanguageKey {
+                translation()
+            } else {
+                if let captions = receivedVideoInfo.caption {
+                    for caption in captions.sentences {
+                        caption.foreign = caption.original
+                    }
+                }
+            }
+        }
+    }
+    
+    // AppDelegateの変数にアクセスする用
+    var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
     @IBOutlet weak var caption: UILabel!
     @IBOutlet weak var playButton: UIButton!
     
-    var textField: MDCMultilineTextField!
-    var editCompleteButton: MDCRaisedButton!
-    var editCancelButton: MDCRaisedButton!
-    var stepper: UIStepper!
+    var timeSlider = MDCSlider()
+    var textField = MDCMultilineTextField()
+    var editCompleteButton = MDCRaisedButton()
+    var editCancelButton = MDCRaisedButton()
+    var stepper = UIStepper()
+    var elapsedTimeLabel = UILabel()
+    var remainingTimeLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
+        print("SubViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // DocumentDirectoryのPath
-        let documentPath: String = FileManager.documentDir
+        let documentPath: String = Utility.documentDir
         
         // 動画のURL
         let url = URL(fileURLWithPath: documentPath + "/" + receivedVideoInfo.name + ".mp4")
@@ -74,7 +102,6 @@ class SubViewController: UIViewController, ItemDelegate {
         // AVPlayerViewControllerの制約を設定
         playerViewController.view.translatesAutoresizingMaskIntoConstraints = false
         playerViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        //playerViewController.view.bottomAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         playerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         playerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         playerViewController.view.heightAnchor.constraint(equalToConstant: view.frame.width*9/16).isActive = true
@@ -98,29 +125,50 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        
+        // 経過時間Labelの設定
+        elapsedTimeLabel.text = "0:00"
+        elapsedTimeLabel.font = MDCTypography.captionFont()
+        elapsedTimeLabel.textAlignment = .right
+        view.addSubview(elapsedTimeLabel)
+        
+        // 経過時間Labelの制約を設定
+        elapsedTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        elapsedTimeLabel.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
+        elapsedTimeLabel.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 10).isActive = true
+        elapsedTimeLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        elapsedTimeLabel.heightAnchor.constraint(equalToConstant: 10).isActive = true
 
         // スライダーの設定
-        timeSlider = MDCSlider()
         timeSlider.minimumValue = 0.0
         timeSlider.maximumValue = CGFloat(duration)
         timeSlider.isContinuous = true
         timeSlider.isThumbHollowAtStart = false
         timeSlider.color = MDCPalette.orange.tint500
-        view.addSubview(timeSlider)
-        
-        // スライダーの値が変わったときに呼び出すメソッドを指定
         timeSlider.addTarget(self, action: #selector(timeSliderChanged), for: .valueChanged)
         timeSlider.addTarget(self, action: #selector(timeSliderTapped), for: .touchUpInside)
+        view.addSubview(timeSlider)
         
         // スライダーの制約を設定
         timeSlider.translatesAutoresizingMaskIntoConstraints = false
-        timeSlider.leadingAnchor.constraint(equalTo: playButton.trailingAnchor, constant: 10).isActive = true
-        timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        timeSlider.leadingAnchor.constraint(equalTo: elapsedTimeLabel.trailingAnchor, constant: 5).isActive = true
+        timeSlider.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -55).isActive = true
         timeSlider.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
         timeSlider.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
+        // 残り時間Labelの設定
+        remainingTimeLabel.text = "-" + timeToString(duration)
+        remainingTimeLabel.font = MDCTypography.captionFont()
+        view.addSubview(remainingTimeLabel)
+        
+        // 残り時間Labelの制約を設定
+        remainingTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        remainingTimeLabel.leadingAnchor.constraint(equalTo: timeSlider.trailingAnchor, constant: 5).isActive = true
+        remainingTimeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        remainingTimeLabel.centerYAnchor.constraint(equalTo: playButton.centerYAnchor).isActive = true
+        remainingTimeLabel.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        
         // TextFieldの設定
-        textField = MDCMultilineTextField()
         textField.isHidden = true
         view.addSubview(textField)
         
@@ -132,8 +180,7 @@ class SubViewController: UIViewController, ItemDelegate {
         textField.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
         
         // 編集完了ボタンの設定
-        editCompleteButton = MDCRaisedButton()
-        editCompleteButton.setTitle("OK", for: .normal)
+        editCompleteButton.setTitle("SAVE", for: .normal)
         editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
         editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
         editCompleteButton.setTitleColor(UIColor.white, for: .normal)
@@ -149,7 +196,6 @@ class SubViewController: UIViewController, ItemDelegate {
         editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // 編集キャンセルボタンの設定
-        editCancelButton = MDCRaisedButton()
         editCancelButton.setTitle("CANCEL", for: .normal)
         editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
         editCancelButton.backgroundColor = UIColor.white
@@ -166,7 +212,6 @@ class SubViewController: UIViewController, ItemDelegate {
         editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // Stepperの設定
-        stepper = UIStepper()
         stepper.minimumValue = 10
         stepper.maximumValue = 25
         stepper.value = Double(caption.font.pointSize)
@@ -190,6 +235,10 @@ class SubViewController: UIViewController, ItemDelegate {
                                          target: self,
                                          action: #selector(itemButtonTapped))
         navigationItem.rightBarButtonItem = itemButton
+        
+        sourceLanguageKey = receivedVideoInfo.language
+        print("sourceLanguage is \(sourceLanguageKey)")
+        print("targetLanguage is \(targetLanguageKey)")
     }
     
     /* 再生・一時停止ボタンが押されたとき */
@@ -231,10 +280,16 @@ class SubViewController: UIViewController, ItemDelegate {
         textField.text = caption.text
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
+        
+        pause()
     }
     
     /* 編集が完了されたとき */
     @objc func editCompleteButtonTapped() {
+        print("編集完了")
+        
+        view.endEditing(true)
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -245,6 +300,10 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* 編集がキャンセルされたとき */
     @objc func editCancelButtonTapped() {
+        print("編集キャンセル")
+        
+        view.endEditing(true)
+        
         textField.isHidden = true
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
@@ -254,11 +313,55 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* 翻訳ボタンが押されたとき */
     func translateButtonTapped() {
+        print("翻訳ボタン")
+        
+        pause()
+        
+        selectLanguage()
+    }
+    
+    /* 翻訳言語の選択用ダイアログを表示する */
+    func selectLanguage() {
+        // AlertControllerを作成
+        let alert = MDCAlertController(title: "言語選択", message: "翻訳する言語を選択してください")
+        
+        // AlertAction用ハンドラ
+        let handler: MDCActionHandler = { (action) -> Void in
+            self.targetLanguageKey = action.title!
+        }
+        
+        // AlertActionを作成
+        let english = MDCAlertAction(title: "English", handler: handler)
+        let korean = MDCAlertAction(title: "한국어", handler: handler)
+        let chinese = MDCAlertAction(title: "中文", handler: handler)
+        let japanese = MDCAlertAction(title: "日本語", handler: handler)
+        
+        // 選択肢をAlertに追加
+        // ダイアログ上では、先に追加したAlertActionほど下に表示される
+        alert.addAction(english)
+        alert.addAction(korean)
+        alert.addAction(chinese)
+        alert.addAction(japanese)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
+    }
+    
+    /* 字幕を翻訳する */
+    func translation() {
         print("翻訳")
+
+        // サポートされている翻訳言語の辞書
+        let languages = [
+            "日本語": "ja",
+            "中文": "zh-CN",
+            "한국어": "ko",
+            "English": "en",
+        ]
         
         let queue = DispatchQueue.global(qos: .default)
-        let translator = Translation("ja", "en")
-                
+        let translator = Translation(languages[sourceLanguageKey]!, languages[targetLanguageKey]!)
+        
         if let captions = receivedVideoInfo.caption {
             for caption in captions.sentences {
                 // サブスレッドで処理
@@ -282,6 +385,8 @@ class SubViewController: UIViewController, ItemDelegate {
     /* チュートリアルボタンが押されたとき */
     func tutorialButtonTapped() {
         print("チュートリアル")
+        
+        pause()
         
         tutorial1()
         
@@ -336,11 +441,6 @@ class SubViewController: UIViewController, ItemDelegate {
         present(tutorial3, animated: true, completion: nil)
     }
     
-    /* Stepperの値が変わったとき */
-    @objc func stepperValueChanged(sender: UIStepper) {
-        caption.font = MDCTypography.body1Font().withSize(CGFloat(sender.value))
-    }
-    
     /* 動画を再生する */
     func play() {
         print("再生")
@@ -359,6 +459,11 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // ボタンの画像をPlayに変える
         playButton.setImage(UIImage(named: "Play"), for: .normal)
+    }
+    
+    /* Stepperの値が変わったとき */
+    @objc func stepperValueChanged(sender: UIStepper) {
+        caption.font = MDCTypography.body1Font().withSize(CGFloat(sender.value))
     }
     
     /* スライダーの値が変わったとき */
@@ -401,9 +506,13 @@ class SubViewController: UIViewController, ItemDelegate {
                 wself.pause()
             }
             
+            print(wself.currentTime)
+            
             // Sliderの値を変える
             wself.timeSlider.setValue(CGFloat(wself.currentTime), animated: true)
-            print(wself.currentTime)
+            
+            wself.elapsedTimeLabel.text = wself.timeToString(wself.currentTime)
+            wself.remainingTimeLabel.text = "-" + wself.timeToString(wself.duration-wself.currentTime)
             
             // 字幕を適切なタイミングで表示
             if let captions = wself.receivedVideoInfo.caption {
@@ -421,19 +530,48 @@ class SubViewController: UIViewController, ItemDelegate {
         }
     }
     
+    // Doubleを時間形式のStringに変換
+    func timeToString(_ time: Double) -> String {
+        var totalSeconds = Int(time)
+        let hours = totalSeconds / 3600
+        totalSeconds %= 3600
+        let minutes = totalSeconds / 60
+        totalSeconds %= 60
+        let seconds = totalSeconds
+        
+        var timeString = ""
+        
+        if hours > 0 {
+            timeString += String(hours) + ":"
+            
+            if minutes < 10 {
+                timeString += "0"
+            }
+        }
+        
+        timeString += String(minutes) + ":"
+        
+        if seconds < 10 {
+            timeString += "0"
+        }
+        timeString += String(seconds)
+        
+        return timeString
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("ViewController/viewWillAppear/画面が表示される直前")
+        print("SubViewController/viewWillAppear/画面が表示される直前")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("ViewController/viewDidAppear/画面が表示された直後")
+        print("SubViewController/viewDidAppear/画面が表示された直後")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("ViewController/viewWillDisappear/別の画面に遷移する直前")
+        print("SubViewController/viewWillDisappear/別の画面に遷移する直前")
         
         // 動画の再生を止める
         player.pause()
@@ -444,11 +582,11 @@ class SubViewController: UIViewController, ItemDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("ViewController/viewDidDisappear/別の画面に遷移した直後")
+        print("SubViewController/viewDidDisappear/別の画面に遷移した直後")
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        print("ViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
+        print("SubViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
 }

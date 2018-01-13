@@ -11,11 +11,9 @@ import SpeechToTextV1
 /* 字幕の情報を管理するクラス */
 class Caption: NSObject, NSCoding {
     
-    var sentences: [Sentence]
+    var sentences = [Sentence]()
     
 	init(_ results: SpeechRecognitionResults) {
-		sentences = [Sentence]()
-		
 		print("Results count = \(results.results.count)")
 		
 		for result in results.results {
