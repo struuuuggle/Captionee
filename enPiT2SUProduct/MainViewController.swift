@@ -29,6 +29,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var editCancelButton: MDCRaisedButton!
     let sideMenuController = SideMenuController()
     var fabOffset: CGFloat = 0
+    var removedVideoInfo: VideoInfo?
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -266,7 +267,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     let label = self.convertFormat(name)
                     
                     // 動画のパス
-                    let path = FileManager.documentDir + "/" + name + ".mp4"
+                    let path = Utility.documentDir + "/" + name + ".mp4"
                     
                     // Documentに動画を保存
                     asset.writeAVToFile(path, presetName: AVAssetExportPresetPassthrough, completeBlock: {(success) in print("Success!")
@@ -387,7 +388,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         Alamofire.upload(
             multipartFormData: { multipartFormData in
                 // ファイルのパス
-                let path = FileManager.documentDir + "/" + fileName + ".mp4"
+                let path = Utility.documentDir + "/" + fileName + ".mp4"
                 let url = URL(fileURLWithPath: path)
                 
                 // サーバサイドでは、withName は $_FILES["uploaded_file"]["tmp_name"] のように使われる
@@ -417,7 +418,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("ファイルをサーバからダウンロード")
         
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            let documentsURL = URL(fileURLWithPath: FileManager.documentDir)
+            let documentsURL = URL(fileURLWithPath: Utility.documentDir)
             let fileURL = documentsURL.appendingPathComponent("\(fileName).wav")
             
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
@@ -549,7 +550,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             print("Open safari success!")
             
             let safariViewController = SFSafariViewController(url: url)
-            view.window?.rootViewController?.present(safariViewController, animated: true, completion: nil)
+            present(safariViewController, animated: true, completion: nil)
         }
     }
     
@@ -570,8 +571,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                    commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         print("Cell: \(indexPath.row) を削除")
         
+        /*
         // DocumentDirectoryのPathを設定
-        let documentPath = FileManager.documentDir
+        let documentPath = Utility.documentDir
         
         // 削除するファイル名を設定
         let fileName = appDelegate.videos[indexPath.row].name
@@ -586,20 +588,23 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         } catch {
             print("\(fileName)は既に削除済み")
         }
+        */
         
-        // 先にデータを更新する
+        // 削除されたセルを一時退避
+        removedVideoInfo = appDelegate.videos[indexPath.row]
+        
+        // セルを削除
         appDelegate.videos.remove(at: indexPath.row)
-        
-        // それからテーブルの更新
-        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-        tableView.reloadData()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
         
         // 元に戻すボタンを生成
         let action = MDCSnackbarMessageAction()
         let actionHandler = { () in
-            let answerMessage = MDCSnackbarMessage()
-            answerMessage.text = "Fascinating"
-            MDCSnackbarManager.show(answerMessage)
+            // セルを戻す
+            self.appDelegate.videos.insert(self.removedVideoInfo!, at: indexPath.row)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         action.handler = actionHandler
         action.title = "元に戻す"
