@@ -190,6 +190,10 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         alert.addAction(ok)
         alert.addAction(cancel)
         
+        // ダイアログ外のタップを無効化
+        let presentationController = alert.mdc_dialogPresentationController
+        presentationController?.dismissOnBackgroundTap = false
+        
         // Alertを表示
         present(alert, animated: true, completion: nil)
     }
