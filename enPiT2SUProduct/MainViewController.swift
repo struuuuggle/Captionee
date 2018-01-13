@@ -730,6 +730,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         selectImageButton.isEnabled = false
         tableView.allowsSelection = false
+        
     }
     
     /* Segueの準備 */
