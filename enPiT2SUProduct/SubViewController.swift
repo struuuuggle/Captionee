@@ -291,6 +291,7 @@ class SubViewController: UIViewController, ItemDelegate {
         caption.isHidden = true
         stepper.isHidden = true
         textField.isHidden = false
+        
         textField.text = caption.text
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
@@ -308,7 +309,16 @@ class SubViewController: UIViewController, ItemDelegate {
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
         caption.isHidden = false
+        
+        if let captions = receivedVideoInfo.caption {
+            for caption in captions.sentences {
+                if currentTime >= caption.startTime && currentTime <= caption.endTime {
+                    caption.foreign = textField.text
+                }
+            }
+        }
         caption.text = textField.text
+        
         stepper.isHidden = false
     }
     
@@ -532,7 +542,7 @@ class SubViewController: UIViewController, ItemDelegate {
             if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
                     if wself.currentTime >= caption.startTime && wself.currentTime <= caption.endTime {
-                        wself.caption.text = caption.foreign + "."
+                        wself.caption.text = caption.foreign
                         return
                     }
                 }

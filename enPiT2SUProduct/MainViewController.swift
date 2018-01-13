@@ -280,7 +280,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                         
                         // 動画をサーバにアップロードする
                         // 長い動画をアップロードするときは極力ここをコメントアウトしてね
-                        // self.uploadFileToServer(name)
+                        self.uploadFileToServer(name)
                     })
                     
                     // メインスレッドで実行
