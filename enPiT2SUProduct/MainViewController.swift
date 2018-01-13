@@ -379,6 +379,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
+        
+        
     }
     
     /* ファイルをサーバにアップロードする */
