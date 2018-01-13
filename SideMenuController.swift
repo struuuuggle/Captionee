@@ -57,6 +57,8 @@ class SideMenuController: UIViewController {
         // Itemの高さ
         let itemHeight: CGFloat = 48
         
+        let mainIcon = UIImage(named: "Main")
+        
         // メインボタンの設定
         let mainButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: width, height: itemHeight))
         mainButton.setTitle("メイン", for: .normal)
