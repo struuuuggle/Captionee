@@ -591,25 +591,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                    commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         print("Cell: \(indexPath.row) を削除")
         
-        /*
-        // DocumentDirectoryのPathを設定
-        let documentPath = Utility.documentDir
-        
-        // 削除するファイル名を設定
-        let fileName = appDelegate.videos[indexPath.row].name
-        
-        // ファイルのPathを設定
-        let filePath: String = documentPath + "/" + fileName
-        
-        // MP4とM4aのファイルを削除
-        do {
-            try FileManager.default.removeItem(atPath: filePath + ".mp4")
-            try FileManager.default.removeItem(atPath: filePath + ".wav")
-        } catch {
-            print("\(fileName)は既に削除済み")
-        }
-        */
-        
         // 削除されたセルを一時退避
         removedVideoInfo = appDelegate.videos[indexPath.row]
         appDelegate.trashVideos.append(appDelegate.videos[indexPath.row])

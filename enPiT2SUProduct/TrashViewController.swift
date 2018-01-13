@@ -15,6 +15,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
 
     var tableView = UITableView()
     var selectImageButton = MDCFloatingButton()
+    let deleteView = UIView()
     let sideMenuController = SideMenuController()
     
     var fabOffset: CGFloat = 0
@@ -47,21 +48,63 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         navigationController?.view.addSubview(sideMenuController.view)
         
         // Viewの背景色を設定
-        view.backgroundColor = MDCPalette.grey.tint100
+        view.backgroundColor = UIColor.white
         
         // CustomCellをTableViewに登録
         tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
         // TableViewのSeparatorを消す
         tableView.tableFooterView = UIView(frame: .zero);
         // TableViewの背景色を設定
-        tableView.backgroundColor = MDCPalette.grey.tint100
+        tableView.backgroundColor = UIColor.white
         view.addSubview(tableView)
         
+        // TableViewの制約を設定
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        // DeleteViewを設定
+        deleteView.backgroundColor = MDCPalette.grey.tint100
+        view.addSubview(deleteView)
+        
+        // DeleteViewの制約を設定
+        deleteView.translatesAutoresizingMaskIntoConstraints = false
+        deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        deleteView.bottomAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        deleteView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        // DeleteViewのLabelを設定
+        let label = UILabel()
+        label.text = "[ゴミ箱]の動画は30日後に自動的に削除されます。"
+        label.font = MDCTypography.body1Font()
+        deleteView.addSubview(label)
+        
+        // DeleteViewのLabelの制約を設定
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.topAnchor.constraint(equalTo: deleteView.topAnchor, constant: 5).isActive = true
+        label.leadingAnchor.constraint(equalTo: deleteView.leadingAnchor, constant: 10).isActive = true
+        label.bottomAnchor.constraint(equalTo: deleteView.centerYAnchor, constant: -10).isActive = true
+        label.trailingAnchor.constraint(equalTo: deleteView.trailingAnchor, constant: -10).isActive = true
+        
+        // DeleteViewのButtonを設定
+        let button = UIButton()
+        let attributedString = NSAttributedString(
+            string: "ゴミ箱を今すぐ空にする",
+            attributes: [NSAttributedStringKey.font: MDCTypography.buttonFont()]
+        )
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        deleteView.addSubview(button)
+        
+        // DeleteViewのButtonの制約を設定
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.topAnchor.constraint(equalTo: deleteView.centerYAnchor, constant: 5).isActive = true
+        button.leadingAnchor.constraint(equalTo: deleteView.centerXAnchor).isActive = true
+        button.bottomAnchor.constraint(equalTo: deleteView.bottomAnchor, constant: -15).isActive = true
+        button.trailingAnchor.constraint(equalTo: deleteView.trailingAnchor).isActive = true
         
         // エッジのドラッグ認識
         let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(edgePanGesture))
@@ -106,6 +149,49 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print("Menu button tapped.")
         
         sideMenuController.open()
+    }
+    
+    /* DeleteButtonが押されたとき */
+    @objc func deleteButtonTapped() {
+        print("Delete button tapped.")
+        
+        // AlertControllerを作成
+        let alert = MDCAlertController(title: "すべての項目を完全に削除しようとしています。続行しますか？", message: "")
+        
+        // AlertActionを作成
+        let ok = MDCAlertAction(title: "OK", handler: { (action) -> Void in
+            print("Delete all")
+            
+            // DocumentDirectoryのPathを設定
+            let documentPath = Utility.documentDir
+            
+            for row in 0..<self.appDelegate.trashVideos.count {
+                // 削除するファイル名を設定
+                let fileName = self.appDelegate.trashVideos[row].name
+                
+                // ファイルのPathを設定
+                let filePath: String = documentPath + "/" + fileName
+                
+                // MP4とM4aのファイルを削除
+                do {
+                    try FileManager.default.removeItem(atPath: filePath + ".mp4")
+                    try FileManager.default.removeItem(atPath: filePath + ".wav")
+                } catch {
+                    print("\(fileName)は既に削除済み")
+                }
+            }
+            
+            self.appDelegate.trashVideos = []
+            self.tableView.reloadData()
+        })
+        let cancel = MDCAlertAction(title: "CANCEL", handler: nil)
+        
+        // 選択肢をAlertに追加
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
     }
     
     /* FABが押されたとき */
@@ -234,7 +320,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     
     /* Cellに値を設定 */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Cellの指定
+        // Cellを指定
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath)
         
         // Cellのサムネイル画像を設定
@@ -293,11 +379,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        // TableViewの背景色を設定
-        scrollView.backgroundColor = MDCPalette.grey.tint100
-        
         // テキストを設定
-        let text = "ゴミ箱にはアイテムがありません"
+        let text = "[ゴミ箱]にはアイテムがありません"
         
         // フォントを設定
         let font = MDCTypography.titleFont()
