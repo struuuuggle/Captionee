@@ -168,6 +168,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.addSubview(refreshControl)
     }
     
+    /* TableViewを引っ張ったとき */
     @objc func refreshControlValueChanged(sender: UIRefreshControl) {
         print("テーブルを下に引っ張った時に呼ばれる")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
@@ -798,6 +799,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("MainViewController/viewDidAppear/画面が表示された直後")
+        
+        sideMenuController.mainButton.isSelected = true
+        sideMenuController.trashButton.isSelected = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {

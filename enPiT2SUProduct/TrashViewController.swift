@@ -423,6 +423,9 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("TrashViewController/viewDidAppear/画面が表示された直後")
+        
+        sideMenuController.mainButton.isSelected = false
+        sideMenuController.trashButton.isSelected = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {

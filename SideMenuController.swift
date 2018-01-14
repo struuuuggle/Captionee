@@ -17,6 +17,9 @@ class SideMenuController: UIViewController {
     var sideView: UIView!
     var shadowView: UIView!
     
+    var mainButton: MDCFlatButton!
+    var trashButton: MDCFlatButton!
+    
     // 画面の横のサイズ
     let screenWidth = UIScreen.main.bounds.width
     // 画面の縦のサイズ
@@ -24,6 +27,7 @@ class SideMenuController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("SideMenuController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // SideViewの横のサイズ
         let width = screenWidth * 2 / 3
@@ -68,20 +72,22 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(divider1)
         
         // メインボタンの設定
-        let mainButton = MDCFlatButton(frame: CGRect(x: 0, y: dividerHeight/2, width: width, height: itemHeight))
+        mainButton = MDCFlatButton(frame: CGRect(x: 0, y: dividerHeight/2, width: width, height: itemHeight))
         mainButton.setTitle("    メイン", for: .normal)
         mainButton.setImage(UIImage(named: "Main"), for: .normal)
         mainButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
+        mainButton.setBackgroundColor(MDCPalette.grey.tint100, for: .selected)
         mainButton.tintColor = iconColor
         mainButton.contentHorizontalAlignment = .left
         mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         buttonView.addSubview(mainButton)
         
         // ゴミ箱ボタンの設定
-        let trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight+dividerHeight/2, width: width, height: itemHeight))
+        trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight+dividerHeight/2, width: width, height: itemHeight))
         trashButton.setTitle("    ゴミ箱", for: .normal)
         trashButton.setImage(UIImage(named: "Trash"), for: .normal)
         trashButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
+        trashButton.setBackgroundColor(MDCPalette.grey.tint100, for: .selected)
         trashButton.tintColor = iconColor
         trashButton.contentHorizontalAlignment = .left
         trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
@@ -136,12 +142,16 @@ class SideMenuController: UIViewController {
     @objc func mainButtonTapped() {
         close()
         
+        trashButton.isSelected = false
+        
         delegate?.mainButtonTapped()
     }
     
     /* ゴミ箱が押されたとき */
     @objc func trashButtonTapped() {
         close()
+        
+        mainButton.isSelected = false
         
         delegate?.trashButtonTapped()
     }
@@ -240,6 +250,31 @@ class SideMenuController: UIViewController {
         default:
             break
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("SideMenuController/viewWillAppear/画面が表示される直前")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("SideMenuController/viewDidAppear/画面が表示された直後")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("SideMenuController/viewWillDisappear/別の画面に遷移する直前")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("SideMenuController/viewDidDisappear/別の画面に遷移した直後")
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        print("SideMenuController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
 
 
