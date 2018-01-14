@@ -40,7 +40,7 @@ class SideMenuController: UIViewController {
         sideView = UIView(frame: CGRect(x: -width, y: 0, width: width, height: screenHeight))
         view.addSubview(sideView)
         
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height-0.5))
         headerView.backgroundColor = UIColor.orange
         sideView.addSubview(headerView)
         
@@ -57,12 +57,19 @@ class SideMenuController: UIViewController {
         // Itemの高さ
         let itemHeight: CGFloat = 48
         
+        // Dividerの高さ
+        let dividerHeight: CGFloat = 16
+        
         // Iconの色
         let iconColor = MDCPalette.grey.tint100
         
+        let divider1 = Divider(frame: CGRect(x: 0, y: -dividerHeight/2, width: width, height: dividerHeight))
+        divider1.isOpaque = false
+        buttonView.addSubview(divider1)
+        
         // メインボタンの設定
-        let mainButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: width, height: itemHeight))
-        mainButton.setTitle("メイン", for: .normal)
+        let mainButton = MDCFlatButton(frame: CGRect(x: 0, y: dividerHeight/2, width: width, height: itemHeight))
+        mainButton.setTitle("    メイン", for: .normal)
         mainButton.setImage(UIImage(named: "Main"), for: .normal)
         mainButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
         mainButton.tintColor = iconColor
@@ -71,8 +78,8 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(mainButton)
         
         // ゴミ箱ボタンの設定
-        let trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: width, height: itemHeight))
-        trashButton.setTitle("ゴミ箱", for: .normal)
+        let trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight+dividerHeight/2, width: width, height: itemHeight))
+        trashButton.setTitle("    ゴミ箱", for: .normal)
         trashButton.setImage(UIImage(named: "Trash"), for: .normal)
         trashButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
         trashButton.tintColor = iconColor
@@ -80,9 +87,13 @@ class SideMenuController: UIViewController {
         trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
         buttonView.addSubview(trashButton)
         
+        let divider2 = Divider(frame: CGRect(x: 0, y: itemHeight*2+dividerHeight/2, width: width, height: dividerHeight))
+        divider2.isOpaque = false
+        buttonView.addSubview(divider2)
+        
         // 設定ボタンの設定
-        let settingsButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: width, height: itemHeight))
-        settingsButton.setTitle("設定", for: .normal)
+        let settingsButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2+dividerHeight*3/2, width: width, height: itemHeight))
+        settingsButton.setTitle("    設定", for: .normal)
         settingsButton.setImage(UIImage(named: "Setting"), for: .normal)
         settingsButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
         settingsButton.tintColor = iconColor
@@ -91,8 +102,8 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(settingsButton)
         
         // チュートリアルボタンの設定
-        let tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: width, height: itemHeight))
-        tutorialButton.setTitle("チュートリアル", for: .normal)
+        let tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3+dividerHeight*3/2, width: width, height: itemHeight))
+        tutorialButton.setTitle("    チュートリアル", for: .normal)
         tutorialButton.setImage(UIImage(named: "Tutorial"), for: .normal)
         tutorialButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
         tutorialButton.tintColor = iconColor
@@ -101,8 +112,8 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(tutorialButton)
         
         // フィードバックボタンの設定
-        let feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*4, width: width, height: itemHeight))
-        feedbackButton.setTitle("フィードバックを送信", for: .normal)
+        let feedbackButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*4+dividerHeight*3/2, width: width, height: itemHeight))
+        feedbackButton.setTitle("    フィードバックを送信", for: .normal)
         feedbackButton.setImage(UIImage(named: "Feedback"), for: .normal)
         feedbackButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
         feedbackButton.tintColor = iconColor
@@ -111,8 +122,8 @@ class SideMenuController: UIViewController {
         buttonView.addSubview(feedbackButton)
         
         // ヘルプの設定
-        let helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*5, width: width, height: itemHeight))
-        helpButton.setTitle("ヘルプ", for: .normal)
+        let helpButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*5+dividerHeight*3/2, width: width, height: itemHeight))
+        helpButton.setTitle("    ヘルプ", for: .normal)
         helpButton.setImage(UIImage(named: "Help"), for: .normal)
         helpButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
         helpButton.tintColor = iconColor
@@ -257,5 +268,18 @@ protocol SideMenuDelegate: class {
     func feedbackButtonTapped()
     // ヘルプボタン用
     func helpButtonTapped()
+}
+
+/* 線を描画するクラス */
+class Divider: UIView {
+    
+    override func draw(_ rect: CGRect) {
+        let line = UIBezierPath()
+        line.move(to: CGPoint(x: 0, y: rect.height/2))
+        line.addLine(to: CGPoint(x: rect.width, y: rect.height/2))
+        UIColor.black.withAlphaComponent(0.12).setStroke()
+        line.lineWidth = 1
+        line.stroke()
+    }
 }
 
