@@ -60,13 +60,17 @@ class SideMenuController: UIViewController {
         
         // Itemの高さ
         let itemHeight: CGFloat = 48
-        
         // Dividerの高さ
         let dividerHeight: CGFloat = 16
         
-        // Iconの色
-        let iconColor = MDCPalette.grey.tint100
+        // Titleの色
+        let titleColor = UIColor(white: 0.0, alpha: 0.87)
+        // 選択状態のTitleの色
+        let selectedTitleColor = MDCPalette.orange.tint500
+        // 選択状態の背景色
+        let selectedBackgroundColor = UIColor(white: 0.0, alpha: 0.06)
         
+        // 1つ目の線
         let divider1 = Divider(frame: CGRect(x: 0, y: -dividerHeight/2, width: width, height: dividerHeight))
         divider1.isOpaque = false
         buttonView.addSubview(divider1)
@@ -75,9 +79,11 @@ class SideMenuController: UIViewController {
         mainButton = MDCFlatButton(frame: CGRect(x: 0, y: dividerHeight/2, width: width, height: itemHeight))
         mainButton.setTitle("    メイン", for: .normal)
         mainButton.setImage(UIImage(named: "Main"), for: .normal)
+        mainButton.setImage(UIImage(named: "SelectedMain"), for: .selected)
         mainButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        mainButton.setBackgroundColor(MDCPalette.grey.tint100, for: .selected)
-        mainButton.tintColor = iconColor
+        mainButton.setBackgroundColor(selectedBackgroundColor, for: .selected)
+        mainButton.setTitleColor(titleColor , for: .normal)
+        mainButton.setTitleColor(selectedTitleColor, for: .selected)
         mainButton.contentHorizontalAlignment = .left
         mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         buttonView.addSubview(mainButton)
@@ -86,13 +92,16 @@ class SideMenuController: UIViewController {
         trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight+dividerHeight/2, width: width, height: itemHeight))
         trashButton.setTitle("    ゴミ箱", for: .normal)
         trashButton.setImage(UIImage(named: "Trash"), for: .normal)
+        trashButton.setImage(UIImage(named: "SelectedTrash"), for: .selected)
         trashButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        trashButton.setBackgroundColor(MDCPalette.grey.tint100, for: .selected)
-        trashButton.tintColor = iconColor
+        trashButton.setBackgroundColor(selectedBackgroundColor, for: .selected)
+        trashButton.setTitleColor(titleColor, for: .normal)
+        trashButton.setTitleColor(selectedTitleColor, for: .selected)
         trashButton.contentHorizontalAlignment = .left
         trashButton.addTarget(self, action: #selector(trashButtonTapped), for: .touchUpInside)
         buttonView.addSubview(trashButton)
         
+        // 2つ目の線
         let divider2 = Divider(frame: CGRect(x: 0, y: itemHeight*2+dividerHeight/2, width: width, height: dividerHeight))
         divider2.isOpaque = false
         buttonView.addSubview(divider2)
@@ -102,7 +111,7 @@ class SideMenuController: UIViewController {
         settingsButton.setTitle("    設定", for: .normal)
         settingsButton.setImage(UIImage(named: "Setting"), for: .normal)
         settingsButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        settingsButton.tintColor = iconColor
+        settingsButton.setTitleColor(titleColor, for: .normal)
         settingsButton.contentHorizontalAlignment = .left
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
         buttonView.addSubview(settingsButton)
@@ -112,7 +121,7 @@ class SideMenuController: UIViewController {
         tutorialButton.setTitle("    チュートリアル", for: .normal)
         tutorialButton.setImage(UIImage(named: "Tutorial"), for: .normal)
         tutorialButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        tutorialButton.tintColor = iconColor
+        tutorialButton.setTitleColor(titleColor, for: .normal)
         tutorialButton.contentHorizontalAlignment = .left
         tutorialButton.addTarget(self, action: #selector(tutorialButtonTapped), for: .touchUpInside)
         buttonView.addSubview(tutorialButton)
@@ -122,7 +131,7 @@ class SideMenuController: UIViewController {
         feedbackButton.setTitle("    フィードバックを送信", for: .normal)
         feedbackButton.setImage(UIImage(named: "Feedback"), for: .normal)
         feedbackButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        feedbackButton.tintColor = iconColor
+        feedbackButton.setTitleColor(titleColor, for: .normal)
         feedbackButton.contentHorizontalAlignment = .left
         feedbackButton.addTarget(self, action: #selector(feedbackButtonTapped), for: .touchUpInside)
         buttonView.addSubview(feedbackButton)
@@ -132,7 +141,7 @@ class SideMenuController: UIViewController {
         helpButton.setTitle("    ヘルプ", for: .normal)
         helpButton.setImage(UIImage(named: "Help"), for: .normal)
         helpButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        helpButton.tintColor = iconColor
+        helpButton.setTitleColor(titleColor, for: .normal)
         helpButton.contentHorizontalAlignment = .left
         helpButton.addTarget(self, action: #selector(helpButtonTapped), for: .touchUpInside)
         buttonView.addSubview(helpButton)
