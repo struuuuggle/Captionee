@@ -48,7 +48,7 @@ Captioneeの字幕翻訳機能は、Cloud Translation APIを利用していま�
 #### Step2. Cloud Translation API のキーを発行する
 
 [コンソール](https://console.cloud.google.com)をひらき、画面左上の「≡」ボタンを押して[「APIとサービス」>「認証情報」](https://console.cloud.google.com/apis/credentials)を押します。    
-「認証情報を作成」ボタンを押し、「APIキー」を選びます。    
+「作成(または認証情報を作成)」ボタンを押し、「APIキー」を選びます。    
 「API キーを作成しました」というダイアログが出ます。作成したAPIキーをメモし、「キーを制限」ボタンを押します。    
 APIキーの設定画面では、名前を適当に入力します。（"Key for Captionee""などが良いでしょう)    
 「キーの制限」は「iOSアプリ」をチェックをし、APIキーを保存します。    
