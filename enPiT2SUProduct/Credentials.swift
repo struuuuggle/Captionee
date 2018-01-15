@@ -17,4 +17,5 @@
 struct Credentials {
     static let SpeechToTextUsername = "feee074e-9bee-4042-bf3e-9eea2c54d224"
     static let SpeechToTextPassword = "lIkbL8uKbLrB"
+    static let CloudTranslationApiKey = "AIzaSyC_Pr-LZAncvufc7wN_VHDY2FGgevyx4ZQ"
 }
