@@ -265,7 +265,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     func helpButtonTapped() {
         print("ヘルプ")
         
-        let url = URL(string: "https://struuuuggle.github.io/Captionee/")
+        let url = URL(string: "http://captionee.servehttp.com/help.html")
         if let url = url {
             print("Open safari success!")
             

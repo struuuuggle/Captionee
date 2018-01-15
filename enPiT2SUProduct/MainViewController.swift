@@ -383,6 +383,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         alert.addAction(chinese)
         alert.addAction(english)
         alert.addAction(japanese)
+
+        // ダイアログ外のタップを無効化
+        let presentationController = alert.mdc_dialogPresentationController
+        presentationController?.dismissOnBackgroundTap = false;
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
