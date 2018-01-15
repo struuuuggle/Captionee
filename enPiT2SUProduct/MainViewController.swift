@@ -168,6 +168,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.addSubview(refreshControl)
     }
     
+    /* 上からスワイプしたとき */
     @objc func refreshControlValueChanged(sender: UIRefreshControl) {
         print("テーブルを下に引っ張った時に呼ばれる")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
@@ -280,7 +281,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                         
                         // 動画をサーバにアップロードする
                         // 長い動画をアップロードするときは極力ここをコメントアウトしてね
-                        self.uploadFileToServer(name)
+                        //self.uploadFileToServer(name)
                     })
                     
                     // メインスレッドで実行
