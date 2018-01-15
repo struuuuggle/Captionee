@@ -28,6 +28,7 @@ enum Language: String {
 class SettingsViewController: FormViewController {
 
     var language: Language = .japanese
+    var captionSize = "中"
     var supportModeOn = false
     
     // AppDelegateの変数にアクセスする用
@@ -76,10 +77,33 @@ class SettingsViewController: FormViewController {
                     row.reload()
                 }
             }
+            // 字幕サイズ
+            <<< PushRow<String>() {
+                $0.title = "字幕の大きさ"
+                $0.value = captionSize
+                $0.options = ["小", "中", "大"]
+                $0.onCellSelection { cell, row in
+                    print("Caption size selected.")
+                    
+                    row.deselect(animated: true)
+                }
+                $0.onChange { [unowned self] row in
+                    print("Caption size changed.")
+                        
+                    self.captionSize = row.value ?? "中"
+                        
+                    print("Caption size is \(String(describing: row.value)).")
+                    
+                    row.value = self.captionSize
+                    
+                    row.reload()
+                }
+            }
             // 聴覚障害者モード
             <<< SwitchRow() {
                 $0.title = "聴覚障害者モード"
                 $0.value = false
+                $0.cell.switchControl.onTintColor = MDCPalette.orange.tint500
                 $0.onChange { [unowned self] row in
                     print("Support mode changed.")
                     
@@ -186,8 +210,6 @@ class SettingsViewController: FormViewController {
                     print("\(fileName)を削除")
                     
                     try FileManager.default.removeItem(atPath: Utility.documentDir+"/"+fileName)
-                    
-                    
                 }
             } catch {
                 print("削除エラー")
