@@ -71,7 +71,7 @@ struct Credentials {
 
 Google Cloud Platform の設定は以上です。
 
-## タイトル（仮）
+## Captioneeの使用方法
 
 ### Chapter.1  アプリ起動〜動画のアップロード
 
