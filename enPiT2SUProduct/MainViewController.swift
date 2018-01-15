@@ -715,7 +715,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    @IBAction func labelEditButton(_ sender: UIButton) {
+    func labelEditButton(_ sender: MDCButton) {
         print("編集")
         
         textField.isHidden = false
@@ -797,7 +797,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("MainViewController/viewWillAppear/画面が表示される直前")
-        
         tableView.reloadData()
     }
     
