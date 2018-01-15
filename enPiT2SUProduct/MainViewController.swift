@@ -802,6 +802,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("MainViewController/viewDidAppear/画面が表示された直後")
+        
+        sideMenuController.mainButton.isSelected = true
+        sideMenuController.trashButton.isSelected = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {

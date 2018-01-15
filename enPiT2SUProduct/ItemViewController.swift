@@ -26,38 +26,38 @@ class ItemViewController: UIViewController {
         // 編集ボタンの設定
         let editButton = MDCFlatButton(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: itemHeight))
         editButton.setTitle("字幕を編集", for: .normal)
-        editButton.titleLabel?.font = MDCTypography.buttonFont()
-        editButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        editButton.setTitleFont(MDCTypography.subheadFont(), for: .normal)
+        editButton.alpha = MDCTypography.subheadFontOpacity()
         editButton.contentHorizontalAlignment = .left
-        view.addSubview(editButton)
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        view.addSubview(editButton)
         
         // 翻訳ボタンの設定
         let translateButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight, width: view.frame.width, height: itemHeight))
         translateButton.setTitle("字幕を翻訳", for: .normal)
-        translateButton.titleLabel?.font = MDCTypography.buttonFont()
-        translateButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        translateButton.setTitleFont(MDCTypography.subheadFont(), for: .normal)
+        translateButton.alpha = MDCTypography.subheadFontOpacity()
         translateButton.contentHorizontalAlignment = .left
-        view.addSubview(translateButton)
         translateButton.addTarget(self, action: #selector(translateButtonTapped), for: .touchUpInside)
+        view.addSubview(translateButton)
         
         // チュートリアルボタンの設定
         let tutorialButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*2, width: view.frame.width, height: itemHeight))
         tutorialButton.setTitle("チュートリアル", for: .normal)
-        tutorialButton.titleLabel?.font = MDCTypography.buttonFont()
-        tutorialButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        tutorialButton.setTitleFont(MDCTypography.subheadFont(), for: .normal)
+        tutorialButton.alpha = MDCTypography.subheadFontOpacity()
         tutorialButton.contentHorizontalAlignment = .left
-        view.addSubview(tutorialButton)
         tutorialButton.addTarget(self, action: #selector(tutorialButtonTapped), for: .touchUpInside)
+        view.addSubview(tutorialButton)
         
         // キャンセルボタンの設定
         let cancelButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight*3, width: view.frame.width, height: itemHeight))
         cancelButton.setTitle("キャンセル", for: .normal)
-        cancelButton.titleLabel?.font = MDCTypography.buttonFont()
-        cancelButton.titleLabel?.alpha = MDCTypography.buttonFontOpacity()
+        cancelButton.setTitleFont(MDCTypography.subheadFont(), for: .normal)
+        cancelButton.alpha = MDCTypography.subheadFontOpacity()
         cancelButton.contentHorizontalAlignment = .left
-        view.addSubview(cancelButton)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        view.addSubview(cancelButton)
         
         // Viewの大きさを設定
         preferredContentSize = CGSize(width: UIScreen.main.bounds.width, height: itemHeight*4)
