@@ -123,7 +123,7 @@ class SettingsViewController: FormViewController {
                 $0.onCellSelection { [unowned self] cell, row in
                     print("Privacy policy selected.")
                     
-                    self.openSafari("https://struuuuggle.github.io/Captionee/")
+                    self.openSafari("http://captionee.servehttp.com/help.html")
                     
                     row.deselect(animated: true)
                 }
@@ -134,7 +134,7 @@ class SettingsViewController: FormViewController {
                 $0.onCellSelection { [unowned self] cell, row in
                     print("Terms of service selected.")
                     
-                    self.openSafari("https://struuuuggle.github.io/Captionee/")
+                    self.openSafari("http://captionee.servehttp.com/help.html")
                     
                     row.deselect(animated: true)
                 }
@@ -145,7 +145,7 @@ class SettingsViewController: FormViewController {
                 $0.onCellSelection { [unowned self] cell, row in
                     print("License selected.")
                     
-                    self.openSafari("https://struuuuggle.github.io/Captionee/")
+                    self.openSafari("http://captionee.servehttp.com/help.html")
                     
                     row.deselect(animated: true)
                 }

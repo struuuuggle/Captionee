@@ -383,6 +383,10 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         alert.addAction(chinese)
         alert.addAction(english)
         alert.addAction(japanese)
+
+        // ダイアログ外のタップを無効化
+        let presentationController = alert.mdc_dialogPresentationController
+        presentationController?.dismissOnBackgroundTap = false;
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
@@ -566,7 +570,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     func helpButtonTapped() {
         print("ヘルプ")
         
-        let url = URL(string: "https://struuuuggle.github.io/Captionee/")
+        let url = URL(string: "http://captionee.servehttp.com/help.html")
         if let url = url {
             print("Open safari success!")
             
