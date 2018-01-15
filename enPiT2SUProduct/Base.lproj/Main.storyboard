@@ -78,10 +78,6 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="Z6o-d9-NA3" id="Jxg-Kw-Bbd"/>
-                                    <outlet property="delegate" destination="Z6o-d9-NA3" id="9LF-z6-gNS"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -94,7 +90,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK"/>
                     <connections>
-                        <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
                         <segue destination="tI5-RB-fPo" kind="show" identifier="toSubViewController" id="e8m-EU-3v6"/>
                     </connections>
                 </viewController>
@@ -113,34 +108,8 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="c5f-MH-R5h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="字幕を表示" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTv-ER-9my">
-                                <rect key="frame" x="272" y="410" width="87" height="20.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aga-F4-Bt2">
-                                <rect key="frame" x="20" y="611" width="36" height="36"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="8yC-Lp-zTs"/>
-                                    <constraint firstAttribute="width" constant="36" id="SPj-y5-mHE"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" image="Play"/>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="aga-F4-Bt2" secondAttribute="bottom" constant="20" id="6J4-8X-YTW"/>
-                            <constraint firstItem="aga-F4-Bt2" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leading" constant="20" id="iGy-tA-JJH"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
-                        <outlet property="playButton" destination="aga-F4-Bt2" id="0pl-dk-0cT"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5o-aQ-1Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="T1T-gk-u30">
@@ -171,7 +140,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Play" width="36" height="36"/>
         <image name="Vertical" width="24" height="24"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -65,8 +65,10 @@ class SubViewController: UIViewController, ItemDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    @IBOutlet weak var caption: UILabel!
-    @IBOutlet weak var playButton: UIButton!
+    //@IBOutlet weak var caption: UILabel!
+    var caption = UILabel()
+    //@IBOutlet weak var playButton: UIButton!
+    var playButton = UIButton()
     
     var timeSlider = MDCSlider()
     var textField = MDCMultilineTextField()
@@ -79,6 +81,8 @@ class SubViewController: UIViewController, ItemDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("SubViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
+        
+        view.backgroundColor = UIColor.white
         
         // DocumentDirectoryのPath
         let documentPath: String = Utility.documentDir
@@ -123,8 +127,16 @@ class SubViewController: UIViewController, ItemDelegate {
         caption.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         caption.bottomAnchor.constraint(equalTo: playButton.topAnchor, constant: -48)
         
+        playButton.setImage(UIImage(named: "Play"), for: .normal)
         // ボタンをクリックしたときに呼び出すメソッドを指定
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        view.addSubview(playButton)
+        
+        playButton.translatesAutoresizingMaskIntoConstraints = false
+        playButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        playButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+        playButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        playButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         // 経過時間Labelの設定
         elapsedTimeLabel.text = "0:00"
@@ -229,12 +241,14 @@ class SubViewController: UIViewController, ItemDelegate {
         stepper.widthAnchor.constraint(equalToConstant: 6).isActive = true
         stepper.heightAnchor.constraint(equalToConstant: 18).isActive = true
         
-        // NavigationBarの右側にtranslateButtonを設置
+        // NavigationBarの右側にItemButtonを設置
         let itemButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
                                          style: .plain,
                                          target: self,
                                          action: #selector(itemButtonTapped))
         navigationItem.rightBarButtonItem = itemButton
+        
+        navigationItem.backBarButtonItem?.title = ""
         
         sourceLanguageKey = receivedVideoInfo.language
         print("sourceLanguage is \(sourceLanguageKey)")
@@ -277,6 +291,7 @@ class SubViewController: UIViewController, ItemDelegate {
         caption.isHidden = true
         stepper.isHidden = true
         textField.isHidden = false
+        
         textField.text = caption.text
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
@@ -294,7 +309,16 @@ class SubViewController: UIViewController, ItemDelegate {
         editCompleteButton.isHidden = true
         editCancelButton.isHidden = true
         caption.isHidden = false
+        
+        if let captions = receivedVideoInfo.caption {
+            for caption in captions.sentences {
+                if currentTime >= caption.startTime && currentTime <= caption.endTime {
+                    caption.foreign = textField.text
+                }
+            }
+        }
         caption.text = textField.text
+        
         stepper.isHidden = false
     }
     
@@ -518,7 +542,7 @@ class SubViewController: UIViewController, ItemDelegate {
             if let captions = wself.receivedVideoInfo.caption {
                 for caption in captions.sentences {
                     if wself.currentTime >= caption.startTime && wself.currentTime <= caption.endTime {
-                        wself.caption.text = caption.foreign + "."
+                        wself.caption.text = caption.foreign
                         return
                     }
                 }

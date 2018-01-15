@@ -17,7 +17,7 @@ class Caption: NSObject, NSCoding {
 		print("Results count = \(results.results.count)")
 		
 		for result in results.results {
-			let original = result.alternatives[0].transcript
+			let original = result.alternatives[0].transcript + "."
 			let startTime = result.alternatives[0].timestamps![0].startTime
 			let endTime = result.alternatives[0].timestamps![result.alternatives[0].timestamps!.count-1].endTime
 			

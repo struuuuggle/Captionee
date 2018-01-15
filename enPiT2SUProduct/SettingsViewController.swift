@@ -167,7 +167,48 @@ class SettingsViewController: FormViewController {
     
     /* アプリ内の全データを削除する */
     func deleteAll() {
-        print("データを削除")
+        // AlertControllerを作成
+        let alert = MDCAlertController(
+            title: "アプリ内の全てのデータを完全に削除しようとしています。続行しますか？",
+            message: "この操作は取り消せません。"
+        )
+        
+        // AlertActionを作成
+        let ok = MDCAlertAction(title: "OK", handler: { (action) -> Void in
+            print("データを削除")
+            
+            do {
+                print("Document: \(Utility.documentDir)")
+                
+                let allFileName = try FileManager.default.contentsOfDirectory(atPath: Utility.documentDir)
+                
+                for fileName in allFileName {
+                    print("\(fileName)を削除")
+                    
+                    try FileManager.default.removeItem(atPath: Utility.documentDir+"/"+fileName)
+                    
+                    
+                }
+            } catch {
+                print("削除エラー")
+            }
+            
+            self.appDelegate.videos = []
+            self.appDelegate.trashVideos = []
+            Utility.userDefault.removeObject(forKey: "Videos")
+        })
+        let cancel = MDCAlertAction(title: "CANCEL", handler: nil)
+        
+        // 選択肢をAlertに追加
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        // ダイアログ外のタップを無効化
+        let presentationController = alert.mdc_dialogPresentationController
+        presentationController?.dismissOnBackgroundTap = false
+        
+        // Alertを表示
+        present(alert, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
