@@ -35,9 +35,41 @@ struct Credentials {
   
 IBM Cloud の設定は以上です。
 
+
 ### Google Cloud Platform の設定
 
-今後追記予定。
+Captioneeの字幕翻訳機能は、Cloud Translation APIを利用しています。
+以下の手順に沿って設定を行ってください。
+
+#### Step1. 新しいプロジェクトを作成し、Cloud Translation APIを有効化する
+
+[こちら](https://cloud.google.com/translate/docs/getting-started?hl=ja#set_up_your_project)の記事を参考にして、「プロジェクトを設定する」の**手順1〜5**を行なってください。
+
+#### Step2. Cloud Translation API のキーを発行する
+
+[コンソール](https://console.cloud.google.com)をひらき、画面左上の「≡」ボタンを押して[「APIとサービス」>「認証情報」](https://console.cloud.google.com/apis/credentials)を押します。    
+「認証情報を作成」ボタンを押し、「APIキー」を選びます。    
+「API キーを作成しました」というダイアログが出ます。作成したAPIキーをメモし、「キーを制限」ボタンを押します。    
+APIキーの設定画面では、名前を適当に入力します。（"Key for Captionee""などが良いでしょう)    
+「キーの制限」は「iOSアプリ」をチェックをし、APIキーを保存します。    
+「リクエストを受け入れるiOSアプリのバンドルID」 の入力は任意です。
+
+#### Step3. Credentials.swift にAPIキーを追記する
+
+IBM Cloudの設定時に作成した**Credentials.swift**に`static let CloudTranslationApiKey = "API-KEY" `を追記します。
+追記した結果、**Credentials.swift**の内容は次のようになります。
+
+```swift
+struct Credentials {
+    static let SpeechToTextUsername = "username"  
+    static let SpeechToTextPassword = "password"
+    static let CloudTranslationApiKey = "API-KEY"  // 追記する行
+}
+```
+
+`API-KEY`にはStep2でメモした値を入力してください。
+
+Google Cloud Platform の設定は以上です。
 
 ## タイトル（仮）
 
