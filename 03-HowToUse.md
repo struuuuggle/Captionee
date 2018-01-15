@@ -1,4 +1,45 @@
-## Captionee の使い方
+# Captionee の使い方
+
+## 事前準備
+
+### IBM Cloud の設定
+
+Captionee を使用するには IBM Cloud の設定が必要になります。  
+以下の手順に沿って設定を行ってください。
+
+#### Step.1 IBM Cloud にログインする
+詳しい手順は[こちら](http://ibm.biz/litecloud)の記事を参考にしてください。
+
+#### Step.2 Speech To Text のインスタンスを作成する
+ダッシュボードで「リソースの作成」を押します。  
+左のカテゴリから「Watson」を選択し、「Speech To Text」を押します。  
+適当な「サービス名」を入力し、「デプロイする地域/ロケーション」、「組織」、「スペース」を選択します。  
+希望の「価格プラン」を選択し、「作成」を押します。
+
+#### Step.3 Speech To Text の API キーを取得する
+Step.2 で作成した Speech To Text のインスタンスを開き、「サービス資格情報」を選択します。  
+その中の「新規資格情報」を押し、そのまま「追加」を押します。（名前の変更は任意です）  
+追加した資格情報の「資格情報の表示」を開きます。  
+表示された JSON スニペットから、 `"username"` の値と `"password"` の値をメモしておきます。
+
+#### Step.4 Credential.swift を作成する
+enPiTSUProduct 内に **Credential.swift** という名前のファイルを作成し、次の内容をコピーします。
+
+```swift
+struct Credentials {
+    static let SpeechToTextUsername = "username"
+    static let SpeechToTextPassword = "password"
+}
+```
+`"username"` と `"password"` は、Step.3 でメモした値にそれぞれ置き換えてください。
+  
+IBM Cloud の設定は以上です。
+
+### Google Cloud Platform の設定
+
+今後追記予定。
+
+## タイトル（仮）
 
 ### Chapter.1  アプリ起動〜動画のアップロード
 
