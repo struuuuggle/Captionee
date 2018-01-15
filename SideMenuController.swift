@@ -264,6 +264,8 @@ class SideMenuController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("SideMenuController/viewWillAppear/画面が表示される直前")
+        
+        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: "delete")
     }
     
     override func viewDidAppear(_ animated: Bool) {
