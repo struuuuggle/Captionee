@@ -797,6 +797,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("MainViewController/viewWillAppear/画面が表示される直前")
+        
+        tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
