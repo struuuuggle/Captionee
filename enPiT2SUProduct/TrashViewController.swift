@@ -62,6 +62,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         let label = UILabel()
         label.text = "[ゴミ箱]の動画は30日後に自動的に削除されます。"
         label.font = MDCTypography.body1Font()
+        label.adjustsFontSizeToFitWidth = true
         deleteView.addSubview(label)
         
         // DeleteViewのLabelの制約を設定
