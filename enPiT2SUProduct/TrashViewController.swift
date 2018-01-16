@@ -15,7 +15,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
 
     var tableView = UITableView()
     var selectImageButton = MDCFloatingButton()
-    let deleteView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
+    let deleteView = UIView()
     let sideMenuController = SideMenuController()
     
     var fabOffset: CGFloat = 0
@@ -48,29 +48,15 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         navigationController?.view.addSubview(sideMenuController.view)
         
         // Viewの背景色を設定
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = MDCPalette.grey.tint100
         
         // DeleteViewを設定
-        if appDelegate.trashVideos.count == 0 {
-            deleteView.isHidden = true
-        }
+        deleteView.frame = CGRect(x: 0,
+                                  y: appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                  width: UIScreen.main.bounds.width,
+                                  height: 80)
         deleteView.backgroundColor = MDCPalette.grey.tint100
         view.addSubview(deleteView)
-        
-        // CustomCellをTableViewに登録
-        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
-        // TableViewのSeparatorを消す
-        tableView.tableFooterView = UIView(frame: .zero);
-        // TableViewの背景色を設定
-        tableView.backgroundColor = UIColor.white
-        view.addSubview(tableView)
-        
-        // TableViewの制約を設定
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: deleteView.bottomAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         // DeleteViewのLabelを設定
         let label = UILabel()
@@ -101,6 +87,21 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         button.leadingAnchor.constraint(equalTo: deleteView.centerXAnchor).isActive = true
         button.bottomAnchor.constraint(equalTo: deleteView.bottomAnchor, constant: -15).isActive = true
         button.trailingAnchor.constraint(equalTo: deleteView.trailingAnchor).isActive = true
+        
+        // CustomCellをTableViewに登録
+        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
+        // TableViewのSeparatorを消す
+        tableView.tableFooterView = UIView(frame: .zero);
+        // TableViewの背景色を設定
+        tableView.backgroundColor = UIColor.white
+        view.addSubview(tableView)
+        
+        // TableViewの制約を設定
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: deleteView.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         // エッジのドラッグ認識
         let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(edgePanGesture))
@@ -177,7 +178,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                 }
             }
             
-            self.deleteView.isHidden = true
+            self.deleteView.frame = self.deleteView.frame.offsetBy(dx: 0, dy: -80)
             self.appDelegate.trashVideos = []
             self.tableView.reloadData()
         })
@@ -307,7 +308,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
             sender.endRefreshing()
         })
         
-        deleteView.isHidden = appDelegate.trashVideos.count == 0 ? true : false
+        deleteView.frame = deleteView.frame.offsetBy(dx: 0, dy: appDelegate.trashVideos.count == 0 ? 0 : 80)
         
         tableView.reloadData()
     }
