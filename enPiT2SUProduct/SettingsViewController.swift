@@ -10,6 +10,7 @@ import UIKit
 import MaterialComponents
 import Eureka
 import SafariServices
+import Material
 
 enum Language: String {
     case japanese = "日本語"
@@ -40,14 +41,17 @@ class SettingsViewController: FormViewController {
         print("SettingsViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // ViewControllerのTitleを設定
-        title = "設定"
+        navigationItem.titleLabel.text = "設定"
+        navigationItem.titleLabel.font = RobotoFont.bold
+        navigationItem.titleLabel.textColor = UIColor.white
         
         // 背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
         
         // NavigationBarの左に閉じるボタンを設置
-        let closeButton = UIBarButtonItem(image: UIImage(named: "Clear"), style: .plain, target: self, action: #selector(closeButtonTapped))
-        navigationItem.leftBarButtonItem = closeButton
+        let closeButton = IconButton(image: Icon.close, tintColor: UIColor.white)
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        navigationItem.leftViews = [closeButton]
         
         // Formを設定
         form

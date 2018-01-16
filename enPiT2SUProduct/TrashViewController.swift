@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 import DZNEmptyDataSet
 import MaterialComponents
+import Material
 
 class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
@@ -37,13 +38,13 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.emptyDataSetSource = self
         
         // NavigationBarの左側にMenuButtonを設置
-        let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(menuButtonTapped))
-        navigationItem.leftBarButtonItem = menuButton
+        let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
+        menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        navigationItem.leftViews = [menuButton]
         
-        navigationItem.title = "ゴミ箱"
+        navigationItem.titleLabel.text = "ゴミ箱"
+        navigationItem.titleLabel.font = RobotoFont.bold
+        navigationItem.titleLabel.textColor = UIColor.white
         
         navigationController?.view.addSubview(sideMenuController.view)
         
@@ -215,8 +216,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print("メイン")
         
         let mainViewController = MainViewController()
-        modalTransitionStyle = .crossDissolve
-        navigationController?.pushViewController(mainViewController, animated: true)
+        let navigationController = CustomNavigationController(rootViewController: mainViewController)
+        present(navigationController, animated: true, completion: nil)
     }
     
     /* ゴミ箱が押されたとき */
@@ -229,7 +230,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print("設定")
         
         let settingsViewController = SettingsViewController()
-        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        let navigationController = CustomNavigationController(rootViewController: settingsViewController)
         present(navigationController, animated: true, completion: nil)
     }
     

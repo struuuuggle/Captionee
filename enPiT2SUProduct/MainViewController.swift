@@ -16,6 +16,7 @@ import MaterialComponents
 import SwiftReorder
 import Alamofire
 import DKImagePickerController
+import Material
 
 /* メイン画面のController */
 class MainViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, SideMenuDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
@@ -45,13 +46,13 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("MainViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // NavigationBarの左側にMenuButtonを設置
-        let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(menuButtonTapped))
-        navigationItem.leftBarButtonItem = menuButton
+        let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
+        menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        navigationItem.leftViews = [menuButton]
         
-        navigationItem.title = "メイン"
+        navigationItem.titleLabel.text = "メイン"
+        navigationItem.titleLabel.font = RobotoFont.bold
+        navigationItem.titleLabel.textColor = UIColor.white
         
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
@@ -516,8 +517,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("ゴミ箱")
         
         let trashViewController = TrashViewController()
-        modalTransitionStyle = .crossDissolve
-        navigationController?.pushViewController(trashViewController, animated: true)
+        let navigationController = CustomNavigationController(rootViewController: trashViewController)
+        present(navigationController, animated: true, completion: nil)
     }
     
     /* 設定ボタンが押されたとき */
@@ -525,7 +526,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("設定")
         
         let settingsViewController = SettingsViewController()
-        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        let navigationController = CustomNavigationController(rootViewController: settingsViewController)
         present(navigationController, animated: true, completion: nil)
     }
     
