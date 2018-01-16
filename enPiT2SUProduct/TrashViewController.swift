@@ -15,7 +15,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
 
     var tableView = UITableView()
     var selectImageButton = MDCFloatingButton()
-    let deleteView = UIView()
+    let deleteView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
     let sideMenuController = SideMenuController()
     
     var fabOffset: CGFloat = 0
@@ -50,6 +50,13 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         // Viewの背景色を設定
         view.backgroundColor = UIColor.white
         
+        // DeleteViewを設定
+        if appDelegate.trashVideos.count == 0 {
+            deleteView.isHidden = true
+        }
+        deleteView.backgroundColor = MDCPalette.grey.tint100
+        view.addSubview(deleteView)
+        
         // CustomCellをTableViewに登録
         tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
         // TableViewのSeparatorを消す
@@ -60,21 +67,10 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         // TableViewの制約を設定
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
+        tableView.topAnchor.constraint(equalTo: deleteView.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        // DeleteViewを設定
-        deleteView.backgroundColor = MDCPalette.grey.tint100
-        view.addSubview(deleteView)
-        
-        // DeleteViewの制約を設定
-        deleteView.translatesAutoresizingMaskIntoConstraints = false
-        deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        deleteView.bottomAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-        deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        deleteView.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         // DeleteViewのLabelを設定
         let label = UILabel()
@@ -181,6 +177,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                 }
             }
             
+            self.deleteView.isHidden = true
             self.appDelegate.trashVideos = []
             self.tableView.reloadData()
         })
@@ -309,6 +306,9 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             sender.endRefreshing()
         })
+        
+        deleteView.isHidden = appDelegate.trashVideos.count == 0 ? true : false
+        
         tableView.reloadData()
     }
     
