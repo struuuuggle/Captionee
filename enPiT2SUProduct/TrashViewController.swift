@@ -308,7 +308,10 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
             sender.endRefreshing()
         })
         
-        deleteView.frame = deleteView.frame.offsetBy(dx: 0, dy: appDelegate.trashVideos.count == 0 ? 0 : 80)
+        deleteView.frame = CGRect(x: 0,
+                                  y: appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                  width: UIScreen.main.bounds.width,
+                                  height: 80)
         
         tableView.reloadData()
     }
@@ -389,6 +392,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         // フォントを設定
         let font = MDCTypography.titleFont()
+        
+        scrollView.backgroundColor = MDCPalette.grey.tint50
         
         return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
     }
