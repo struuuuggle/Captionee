@@ -29,7 +29,6 @@ class SettingsViewController: FormViewController {
 
     var language: Language = .japanese
     var captionSize = "中"
-    var supportModeOn = false
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -102,12 +101,14 @@ class SettingsViewController: FormViewController {
             // 聴覚障害者モード
             <<< SwitchRow() {
                 $0.title = "聴覚障害者モード"
-                $0.value = false
+                $0.value = Utility.userDefault.bool(forKey: "SupportMode")
                 $0.cell.switchControl.onTintColor = MDCPalette.orange.tint500
-                $0.onChange { [unowned self] row in
-                    print("Support mode changed.")
+                $0.onChange { row in
+                    if let isSupportModeOn = row.value {
+                        print("Support mode "+(isSupportModeOn ? "on" : "off")+".")
                     
-                    self.supportModeOn = row.value ?? false
+                        Utility.userDefault.set(isSupportModeOn, forKey: "SupportMode")
+                    }
                 }
             }
             
