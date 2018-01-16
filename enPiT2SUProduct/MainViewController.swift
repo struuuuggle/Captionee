@@ -281,7 +281,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                         
                         // 動画をサーバにアップロードする
                         // 長い動画をアップロードするときは極力ここをコメントアウトしてね
-                        //self.uploadFileToServer(name)
+                        // self.uploadFileToServer(name)
                     })
                     
                     // メインスレッドで実行
@@ -622,6 +622,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let message = MDCSnackbarMessage(text: "ゴミ箱に移動しました。")
         message.action = action
         message.buttonTextColor = MDCPalette.indigo.tint200
+        message.category = "delete"
         
         // SnackBarを表示
         MDCSnackbarManager.show(message)
@@ -815,6 +816,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("MainViewController/viewWillDisappear/別の画面に遷移する直前")
+        
+        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: "delete")
     }
     
     override func viewDidDisappear(_ animated: Bool) {

@@ -48,38 +48,21 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         navigationController?.view.addSubview(sideMenuController.view)
         
         // Viewの背景色を設定
-        view.backgroundColor = UIColor.white
-        
-        // CustomCellをTableViewに登録
-        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
-        // TableViewのSeparatorを消す
-        tableView.tableFooterView = UIView(frame: .zero);
-        // TableViewの背景色を設定
-        tableView.backgroundColor = UIColor.white
-        view.addSubview(tableView)
-        
-        // TableViewの制約を設定
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        view.backgroundColor = MDCPalette.grey.tint100
         
         // DeleteViewを設定
+        deleteView.frame = CGRect(x: 0,
+                                  y: appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                  width: UIScreen.main.bounds.width,
+                                  height: 80)
         deleteView.backgroundColor = MDCPalette.grey.tint100
         view.addSubview(deleteView)
-        
-        // DeleteViewの制約を設定
-        deleteView.translatesAutoresizingMaskIntoConstraints = false
-        deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        deleteView.bottomAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
-        deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        deleteView.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         // DeleteViewのLabelを設定
         let label = UILabel()
         label.text = "[ゴミ箱]の動画は30日後に自動的に削除されます。"
         label.font = MDCTypography.body1Font()
+        label.adjustsFontSizeToFitWidth = true
         deleteView.addSubview(label)
         
         // DeleteViewのLabelの制約を設定
@@ -105,6 +88,21 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         button.leadingAnchor.constraint(equalTo: deleteView.centerXAnchor).isActive = true
         button.bottomAnchor.constraint(equalTo: deleteView.bottomAnchor, constant: -15).isActive = true
         button.trailingAnchor.constraint(equalTo: deleteView.trailingAnchor).isActive = true
+        
+        // CustomCellをTableViewに登録
+        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
+        // TableViewのSeparatorを消す
+        tableView.tableFooterView = UIView(frame: .zero);
+        // TableViewの背景色を設定
+        tableView.backgroundColor = UIColor.white
+        view.addSubview(tableView)
+        
+        // TableViewの制約を設定
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: deleteView.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         // エッジのドラッグ認識
         let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(edgePanGesture))
@@ -181,6 +179,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                 }
             }
             
+            self.deleteView.frame = self.deleteView.frame.offsetBy(dx: 0, dy: -80)
             self.appDelegate.trashVideos = []
             self.tableView.reloadData()
         })
@@ -309,6 +308,12 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             sender.endRefreshing()
         })
+        
+        deleteView.frame = CGRect(x: 0,
+                                  y: appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                  width: UIScreen.main.bounds.width,
+                                  height: 80)
+        
         tableView.reloadData()
     }
     
@@ -388,6 +393,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         // フォントを設定
         let font = MDCTypography.titleFont()
+        
+        scrollView.backgroundColor = MDCPalette.grey.tint50
         
         return NSAttributedString(string: text, attributes: [NSAttributedStringKey.font: font])
     }

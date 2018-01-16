@@ -92,6 +92,9 @@ class SubViewController: UIViewController, ItemDelegate {
         
         // AVPlayerを生成
         player = AVPlayer(url: url)
+        if Utility.userDefault.bool(forKey: "SupportMode") {
+            player.volume = 0.0
+        }
         
         // 動画の時間を初期化
         currentTime = 0.0

@@ -8,7 +8,6 @@
 
 import UIKit
 import MaterialComponents
-import SafariServices
 
 class SideMenuController: UIViewController {
     
@@ -42,6 +41,7 @@ class SideMenuController: UIViewController {
         view.addSubview(shadowView)
         
         sideView = UIView(frame: CGRect(x: -width, y: 0, width: width, height: screenHeight))
+        sideView.backgroundColor = UIColor.white
         view.addSubview(sideView)
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height-0.5))
@@ -263,6 +263,8 @@ class SideMenuController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("SideMenuController/viewWillAppear/画面が表示される直前")
+        
+        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: "delete")
     }
     
     override func viewDidAppear(_ animated: Bool) {
