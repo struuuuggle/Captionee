@@ -96,6 +96,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.tableFooterView = UIView(frame: .zero);
         // TableViewの背景色を設定
         tableView.backgroundColor = UIColor.white
+        // 編集モードで複数選択を可能にする
+        tableView.allowsMultipleSelectionDuringEditing = true
         view.addSubview(tableView)
         
         // TableViewの制約を設定
@@ -141,6 +143,9 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.addSubview(refreshControl)
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     /* MenuButtonが押されたとき */
@@ -347,6 +352,38 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         return cell
     }
     
+    var isEditMode: Bool {
+        set {
+            tableView.setEditing(newValue, animated: true)
+        }
+        get {
+            return tableView.isEditing
+        }
+    }
+    
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            // 押された位置でcellのPathを取得
+            let point = sender.location(in: tableView)
+            guard let indexPath = tableView.indexPathForRow(at: point) else {
+                return
+            }
+            print("Cell \(String(describing: indexPath.row)) long pressed.")
+        
+            isEditMode = !isEditMode
+            
+            if isEditMode {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            } else {
+                if let selectedRows = tableView.indexPathsForSelectedRows {
+                    for row in selectedRows {
+                        tableView.deselectRow(at: row, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
     /* Cellの高さを設定 */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // 画面の縦サイズ
@@ -373,13 +410,28 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print(appDelegate.trashVideos[indexPath.row].name)
         print("<--- VideoName")
         
-        // SubViewに遷移
-        let subViewController = SubViewController()
-        subViewController.receivedVideoInfo = appDelegate.trashVideos[indexPath.row]
-        navigationController?.pushViewController(subViewController, animated: true)
+        if isEditMode {
+            print("Cell \(indexPath.row) selected.")
+        } else {
+            // SubViewに遷移
+            let subViewController = SubViewController()
+            subViewController.receivedVideoInfo = appDelegate.trashVideos[indexPath.row]
+            navigationController?.pushViewController(subViewController, animated: true)
+            
+            // Cellの選択状態を解除
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    /* Cellが選択解除されたとき */
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        print("Cell \(indexPath.row) deselected.")
         
-        // Cellの選択状態を解除
-        tableView.deselectRow(at: indexPath, animated: true)
+        if let selectedRows = tableView.indexPathsForSelectedRows {
+            print("\(selectedRows.count) rows selected.")
+        } else {
+            isEditMode = false
+        }
     }
     
     /* TableViewが空のときに表示する画像を設定 */
