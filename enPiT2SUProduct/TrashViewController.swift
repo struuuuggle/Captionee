@@ -15,7 +15,6 @@ import Material
 class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     var tableView = UITableView()
-    var selectImageButton = MDCFloatingButton()
     let deleteView = UIView()
     let sideMenuController = SideMenuController()
     let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
@@ -23,7 +22,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     let moveButton = IconButton(image: UIImage(named: "MoveToMain"))
     let numberLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
     
-    var fabOffset: CGFloat = 0
     var movedVideoInfos = [VideoInfo]()
     
     // AppDelegateの変数にアクセスする用
@@ -163,26 +161,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         edgePanGestureRecognizer.edges = .left
         view.addGestureRecognizer(edgePanGestureRecognizer)
         
-        // StatusBarの高さ
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        // NavigationBarの高さ
-        let navigationBarHeight = navigationController?.navigationBar.frame.height
-        
-        // アップロードボタンのサイズ
-        let fabSize: CGFloat = 56
-        
-        // アップロードボタンの設定
-        selectImageButton = MDCFloatingButton(type: .roundedRect)
-        selectImageButton.frame = CGRect(x: UIScreen.main.bounds.width-fabSize-16,
-                                         y: UIScreen.main.bounds.height-statusBarHeight-navigationBarHeight!-fabSize-16,
-                                         width: fabSize,
-                                         height: fabSize)
-        selectImageButton.setImage(UIImage(named: "Add"), for: .normal)
-        selectImageButton.tintColor = UIColor.white
-        selectImageButton.backgroundColor = MDCPalette.yellow.tint600
-        selectImageButton.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
-        view.addSubview(selectImageButton)
-        
         let manager = MDCOverlayObserver(for: nil)
         manager?.addTarget(self, action: #selector(handleOverlayTransition))
         
@@ -254,11 +232,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
-    }
-    
-    /* FABが押されたとき */
-    @objc func selectImage() {
-        print("FAB tapped.")
     }
     
     /* 画面の左端がドラッグされたとき */
@@ -334,30 +307,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     
     /* SnackBarが表示・非表示するときに呼ばれる */
     @objc func handleOverlayTransition(transition: MDCOverlayTransitioning) {
-        if fabOffset == 0 {
-            print("SnackBarを表示")
-        } else {
-            print("SnackBarを非表示")
-        }
         
-        let bounds = view.bounds
-        let coveredRect = transition.compositeFrame(in: view)
-        
-        let boundedRect = bounds.intersection(coveredRect)
-        
-        var fabVerticalShift: CGFloat = 0
-        var distanceFromBottom: CGFloat = 0
-        
-        if !boundedRect.isEmpty {
-            distanceFromBottom = bounds.maxY - boundedRect.minY
-        }
-        
-        fabVerticalShift = fabOffset - distanceFromBottom
-        fabOffset = distanceFromBottom
-        
-        transition.animate(alongsideTransition: {
-            self.selectImageButton.center = CGPoint(x: self.selectImageButton.center.x, y: self.selectImageButton.center.y+fabVerticalShift)
-        })
     }
     
     /* TableViewを引っ張ったとき */
