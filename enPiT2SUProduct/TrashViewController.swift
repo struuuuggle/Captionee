@@ -553,6 +553,11 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("TrashViewController/viewWillAppear/画面が表示される直前")
+        
+        deleteView.frame = CGRect(x: 0,
+                                  y: appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                  width: UIScreen.main.bounds.width,
+                                  height: 80)
     }
     
     override func viewDidAppear(_ animated: Bool) {

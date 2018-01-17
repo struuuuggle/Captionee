@@ -611,7 +611,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("Cell: \(indexPath.row) を削除")
         
         // 削除されたセルを一時退避
-        removedVideoInfos.append(appDelegate.videos[indexPath.row])
+        removedVideoInfos = [appDelegate.videos[indexPath.row]]
         
         // セルを削除
         appDelegate.videos.remove(at: indexPath.row)
@@ -650,8 +650,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.appDelegate.trashVideos.append(videoInfo)
                 }
             }
-            
-            self.removedVideoInfos = []
         }
         
         // SnackBarを表示
