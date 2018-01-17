@@ -606,6 +606,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.reloadRows(at: [indexPath], with: .automatic)
         
+        tableView.reloadData()
+        
         // 元に戻すボタンを生成
         let action = MDCSnackbarMessageAction()
         let actionHandler = { () in
