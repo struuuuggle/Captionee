@@ -28,9 +28,8 @@ class CustomCell: UITableViewCell {
         contentView.addSubview(label)
         
         labelText = UITextField()
-        label.tag = 2
+        labelText.tag = 4
         contentView.addSubview(labelText)
-        labelText.isHidden = true
         
         
         labelButton = UIButton(frame: CGRect.zero)
