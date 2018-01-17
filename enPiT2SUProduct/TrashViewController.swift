@@ -96,6 +96,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.tableFooterView = UIView(frame: .zero);
         // TableViewの背景色を設定
         tableView.backgroundColor = UIColor.white
+        // 編集モードで選択されたときの色
+        tableView.tintColor = MDCPalette.orange.tint500
         // 編集モードで複数選択を可能にする
         tableView.allowsMultipleSelectionDuringEditing = true
         view.addSubview(tableView)
@@ -355,10 +357,30 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     var isEditMode: Bool {
         set {
             tableView.setEditing(newValue, animated: true)
+            
+            if newValue {
+                /*
+                let backButton = IconButton(image: Icon.arrowBack, tintColor: UIColor(white: 0.0, alpha: 0.54))
+                backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+                navigationItem.leftViews = [backButton]
+                
+                let moveButton = IconButton(image: UIImage(named: "MoveToMain"), tintColor: UIColor(white: 0.0, alpha: 0.54))
+                moveButton.addTarget(self, action: #selector(moveButtonTapped), for: .touchUpInside)
+                navigationItem.rightViews = [moveButton]
+                */
+            }
         }
         get {
             return tableView.isEditing
         }
+    }
+    
+    @objc func backButtonTapped() {
+        print("Back button tapped.")
+    }
+    
+    @objc func moveButtonTapped() {
+        print("Move button tapped.")
     }
     
     @objc func longPressed(sender: UILongPressGestureRecognizer) {
