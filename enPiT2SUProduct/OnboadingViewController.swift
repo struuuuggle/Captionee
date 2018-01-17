@@ -23,7 +23,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         // ページごとの背景色
         let pageColors = [MDCPalette.orange.tint500, MDCPalette.orange.tint600, MDCPalette.orange.tint700]
         // ページごとの画像
-        let pageImages = ["", "", ""]
+        let pageImages = ["", "", "page-3.png"]
         // ページごとのテキスト
         let pageTexts = ["動画に自動で字幕をつけます", "字幕をお好きな言語に翻訳もできます", "動画視聴を楽しみましょう！"]
         
