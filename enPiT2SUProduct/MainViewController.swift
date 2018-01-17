@@ -25,15 +25,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var speechToText: SpeechToText!
     var tableView = UITableView()
     var selectImageButton = MDCFloatingButton(type: .roundedRect)
-    var textField = MDCTextField()
-    var editCompleteButton = MDCRaisedButton()
-    var editCancelButton = MDCRaisedButton()
+    var textField: UITextField!
     let sideMenuController = SideMenuController()
     let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    var customCell: CustomCell{
+        return UIApplication.shared.delegate as! CustomCell
     }
     
     var languageKey = "日本語"
@@ -94,7 +96,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         edgePanGestureRecognizer.edges = .left
         view.addGestureRecognizer(edgePanGestureRecognizer)
         
-        // TextFieldの設定
+        /* TextFieldの設定
         textField.isHidden = true
         view.addSubview(textField)
         
@@ -104,6 +106,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         textField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         textField.widthAnchor.constraint(equalToConstant: view.frame.width*2/3).isActive = true
         textField.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        */
         
         // StatusBarの高さ
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -123,38 +126,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         selectImageButton.backgroundColor = MDCPalette.yellow.tint600
         selectImageButton.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
         view.addSubview(selectImageButton)
-        
-        // 編集完了ボタンの設定
-        editCompleteButton.setTitle("SAVE", for: .normal)
-        editCompleteButton.titleLabel?.font = MDCTypography.buttonFont()
-        editCompleteButton.backgroundColor = MDCPalette.lightBlue.tint500
-        editCompleteButton.setTitleColor(UIColor.white, for: .normal)
-        editCompleteButton.isHidden = true
-        editCompleteButton.addTarget(self, action: #selector(editCompleteButtonTapped), for: .touchUpInside)
-        view.addSubview(editCompleteButton)
-        
-        // 編集完了ボタンの制約を設定
-        editCompleteButton.translatesAutoresizingMaskIntoConstraints = false
-        editCompleteButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
-        editCompleteButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor).isActive = true
-        editCompleteButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
-        editCompleteButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        
-        // 編集キャンセルボタンの設定
-        editCancelButton.setTitle("CANCEL", for: .normal)
-        editCancelButton.titleLabel?.font = MDCTypography.buttonFont()
-        editCancelButton.backgroundColor = UIColor.white
-        editCancelButton.setTitleColor(UIColor.black, for: .normal)
-        editCancelButton.isHidden = true
-        editCancelButton.addTarget(self, action: #selector(editCancelButtonTapped), for: .touchUpInside)
-        view.addSubview(editCancelButton)
-        
-        // 編集キャンセルボタンの制約を設定
-        editCancelButton.translatesAutoresizingMaskIntoConstraints = false
-        editCancelButton.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
-        editCancelButton.trailingAnchor.constraint(equalTo: editCompleteButton.leadingAnchor, constant: -10).isActive = true
-        editCancelButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
-        editCancelButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         
         navigationController?.view.addSubview(sideMenuController.view)
         
@@ -194,7 +165,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         sender.setTranslation(CGPoint.zero, in: view)
     }
     
-    /* 編集が完了されたとき */
+    /* 編集が完了されたとき
     @objc func editCompleteButtonTapped() {
         view.endEditing(true)
         
@@ -211,7 +182,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         menuButton.isEnabled = true
     }
     
-    /* 編集がキャンセルされたとき */
+     編集がキャンセルされたとき
     @objc func editCancelButtonTapped() {
         view.endEditing(true)
         
@@ -223,7 +194,43 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         selectImageButton.isEnabled = true
         tableView.allowsSelection = true
         menuButton.isEnabled = true
+    }*/
+    /*
+     UITextFieldが編集された直前に呼ばれる
+     */
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("textFieldDidBeginEditing: \(textField.text!)")
     }
+    
+    /*
+     UITextFieldが編集された直後に呼ばれる
+     */
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print("textFieldDidEndEditing: \(textField.text!)")
+    }
+    
+    /*
+     改行ボタンが押された際に呼ばれる
+     */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn \(textField.text!)")
+        print("編集終了")
+        
+        // 改行ボタンが押されたらKeyboardを閉じる処理.
+        textField.resignFirstResponder()
+        textField.isHidden = true
+        
+        appDelegate.videos[index].label = textField.text!
+        
+        textField.text = ""
+        selectImageButton.isEnabled = true
+        tableView.reloadData()
+        tableView.allowsSelection = true
+        menuButton.isEnabled = true
+        return true
+    }
+    
+    
     
     /* PhotoLibraryから動画を選択する */
     @objc func selectImage(_ sender: Any) {
@@ -705,6 +712,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         label.font = MDCTypography.captionFont()
         label.alpha = MDCTypography.captionFontOpacity()
         
+        let labelText = cell.viewWithTag(4) as! UITextField
+        labelText.isHidden = true
+        labelText.font = MDCTypography.captionFont()
+        labelText.alpha = MDCTypography.captionFontOpacity()
+        
         let button = cell.viewWithTag(3) as! UIButton
         button.addTarget(self, action: #selector(labelEditButton), for: .touchUpInside)
 
@@ -746,9 +758,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @objc func labelEditButton(_ sender: MDCButton) {
         print("編集")
         
-        textField.isHidden = false
-        editCompleteButton.isHidden = false
-        editCancelButton.isHidden = false
 
         //押された位置でcellのpathを取得
         let btn = sender
@@ -756,11 +765,19 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let indexPath = tableView.indexPath(for: cell)?.row
         
         index = indexPath
-                
-        // プレースホルダー
-        textField.placeholder = "動画タイトルの入力"
         
-        textField.text = appDelegate.videos[index].label
+        let label = cell.viewWithTag(2) as! UILabel
+        
+        textField = cell.viewWithTag(4) as! UITextField
+        textField.isHidden = false
+        
+        textField.delegate = self
+        // プレースホルダー
+        
+        textField.placeholder = "タイトル入力"
+        textField.text = label.text
+        label.text = ""
+
         
         // テキストを全消去するボタンを表示
         textField.clearButtonMode = .always
@@ -847,6 +864,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("MainViewController/viewWillDisappear/別の画面に遷移する直前")
         
         MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: "delete")
+        self.removeObserver()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -858,7 +876,39 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.didReceiveMemoryWarning()
         print("MainViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
-
+    // Notificationを設定
+    func configureObserver() {
+        let notification = NotificationCenter.default
+        notification.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notification.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    // Notificationを削除
+    func removeObserver() {
+        let notification = NotificationCenter.default
+        notification.removeObserver(self)
+    }
+    
+    // Keyboardが現れた時Viewをずらす。
+    @objc func keyboardWillShow(notification: Notification?) {
+        //上のTextFieldをタップする時そのまま、下のTextFieldをタップする時Viewをずらす。
+        if textField.isFirstResponder {
+            let rect = (notification?.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+            let duration: TimeInterval? = notification?.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
+            UIView.animate(withDuration: duration!, animations: { () in
+                let transform = CGAffineTransform(translationX: 0, y: -(rect?.size.height)!)
+                self.view.transform = transform
+            })
+        }
+    }
+    
+    // Keyboardが消えたときViewを戻す
+    @objc func keyboardWillHide(notification: Notification?) {
+        let duration: TimeInterval? = notification?.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Double
+        UIView.animate(withDuration: duration!, animations: { () in
+            self.view.transform = CGAffineTransform.identity
+        })
+    }
     /*
     // MARK: - Navigation
 

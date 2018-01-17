@@ -14,9 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var themeColor = "Orange"
-    let colors = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
-                 "Yellow": MDCPalette.yellow.tint500, "Green": MDCPalette.green.tint500,
-                 "Blue": MDCPalette.blue.tint500]
+    let colors = ["Red": MDCPalette.red.tint700,
+                  "Orange": MDCPalette.orange.tint500,
+                  "Yellow": MDCPalette.yellow.tint500,
+                  "Green": MDCPalette.green.tint500,
+                  "Blue": MDCPalette.blue.tint500]
     var language = "日本語"
     let languages = ["日本語", "中文", "한국어", "English"]
     var videos = [VideoInfo]()
@@ -37,13 +39,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 起動時間延長
         sleep(1)
         
-        let dict = ["firstLaunch": true]
-        Utility.userDefault.register(defaults: dict)
+        Utility.userDefault.register(defaults: ["firstLaunch": true])
         
-        // 初回起動時のみに行うための処理をここに書く
+        if Utility.userDefault.bool(forKey: "firstLaunch") {
+            Utility.userDefault.set(false, forKey: "firstLaunch")
+            print("初回起動の時だけ呼ばれるよ")
+            
+            // ウォークスルー実行
+            self.playWalkthrough()
+        }
         
-        // ウォークスルーの実行
-        playWalkthrough()
+        // UIテスト時はこちらを実行
+        //self.playWalkthrough()
     
         // UserDefaultに保存されたデータを読み込む
         if let storedData = Utility.userDefault.object(forKey: "Videos") as? Data {
