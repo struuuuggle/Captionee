@@ -12,6 +12,7 @@ import MaterialComponents
 class CustomCell: UITableViewCell {
     var myImageView: UIImageView!
     var label: UILabel!
+    var labelText: UITextField!
     var labelButton: UIButton!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -25,6 +26,12 @@ class CustomCell: UITableViewCell {
         label.textAlignment = .left
         label.tag = 2
         contentView.addSubview(label)
+        
+        labelText = UITextField()
+        label.tag = 2
+        contentView.addSubview(labelText)
+        labelText.isHidden = true
+        
         
         labelButton = UIButton(frame: CGRect.zero)
         labelButton.setImage(UIImage(named: "Vertical"), for: .normal)
@@ -56,6 +63,12 @@ class CustomCell: UITableViewCell {
             label.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor, constant: 20).isActive = true
             label.bottomAnchor.constraint(equalTo: superview.layoutMarginsGuide.bottomAnchor).isActive = true
             label.widthAnchor.constraint(equalToConstant: 150).isActive = true
+            
+            labelText.translatesAutoresizingMaskIntoConstraints = false
+            labelText.topAnchor.constraint(equalTo: superview.layoutMarginsGuide.topAnchor).isActive = true
+            labelText.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor, constant: 20).isActive = true
+            labelText.bottomAnchor.constraint(equalTo: superview.layoutMarginsGuide.bottomAnchor).isActive = true
+            labelText.widthAnchor.constraint(equalToConstant: 150).isActive = true
             
             labelButton.translatesAutoresizingMaskIntoConstraints = false
             labelButton.topAnchor.constraint(equalTo: superview.layoutMarginsGuide.topAnchor).isActive = true
