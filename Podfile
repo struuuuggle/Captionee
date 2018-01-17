@@ -12,4 +12,5 @@ target 'enPiT2SUProduct' do
   pod 'Alamofire'
   pod 'DKImagePickerController'
   pod 'Eureka'
+  pod 'Material'
 end

@@ -115,12 +115,8 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
     @objc func getStarted(sender: MDCRaisedButton) {
         print("Get started!")
         
-        // Storyboardを指定
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        // MainViewcontrollerを指定
-        let initialViewController = storyboard.instantiateInitialViewController()
-        // MainViewControllerを表示
-        present(initialViewController!, animated: true, completion: nil)
+        let rootViewController = CustomNavigationController(rootViewController: MainViewController())
+        present(rootViewController, animated: true, completion: nil)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

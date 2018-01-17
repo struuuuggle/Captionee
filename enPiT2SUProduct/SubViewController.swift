@@ -9,6 +9,7 @@
 import UIKit
 import AVKit
 import MaterialComponents
+import Material
 
 class SubViewController: UIViewController, ItemDelegate {
     
@@ -65,15 +66,12 @@ class SubViewController: UIViewController, ItemDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    //@IBOutlet weak var caption: UILabel!
-    var caption = UILabel()
-    //@IBOutlet weak var playButton: UIButton!
-    var playButton = UIButton()
-    
     var timeSlider = MDCSlider()
     var textField = MDCMultilineTextField()
     var editCompleteButton = MDCRaisedButton()
     var editCancelButton = MDCRaisedButton()
+    var caption = UILabel()
+    var playButton = UIButton()
     var stepper = UIStepper()
     var elapsedTimeLabel = UILabel()
     var remainingTimeLabel = UILabel()
@@ -245,13 +243,11 @@ class SubViewController: UIViewController, ItemDelegate {
         stepper.heightAnchor.constraint(equalToConstant: 18).isActive = true
         
         // NavigationBarの右側にItemButtonを設置
-        let itemButton = UIBarButtonItem(image: UIImage(named: "Horizontal"),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(itemButtonTapped))
-        navigationItem.rightBarButtonItem = itemButton
+        let itemButton = IconButton(image: Icon.moreHorizontal, tintColor: UIColor.white)
+        itemButton.addTarget(self, action: #selector(itemButtonTapped), for: .touchUpInside)
+        navigationItem.rightViews = [itemButton]
         
-        navigationItem.backBarButtonItem?.title = ""
+        navigationItem.backButton.tintColor = UIColor.white
         
         sourceLanguageKey = receivedVideoInfo.language
         print("sourceLanguage is \(sourceLanguageKey)")

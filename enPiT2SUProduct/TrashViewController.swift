@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 import DZNEmptyDataSet
 import MaterialComponents
+import Material
 
 class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
@@ -37,13 +38,13 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.emptyDataSetSource = self
         
         // NavigationBarの左側にMenuButtonを設置
-        let menuButton = UIBarButtonItem(image: UIImage(named: "Menu"),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(menuButtonTapped))
-        navigationItem.leftBarButtonItem = menuButton
+        let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
+        menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        navigationItem.leftViews = [menuButton]
         
-        navigationItem.title = "ゴミ箱"
+        navigationItem.titleLabel.text = "ゴミ箱"
+        navigationItem.titleLabel.font = RobotoFont.bold
+        navigationItem.titleLabel.textColor = UIColor.white
         
         navigationController?.view.addSubview(sideMenuController.view)
         
@@ -95,6 +96,10 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.tableFooterView = UIView(frame: .zero);
         // TableViewの背景色を設定
         tableView.backgroundColor = UIColor.white
+        // 編集モードで選択されたときの色
+        tableView.tintColor = MDCPalette.orange.tint500
+        // 編集モードで複数選択を可能にする
+        tableView.allowsMultipleSelectionDuringEditing = true
         view.addSubview(tableView)
         
         // TableViewの制約を設定
@@ -140,6 +145,9 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.addSubview(refreshControl)
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
     
     /* MenuButtonが押されたとき */
@@ -215,8 +223,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print("メイン")
         
         let mainViewController = MainViewController()
-        modalTransitionStyle = .crossDissolve
-        navigationController?.pushViewController(mainViewController, animated: true)
+        let navigationController = CustomNavigationController(rootViewController: mainViewController)
+        present(navigationController, animated: true, completion: nil)
     }
     
     /* ゴミ箱が押されたとき */
@@ -229,7 +237,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print("設定")
         
         let settingsViewController = SettingsViewController()
-        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        let navigationController = CustomNavigationController(rootViewController: settingsViewController)
         present(navigationController, animated: true, completion: nil)
     }
     
@@ -346,6 +354,58 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         return cell
     }
     
+    var isEditMode: Bool {
+        set {
+            tableView.setEditing(newValue, animated: true)
+            
+            if newValue {
+                /*
+                let backButton = IconButton(image: Icon.arrowBack, tintColor: UIColor(white: 0.0, alpha: 0.54))
+                backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+                navigationItem.leftViews = [backButton]
+                
+                let moveButton = IconButton(image: UIImage(named: "MoveToMain"), tintColor: UIColor(white: 0.0, alpha: 0.54))
+                moveButton.addTarget(self, action: #selector(moveButtonTapped), for: .touchUpInside)
+                navigationItem.rightViews = [moveButton]
+                */
+            }
+        }
+        get {
+            return tableView.isEditing
+        }
+    }
+    
+    @objc func backButtonTapped() {
+        print("Back button tapped.")
+    }
+    
+    @objc func moveButtonTapped() {
+        print("Move button tapped.")
+    }
+    
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            // 押された位置でcellのPathを取得
+            let point = sender.location(in: tableView)
+            guard let indexPath = tableView.indexPathForRow(at: point) else {
+                return
+            }
+            print("Cell \(String(describing: indexPath.row)) long pressed.")
+        
+            isEditMode = !isEditMode
+            
+            if isEditMode {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            } else {
+                if let selectedRows = tableView.indexPathsForSelectedRows {
+                    for row in selectedRows {
+                        tableView.deselectRow(at: row, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
     /* Cellの高さを設定 */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // 画面の縦サイズ
@@ -372,13 +432,28 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         print(appDelegate.trashVideos[indexPath.row].name)
         print("<--- VideoName")
         
-        // SubViewに遷移
-        let subViewController = SubViewController()
-        subViewController.receivedVideoInfo = appDelegate.trashVideos[indexPath.row]
-        navigationController?.pushViewController(subViewController, animated: true)
+        if isEditMode {
+            print("Cell \(indexPath.row) selected.")
+        } else {
+            // SubViewに遷移
+            let subViewController = SubViewController()
+            subViewController.receivedVideoInfo = appDelegate.trashVideos[indexPath.row]
+            navigationController?.pushViewController(subViewController, animated: true)
+            
+            // Cellの選択状態を解除
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    /* Cellが選択解除されたとき */
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        print("Cell \(indexPath.row) deselected.")
         
-        // Cellの選択状態を解除
-        tableView.deselectRow(at: indexPath, animated: true)
+        if let selectedRows = tableView.indexPathsForSelectedRows {
+            print("\(selectedRows.count) rows selected.")
+        } else {
+            isEditMode = false
+        }
     }
     
     /* TableViewが空のときに表示する画像を設定 */
