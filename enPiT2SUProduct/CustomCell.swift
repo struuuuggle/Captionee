@@ -30,7 +30,6 @@ class CustomCell: UITableViewCell {
         labelButton.setImage(UIImage(named: "Vertical"), for: .normal)
         labelButton.tag = 3
         labelButton.backgroundColor = UIColor.white
-        labelButton.addTarget(self, action: #selector(labelButtonTapped), for: .touchUpInside)
         contentView.addSubview(labelButton)
     }
     
@@ -40,10 +39,6 @@ class CustomCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-    }
-    @objc func labelButtonTapped() {
-        print("うおお")
-
     }
     
     override func layoutSubviews() {
