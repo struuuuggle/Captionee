@@ -47,6 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // ウォークスルー実行
             self.playWalkthrough()
+        } else {
+            let rootViewController = CustomNavigationController(rootViewController: MainViewController())
+            window = UIWindow(frame: UIScreen.main.bounds)
+            window?.rootViewController = rootViewController
+            window?.makeKeyAndVisible()
         }
         
         // UIテスト時はこちらを実行
