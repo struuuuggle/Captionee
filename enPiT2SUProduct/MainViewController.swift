@@ -826,6 +826,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("MainViewController/viewWillAppear/画面が表示される直前")
+        self.configureObserver()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -844,6 +845,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("MainViewController/viewWillDisappear/別の画面に遷移する直前")
         
         MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: "delete")
+        self.removeObserver()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -855,7 +857,39 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.didReceiveMemoryWarning()
         print("MainViewController/didReceiveMemoryWarning/メモリが足りないので開放される")
     }
-
+    // Notificationを設定
+    func configureObserver() {
+        let notification = NotificationCenter.default
+        notification.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notification.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    // Notificationを削除
+    func removeObserver() {
+        let notification = NotificationCenter.default
+        notification.removeObserver(self)
+    }
+    
+    // Keyboardが現れた時Viewをずらす。
+    @objc func keyboardWillShow(notification: Notification?) {
+        //上のTextFieldをタップする時そのまま、下のTextFieldをタップする時Viewをずらす。
+        if textField.isFirstResponder {
+            let rect = (notification?.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+            let duration: TimeInterval? = notification?.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
+            UIView.animate(withDuration: duration!, animations: { () in
+                let transform = CGAffineTransform(translationX: 0, y: -(rect?.size.height)!)
+                self.view.transform = transform
+            })
+        }
+    }
+    
+    // Keyboardが消えたときViewを戻す
+    @objc func keyboardWillHide(notification: Notification?) {
+        let duration: TimeInterval? = notification?.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Double
+        UIView.animate(withDuration: duration!, animations: { () in
+            self.view.transform = CGAffineTransform.identity
+        })
+    }
     /*
     // MARK: - Navigation
 
