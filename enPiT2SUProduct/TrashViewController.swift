@@ -21,12 +21,53 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
     let backButton = IconButton(image: UIImage(named: "Back"))
     let moveButton = IconButton(image: UIImage(named: "MoveToMain"))
+    let numberLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
     
     var fabOffset: CGFloat = 0
+    var movedVideoInfos = [VideoInfo]()
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    var isEditMode: Bool {
+        set {
+            tableView.setEditing(newValue, animated: true)
+            
+            if newValue {
+                navigationController?.navigationBar.backgroundColor = UIColor.white
+                navigationItem.leftViews = [backButton, numberLabel]
+                navigationItem.rightViews = [moveButton]
+                
+                numberOfSelected = 1
+            } else {
+                navigationController?.navigationBar.backgroundColor = MDCPalette.orange.tint500
+                navigationItem.leftViews = [menuButton]
+                navigationItem.rightViews = []
+                
+                if let selectedRows = tableView.indexPathsForSelectedRows {
+                    for row in selectedRows {
+                        tableView.deselectRow(at: row, animated: true)
+                    }
+                }
+            }
+        }
+        get {
+            return tableView.isEditing
+        }
+    }
+    
+    var numberOfSelected: Int {
+        set {
+            numberLabel.text = String(newValue)
+        }
+        get {
+            guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
+                return 0
+            }
+            return selectedIndexPaths.count
+        }
     }
     
     override func viewDidLoad() {
@@ -46,6 +87,9 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         moveButton.addTarget(self, action: #selector(moveButtonTapped), for: .touchUpInside)
+        
+        numberLabel.text = "0"
+        numberLabel.textColor = MDCPalette.orange.tint700
         
         navigationItem.titleLabel.text = "ゴミ箱"
         navigationItem.titleLabel.font = RobotoFont.bold
@@ -332,6 +376,85 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.reloadData()
     }
     
+    /* 編集モードで戻るボタンが押されたとき */
+    @objc func backButtonTapped() {
+        print("Back button tapped.")
+        
+        isEditMode = false
+    }
+    
+    /* 編集モードで移動ボタンが押されたとき */
+    @objc func moveButtonTapped() {
+        print("Move button tapped.")
+        
+        guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else {
+            return
+        }
+        
+        let sortedIndexPaths = selectedIndexPaths.sorted { $0.row > $1.row }
+        for indexPath in sortedIndexPaths {
+            print("Cell \(indexPath.row) moved.")
+            
+            appDelegate.videos.append(appDelegate.trashVideos[indexPath.row])
+            movedVideoInfos.append(appDelegate.trashVideos[indexPath.row])
+            appDelegate.trashVideos.remove(at: indexPath.row)
+        }
+        
+        tableView.deleteRows(at: selectedIndexPaths, with: .automatic)
+        
+        isEditMode = false
+        
+        if appDelegate.trashVideos.count == 0 {
+            self.deleteView.frame = self.deleteView.frame.offsetBy(dx: 0, dy: -80)
+        }
+        
+        tableView.reloadData()
+        
+        // 元に戻すボタンを生成
+        let action = MDCSnackbarMessageAction()
+        let actionHandler = { () in
+            print("元に戻す")
+            
+            let indexPaths: [IndexPath] = sortedIndexPaths.reversed()
+            
+            // セルを戻す
+            for (index, indexPath) in indexPaths.enumerated() {
+                self.appDelegate.trashVideos.insert(self.movedVideoInfos[index], at: indexPath.row)
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+        action.handler = actionHandler
+        action.title = "元に戻す"
+        
+        // SnackBarを生成
+        let message = MDCSnackbarMessage(text: "\(numberLabel.text!)個のアイテムをメインに移動しました。")
+        message.action = action
+        message.buttonTextColor = MDCPalette.indigo.tint200
+        message.category = "move"
+        
+        // SnackBarを表示
+        MDCSnackbarManager.show(message)
+    }
+    
+    /* Cellが長押しされたとき */
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            // 押された位置でcellのPathを取得
+            let point = sender.location(in: tableView)
+            guard let indexPath = tableView.indexPathForRow(at: point) else {
+                return
+            }
+            print("Cell \(String(describing: indexPath.row)) long pressed.")
+            
+            isEditMode = !isEditMode
+            
+            if isEditMode {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            }
+        }
+    }
+    
     /* 移動可能なCellを設定 */
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -361,59 +484,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         return cell
     }
     
-    var isEditMode: Bool {
-        set {
-            tableView.setEditing(newValue, animated: true)
-            
-            if newValue {
-                navigationController?.navigationBar.backgroundColor = UIColor.white
-                navigationItem.leftViews = [backButton]
-                navigationItem.rightViews = [moveButton]
-            } else {
-                navigationController?.navigationBar.backgroundColor = MDCPalette.orange.tint500
-                navigationItem.leftViews = [menuButton]
-                navigationItem.rightViews = []
-                
-                if let selectedRows = tableView.indexPathsForSelectedRows {
-                    for row in selectedRows {
-                        tableView.deselectRow(at: row, animated: true)
-                    }
-                }
-            }
-        }
-        get {
-            return tableView.isEditing
-        }
-    }
-    
-    /* 編集モードで戻るボタンが押されたとき */
-    @objc func backButtonTapped() {
-        print("Back button tapped.")
-        
-        isEditMode = false
-    }
-    
-    @objc func moveButtonTapped() {
-        print("Move button tapped.")
-    }
-    
-    @objc func longPressed(sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            // 押された位置でcellのPathを取得
-            let point = sender.location(in: tableView)
-            guard let indexPath = tableView.indexPathForRow(at: point) else {
-                return
-            }
-            print("Cell \(String(describing: indexPath.row)) long pressed.")
-        
-            isEditMode = !isEditMode
-            
-            if isEditMode {
-                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            }
-        }
-    }
-    
     /* Cellの高さを設定 */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // 画面の縦サイズ
@@ -436,13 +506,15 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     
     /* Cellが選択されたとき */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("---> VideoName")
-        print(appDelegate.trashVideos[indexPath.row].name)
-        print("<--- VideoName")
-        
         if isEditMode {
             print("Cell \(indexPath.row) selected.")
+            
+            numberOfSelected = tableView.indexPathsForSelectedRows!.count
         } else {
+            print("---> VideoName")
+            print(appDelegate.trashVideos[indexPath.row].name)
+            print("<--- VideoName")
+            
             // SubViewに遷移
             let subViewController = SubViewController()
             subViewController.receivedVideoInfo = appDelegate.trashVideos[indexPath.row]
@@ -459,6 +531,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         if let selectedRows = tableView.indexPathsForSelectedRows {
             print("\(selectedRows.count) rows selected.")
+            
+            numberOfSelected = selectedRows.count
         } else {
             isEditMode = false
         }
