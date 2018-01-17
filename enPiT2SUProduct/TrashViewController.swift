@@ -590,6 +590,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         
         sideMenuController.mainButton.isSelected = false
         sideMenuController.trashButton.isSelected = true
+        
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

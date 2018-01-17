@@ -29,6 +29,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var editCompleteButton = MDCRaisedButton()
     var editCancelButton = MDCRaisedButton()
     let sideMenuController = SideMenuController()
+    let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
     
     // AppDelegateの変数にアクセスする用
     var appDelegate: AppDelegate {
@@ -46,7 +47,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("MainViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // NavigationBarの左側にMenuButtonを設置
-        let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
+        
         menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
         navigationItem.leftViews = [menuButton]
         
@@ -169,7 +170,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.addSubview(refreshControl)
     }
     
-    /* TableViewを引っ張ったとき */
+    /* 上からスワイプしたとき */
     @objc func refreshControlValueChanged(sender: UIRefreshControl) {
         print("テーブルを下に引っ張った時に呼ばれる")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
@@ -207,6 +208,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         selectImageButton.isEnabled = true
         tableView.reloadData()
         tableView.allowsSelection = true
+        menuButton.isEnabled = true
     }
     
     /* 編集がキャンセルされたとき */
@@ -220,6 +222,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         textField.text = ""
         selectImageButton.isEnabled = true
         tableView.allowsSelection = true
+        menuButton.isEnabled = true
     }
     
     /* PhotoLibraryから動画を選択する */
@@ -282,7 +285,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                         
                         // 動画をサーバにアップロードする
                         // 長い動画をアップロードするときは極力ここをコメントアウトしてね
-                        // self.uploadFileToServer(name)
+                        //self.uploadFileToServer(name)
                     })
                     
                     // メインスレッドで実行
@@ -391,6 +394,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         // Alertを表示
         present(alert, animated: true, completion: nil)
+        
+        
     }
     
     /* ファイルをサーバにアップロードする */
@@ -500,6 +505,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     /* 動画のアップロードに成功したとき */
     func success() {
         print("Speech recognition success!")
+        //tableView.reloadData()
     }
     
     /* 動画のアップロードに失敗したとき */
@@ -682,6 +688,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         label.text = appDelegate.videos[indexPath.row].label
         label.font = MDCTypography.captionFont()
         label.alpha = MDCTypography.captionFontOpacity()
+        
+        let button = cell.viewWithTag(3) as! UIButton
+        button.addTarget(self, action: #selector(labelEditButton), for: .touchUpInside)
 
         return cell
     }
@@ -716,18 +725,16 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let subViewController = SubViewController()
         subViewController.receivedVideoInfo = appDelegate.videos[indexPath.row]
         navigationController?.pushViewController(subViewController, animated: true)
-        
-        // Cellの選択状態を解除
-        tableView.deselectRow(at: indexPath, animated: true)
+
     }
     
-    @IBAction func labelEditButton(_ sender: UIButton) {
+    @objc func labelEditButton(_ sender: MDCButton) {
         print("編集")
         
         textField.isHidden = false
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
-        
+
         //押された位置でcellのpathを取得
         let btn = sender
         let cell = btn.superview?.superview as! UITableViewCell
@@ -745,6 +752,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         selectImageButton.isEnabled = false
         tableView.allowsSelection = false
+        menuButton.isEnabled = false
+        
     }
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
@@ -800,14 +809,18 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+        super.viewWillAppear(animated)
         print("MainViewController/viewWillAppear/画面が表示される直前")
+tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("MainViewController/viewDidAppear/画面が表示された直後")
-        
+        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPathForSelectedRow, animated: true)
+        }
+        tableView.reloadData()
         sideMenuController.mainButton.isSelected = true
         sideMenuController.trashButton.isSelected = false
     }

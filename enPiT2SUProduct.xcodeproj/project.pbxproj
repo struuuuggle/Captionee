@@ -170,7 +170,7 @@
 				TargetAttributes = {
 					C0F7E2601F6B7FC90038357B = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = U48PC58DNS;
+						DevelopmentTeam = Z2JW4TKX97;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -455,7 +455,7 @@
 			baseConfigurationReference = 3A7FBAE2BA0769D91B89A609 /* Pods-enPiT2SUProduct.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = U48PC58DNS;
+				DEVELOPMENT_TEAM = Z2JW4TKX97;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -463,7 +463,7 @@
 				INFOPLIST_FILE = enPiT2SUProduct/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = enPiT;
+				PRODUCT_BUNDLE_IDENTIFIER = enPiT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -475,7 +475,7 @@
 			baseConfigurationReference = 6D0662C7A541057EA38F7248 /* Pods-enPiT2SUProduct.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = U48PC58DNS;
+				DEVELOPMENT_TEAM = Z2JW4TKX97;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -483,7 +483,7 @@
 				INFOPLIST_FILE = enPiT2SUProduct/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = enPiT;
+				PRODUCT_BUNDLE_IDENTIFIER = enPiT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

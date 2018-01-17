@@ -81,12 +81,11 @@ class SideMenuController: UIViewController {
         mainButton.setImage(UIImage(named: "Main"), for: .normal)
         mainButton.setImage(UIImage(named: "SelectedMain"), for: .selected)
         mainButton.setTitleFont(MDCTypography.buttonFont(), for: .normal)
-        mainButton.setBackgroundColor(selectedBackgroundColor, for: .selected)
-        mainButton.setTitleColor(titleColor , for: .normal)
-        mainButton.setTitleColor(selectedTitleColor, for: .selected)
+        mainButton.tintColor = UIColor.red
         mainButton.contentHorizontalAlignment = .left
         mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         buttonView.addSubview(mainButton)
+        mainButton.tintColor = UIColor.red
         
         // ゴミ箱ボタンの設定
         trashButton = MDCFlatButton(frame: CGRect(x: 0, y: itemHeight+dividerHeight/2, width: width, height: itemHeight))

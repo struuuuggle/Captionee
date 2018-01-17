@@ -25,7 +25,7 @@ class OnboadingViewController: UIViewController, UIScrollViewDelegate {
         // ページごとの画像
         let pageImages = ["", "", ""]
         // ページごとのテキスト
-        let pageTexts = ["動画に自動で字幕をつけます", "字幕をお好きな言語に翻訳します", "字幕がなくて見られなかった動画を見てみましょう！"]
+        let pageTexts = ["動画に自動で字幕をつけます", "字幕をお好きな言語に翻訳もできます", "動画視聴を楽しみましょう！"]
         
         // ScrollViewを作成
         scrollView = UIScrollView(frame: view.bounds)

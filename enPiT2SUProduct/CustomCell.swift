@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import MaterialComponents
 
 class CustomCell: UITableViewCell {
     var myImageView: UIImageView!
     var label: UILabel!
+    var labelButton: UIButton!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,6 +25,12 @@ class CustomCell: UITableViewCell {
         label.textAlignment = .left
         label.tag = 2
         contentView.addSubview(label)
+        
+        labelButton = UIButton(frame: CGRect.zero)
+        labelButton.setImage(UIImage(named: "Vertical"), for: .normal)
+        labelButton.tag = 3
+        labelButton.backgroundColor = UIColor.white
+        contentView.addSubview(labelButton)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -47,7 +55,13 @@ class CustomCell: UITableViewCell {
             label.topAnchor.constraint(equalTo: superview.layoutMarginsGuide.topAnchor).isActive = true
             label.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor, constant: 20).isActive = true
             label.bottomAnchor.constraint(equalTo: superview.layoutMarginsGuide.bottomAnchor).isActive = true
-            label.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -5).isActive = true
+            label.widthAnchor.constraint(equalToConstant: 150).isActive = true
+            
+            labelButton.translatesAutoresizingMaskIntoConstraints = false
+            labelButton.topAnchor.constraint(equalTo: superview.layoutMarginsGuide.topAnchor).isActive = true
+            labelButton.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 10).isActive = true
+            labelButton.bottomAnchor.constraint(equalTo: superview.layoutMarginsGuide.bottomAnchor).isActive = true
+            labelButton.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -5).isActive = true
         }
     }
     
