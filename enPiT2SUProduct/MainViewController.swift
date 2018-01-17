@@ -39,7 +39,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     var languageKey = "日本語"
     var index: Int!
     var fabOffset: CGFloat = 0
-    var removedVideoInfo: VideoInfo?
+    var removedVideoInfos = [VideoInfo]()
     
     /* Viewがロードされたとき */
     override func viewDidLoad() {
@@ -604,8 +604,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("Cell: \(indexPath.row) を削除")
         
         // 削除されたセルを一時退避
-        removedVideoInfo = appDelegate.videos[indexPath.row]
-        appDelegate.trashVideos.append(appDelegate.videos[indexPath.row])
+        removedVideoInfos.append(appDelegate.videos[indexPath.row])
         
         // セルを削除
         appDelegate.videos.remove(at: indexPath.row)
@@ -618,9 +617,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let action = MDCSnackbarMessageAction()
         let actionHandler = { () in
             // セルを戻す
-            self.appDelegate.videos.insert(self.removedVideoInfo!, at: indexPath.row)
+            self.appDelegate.videos.insert(self.removedVideoInfos[0], at: indexPath.row)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            self.removedVideoInfos = []
             
             self.tableView.reloadData()
         }
@@ -632,6 +633,19 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         message.action = action
         message.buttonTextColor = MDCPalette.indigo.tint200
         message.category = "delete"
+        message.completionHandler = { tapped in
+            print("Snack bar hidden.")
+            
+            if tapped {
+                print("Action button tapped.")
+            } else {
+                print("Action button untapped.")
+                
+                for videoInfo in self.removedVideoInfos {
+                    self.appDelegate.trashVideos.append(videoInfo)
+                }
+            }
+        }
         
         // SnackBarを表示
         MDCSnackbarManager.show(message)

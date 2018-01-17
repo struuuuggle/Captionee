@@ -345,7 +345,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         for indexPath in sortedIndexPaths {
             print("Cell \(indexPath.row) moved.")
             
-            appDelegate.videos.append(appDelegate.trashVideos[indexPath.row])
             movedVideoInfos.append(appDelegate.trashVideos[indexPath.row])
             appDelegate.trashVideos.remove(at: indexPath.row)
         }
@@ -374,10 +373,12 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
             
+            self.movedVideoInfos = []
+            
             self.deleteView.frame = CGRect(x: 0,
-                                      y: self.appDelegate.trashVideos.count == 0 ? -80 : 0,
-                                      width: UIScreen.main.bounds.width,
-                                      height: 80)
+                                           y: self.appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                           width: UIScreen.main.bounds.width,
+                                           height: 80)
             
             self.tableView.reloadData()
         }
@@ -389,6 +390,19 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         message.action = action
         message.buttonTextColor = MDCPalette.indigo.tint200
         message.category = "move"
+        message.completionHandler = { tapped in
+            print("Snack bar hidden.")
+            
+            if tapped {
+                print("Action button tapped.")
+            } else {
+                print("Action button untapped.")
+                
+                for videoInfo in self.movedVideoInfos {
+                    self.appDelegate.videos.append(videoInfo)
+                }
+            }
+        }
         
         // SnackBarを表示
         MDCSnackbarManager.show(message)
