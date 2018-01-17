@@ -272,6 +272,8 @@ class SubViewController: UIViewController, ItemDelegate {
     
     /* アイテムボタンが押されたとき */
     @objc func itemButtonTapped(sender: UIButton) {
+        print("Item Button Tapped")
+        
         // ItemViewControllerを作成
         let viewController: ItemViewController = ItemViewController()
         // ItemViewControllerのdelegateを設定
@@ -283,7 +285,7 @@ class SubViewController: UIViewController, ItemDelegate {
         present(bottomSheet, animated: true, completion: nil)
     }
     
-    /* 編集ボタンが押されたとき */
+    /* 「字幕を編集」ボタンが押されたとき */
     func editButtonTapped() {
         print("編集")
         
@@ -298,7 +300,7 @@ class SubViewController: UIViewController, ItemDelegate {
         pause()
     }
     
-    /* 編集が完了されたとき */
+    /* 字幕の編集が完了されたとき */
     @objc func editCompleteButtonTapped() {
         print("編集完了")
         
@@ -321,7 +323,7 @@ class SubViewController: UIViewController, ItemDelegate {
         stepper.isHidden = false
     }
     
-    /* 編集がキャンセルされたとき */
+    /* 字幕の編集がキャンセルされたとき */
     @objc func editCancelButtonTapped() {
         print("編集キャンセル")
         
@@ -334,7 +336,7 @@ class SubViewController: UIViewController, ItemDelegate {
         stepper.isHidden = false
     }
     
-    /* 翻訳ボタンが押されたとき */
+    /* 「字幕を翻訳」ボタンが押されたとき */
     func translateButtonTapped() {
         print("翻訳ボタン")
         
@@ -405,7 +407,7 @@ class SubViewController: UIViewController, ItemDelegate {
         }
     }
     
-    /* チュートリアルボタンが押されたとき */
+    /* 「チュートリアル」ボタンが押されたとき */
     func tutorialButtonTapped() {
         print("チュートリアル")
         
