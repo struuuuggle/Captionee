@@ -298,6 +298,10 @@ class SubViewController: UIViewController, ItemDelegate {
         editCancelButton.isHidden = false
         
         pause()
+        
+        // キーボードを表示する(仮)
+        // TODO: BottomSheetが完全に隠れてからキーボードの表示
+        textField.becomeFirstResponder()
     }
     
     /* 字幕の編集が完了されたとき */
