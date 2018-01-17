@@ -732,7 +732,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         textField.isHidden = false
         editCompleteButton.isHidden = false
         editCancelButton.isHidden = false
-        
+
         //押された位置でcellのpathを取得
         let btn = sender
         let cell = btn.superview?.superview as! UITableViewCell
