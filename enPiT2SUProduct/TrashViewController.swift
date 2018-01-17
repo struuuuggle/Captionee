@@ -423,6 +423,13 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
+            
+            self.deleteView.frame = CGRect(x: 0,
+                                      y: self.appDelegate.trashVideos.count == 0 ? -80 : 0,
+                                      width: UIScreen.main.bounds.width,
+                                      height: 80)
+            
+            self.tableView.reloadData()
         }
         action.handler = actionHandler
         action.title = "元に戻す"
@@ -587,6 +594,10 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("TrashViewController/viewDidAppear/画面が表示された直後")
+        
+        if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPathForSelectedRow, animated: true)
+        }
         
         sideMenuController.mainButton.isSelected = false
         sideMenuController.trashButton.isSelected = true

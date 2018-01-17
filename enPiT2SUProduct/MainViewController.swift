@@ -621,6 +621,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.appDelegate.videos.insert(self.removedVideoInfo!, at: indexPath.row)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            self.tableView.reloadData()
         }
         action.handler = actionHandler
         action.title = "元に戻す"
@@ -725,7 +727,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let subViewController = SubViewController()
         subViewController.receivedVideoInfo = appDelegate.videos[indexPath.row]
         navigationController?.pushViewController(subViewController, animated: true)
-
     }
     
     @objc func labelEditButton(_ sender: MDCButton) {
@@ -811,16 +812,18 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("MainViewController/viewWillAppear/画面が表示される直前")
-tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("MainViewController/viewDidAppear/画面が表示された直後")
+        
         if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPathForSelectedRow, animated: true)
         }
+        
         tableView.reloadData()
+        
         sideMenuController.mainButton.isSelected = true
         sideMenuController.trashButton.isSelected = false
     }
