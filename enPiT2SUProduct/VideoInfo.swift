@@ -14,18 +14,21 @@ class VideoInfo: NSObject, NSCoding {
     var name: String
     var image: UIImage
     var label: String
+    var language: String
     var caption: Caption?
     
     init(_ name: String, _ image: UIImage, _ label: String) {
         self.name = name
         self.image = image
         self.label = label
+        self.language = "日本語"
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: "Name")
         aCoder.encode(image, forKey: "Image")
         aCoder.encode(label, forKey: "Label")
+        aCoder.encode(language, forKey: "Language")
         aCoder.encode(caption, forKey: "Caption")
     }
     
@@ -33,6 +36,7 @@ class VideoInfo: NSObject, NSCoding {
         name = aDecoder.decodeObject(forKey: "Name") as! String
         image = aDecoder.decodeObject(forKey: "Image") as! UIImage
         label = aDecoder.decodeObject(forKey: "Label") as! String
+        language = aDecoder.decodeObject(forKey: "Language") as! String
         caption = aDecoder.decodeObject(forKey: "Caption") as? Caption
     }
     

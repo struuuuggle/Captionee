@@ -8,111 +8,51 @@
 
 import UIKit
 import MaterialComponents
-import Onboard
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var themeColor = "Orange"
-    let color = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
+    let colors = ["Red": MDCPalette.red.tint700, "Orange": MDCPalette.orange.tint500,
                  "Yellow": MDCPalette.yellow.tint500, "Green": MDCPalette.green.tint500,
                  "Blue": MDCPalette.blue.tint500]
+    var language = "日本語"
+    let languages = ["日本語", "中文", "한국어", "English"]
     var videos = [VideoInfo]()
-    let userDefault = UserDefaults.standard
+    var trashVideos = [VideoInfo]()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
         // NavigationBarの設定
         UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barTintColor = MDCPalette.orange.tint500
+        UINavigationBar.appearance().barTintColor = colors[themeColor]
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: MDCTypography.titleFont()
         ]
         UINavigationBar.appearance().isTranslucent = false
         
-        UIToolbar.appearance().tintColor = MDCPalette.grey.tint500
-        UIToolbar.appearance().backgroundColor = MDCPalette.orange.tint500
-        
         // 起動時間延長
-        sleep(2)
+        sleep(1)
         
         let dict = ["firstLaunch": true]
-        self.userDefault.register(defaults: dict)
+        Utility.userDefault.register(defaults: dict)
         
-        // 初回起動時のみに実行する処理
-        if userDefault.bool(forKey: "firstLaunch") {
-            userDefault.set(false, forKey: "firstLaunch")
-            print("初回起動の時だけ呼ばれるよ")
+        // 初回起動時のみに行うための処理をここに書く
         
-            print("初回起動じゃなくても呼ばれるアプリ起動時の処理だよ")
-            if true {
-                let content1 = OnboardingContentViewController(
-                    title: "ようこそ",
-                    body: "Captioneeへ",
-                    image: nil,
-                    buttonText: "",
-                    action: nil
-                )
-                let content2 = OnboardingContentViewController(
-                    title: "使い方",
-                    body: "動画をアップロードするだけで、字幕が生成されます",
-                    image: nil,
-                    buttonText: "",
-                    action: nil
-                )
-                let content3 = OnboardingContentViewController(
-                    title: "使ってみよう",
-                    body: "",
-                    image: nil,
-                    buttonText: "始める",
-                    action: {
-                        //Storyboardを指定
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        //Viewcontrollerを指定
-                        let initialViewController = storyboard.instantiateInitialViewController()
-                        //rootViewControllerに入れる
-                        self.window?.rootViewController = initialViewController
-                        //表示
-                        self.window?.makeKeyAndVisible()
-                }
-                )
-                
-                let bgImage = UIImage(named: "AppIcon")
-                let vc = OnboardingViewController(
-                    backgroundImage: bgImage,
-                    contents: [content1, content2, content3]
-                )
-                vc?.allowSkipping = true
-                vc?.fadeSkipButtonOnLastPage = false
-
-                vc?.skipHandler = {
-                    //Storyboardを指定
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    //Viewcontrollerを指定
-                    let initialViewController = storyboard.instantiateInitialViewController()
-                    //rootViewControllerに入れる
-                    self.window?.rootViewController = initialViewController
-                    //表示
-                    self.window?.makeKeyAndVisible()
-                }
-                
-                window?.rootViewController = vc
-                
-                return true
-            }
-        }
-        //ウォークスルー終
+        // ウォークスルーの実行
+        playWalkthrough()
     
-        
         // UserDefaultに保存されたデータを読み込む
-        if let storedData = userDefault.object(forKey: "Videos") as? Data {
+        if let storedData = Utility.userDefault.object(forKey: "Videos") as? Data {
             if let unarchivedData = NSKeyedUnarchiver.unarchiveObject(with: storedData) as? [VideoInfo] {
                 print("動画をロード")
                 
                 videos = unarchivedData
                 print(videos)
+                
             }
         }
         
@@ -124,70 +64,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    /* ウォークスルーの表示 */
+    /* ウォークスルーの実行 */
     func playWalkthrough() {
-        // 背景画像
-        let bgImage = UIImage(named: "AppIcon")
-
-        // 1ページ目の設定
-        let firstPage = OnboardingContentViewController.content(withTitle: "Title 1",
-                                                                body: "Body 1",
-                                                                image: UIImage(named: "Setting"),    // 画像を表示しない場合はnilにする
-                                                                buttonText: "Next",
-                                                                action: nil)
-        firstPage.movesToNextViewController = true
+        print("ウォークスルーの実行")
         
-        // 2ページ目の設定
-        let secondPage = OnboardingContentViewController.content(withTitle: "Title 2",
-                                                                 body: "Body 2",
-                                                                 image: UIImage(named: "Setting"),
-                                                                 buttonText: "Next",
-                                                                 action:nil)
-        secondPage.movesToNextViewController = true
+        let onboarding = OnboadingViewController()
         
-        // 3ページ目の設定
-
-        let thirdPage = OnboardingContentViewController.content(withTitle: "Title",
-                                                                body: "Body 3",
-                                                                image: UIImage(named: "Setting"),
-                                                                buttonText: "Get Started!",
-                                                                action: { self.getStarted() })
-        
-        // onboardingViewcontrollerのインスタンスを生成
-        let onboardingVC = OnboardingViewController(backgroundImage: bgImage,
-                                                     contents: [firstPage, secondPage, thirdPage])
-        
-//        onboardingVC?.shouldMaskBackground = false
-//        onboardingVC?.shouldBlurBackground = true
-//        onboardingVC?.shouldFadeTransitions = true
-//        onboardingVC?.fadePageControlOnLastPage = true
-//        onboardingVC?.fadeSkipButtonOnLastPage = true
-        onboardingVC?.allowSkipping = false
-//        onboardingVC?.skipHandler = { self.skip() }
-
-        
-        // onboardingVCを表示
-        window?.rootViewController = onboardingVC
-        print("ウォークスルー表示")
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = onboarding
+        window?.makeKeyAndVisible()
     }
     
-    /* ウォークスルーを終了させる */
-    func getStarted() {
-        //Storyboardを指定
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //MainViewcontrollerを指定
-        let initialViewController = storyboard.instantiateInitialViewController()
-        //rootViewControllerに入れる
-        self.window?.rootViewController = initialViewController
-        //MainVCを表示
-        self.window?.makeKeyAndVisible()
-    }
-    
-    /* ウォークスルー中にskipボタンを押した時の処理 */
-    func skip() {
-        self.getStarted()
-    }
-
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -201,8 +88,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("AppDelegate/DidEnterBackground/アプリを閉じた時")
         
         let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
-        userDefault.set(archiveData, forKey: "Videos")
-        userDefault.synchronize()
+        Utility.userDefault.set(archiveData, forKey: "Videos")
+        Utility.userDefault.synchronize()
         
     }
 
@@ -223,8 +110,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("AppDelegate/WillTerminate/アプリ終了時(フリック)")
         
         let archiveData = NSKeyedArchiver.archivedData(withRootObject: videos)
-        userDefault.set(archiveData, forKey: "Videos")
-        userDefault.synchronize()
+        Utility.userDefault.set(archiveData, forKey: "Videos")
+        Utility.userDefault.synchronize()
         
     }
 
