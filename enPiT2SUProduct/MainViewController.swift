@@ -621,8 +621,6 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             self.tableView.insertRows(at: [indexPath], with: .automatic)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
             
-            self.removedVideoInfos = []
-            
             self.tableView.reloadData()
         }
         action.handler = actionHandler
@@ -645,6 +643,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                     self.appDelegate.trashVideos.append(videoInfo)
                 }
             }
+            
+            self.removedVideoInfos = []
         }
         
         // SnackBarを表示

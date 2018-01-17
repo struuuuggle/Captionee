@@ -373,8 +373,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
             
-            self.movedVideoInfos = []
-            
             self.deleteView.frame = CGRect(x: 0,
                                            y: self.appDelegate.trashVideos.count == 0 ? -80 : 0,
                                            width: UIScreen.main.bounds.width,
@@ -402,6 +400,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                     self.appDelegate.videos.append(videoInfo)
                 }
             }
+            
+            self.movedVideoInfos = []
         }
         
         // SnackBarを表示
@@ -572,6 +572,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("TrashViewController/viewWillDisappear/別の画面に遷移する直前")
+        
+        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: "move")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
