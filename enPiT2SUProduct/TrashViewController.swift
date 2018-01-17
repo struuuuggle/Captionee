@@ -18,6 +18,9 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     var selectImageButton = MDCFloatingButton()
     let deleteView = UIView()
     let sideMenuController = SideMenuController()
+    let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
+    let backButton = IconButton(image: UIImage(named: "Back"))
+    let moveButton = IconButton(image: UIImage(named: "MoveToMain"))
     
     var fabOffset: CGFloat = 0
     
@@ -38,9 +41,11 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         tableView.emptyDataSetSource = self
         
         // NavigationBarの左側にMenuButtonを設置
-        let menuButton = IconButton(image: Icon.menu, tintColor: UIColor.white)
         menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
         navigationItem.leftViews = [menuButton]
+        
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        moveButton.addTarget(self, action: #selector(moveButtonTapped), for: .touchUpInside)
         
         navigationItem.titleLabel.text = "ゴミ箱"
         navigationItem.titleLabel.font = RobotoFont.bold
@@ -186,6 +191,8 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
                     print("\(fileName)は既に削除済み")
                 }
             }
+            
+            self.isEditMode = false
             
             self.deleteView.frame = self.deleteView.frame.offsetBy(dx: 0, dy: -80)
             self.appDelegate.trashVideos = []
@@ -359,15 +366,19 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
             tableView.setEditing(newValue, animated: true)
             
             if newValue {
-                /*
-                let backButton = IconButton(image: Icon.arrowBack, tintColor: UIColor(white: 0.0, alpha: 0.54))
-                backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+                navigationController?.navigationBar.backgroundColor = UIColor.white
                 navigationItem.leftViews = [backButton]
-                
-                let moveButton = IconButton(image: UIImage(named: "MoveToMain"), tintColor: UIColor(white: 0.0, alpha: 0.54))
-                moveButton.addTarget(self, action: #selector(moveButtonTapped), for: .touchUpInside)
                 navigationItem.rightViews = [moveButton]
-                */
+            } else {
+                navigationController?.navigationBar.backgroundColor = MDCPalette.orange.tint500
+                navigationItem.leftViews = [menuButton]
+                navigationItem.rightViews = []
+                
+                if let selectedRows = tableView.indexPathsForSelectedRows {
+                    for row in selectedRows {
+                        tableView.deselectRow(at: row, animated: true)
+                    }
+                }
             }
         }
         get {
@@ -375,8 +386,11 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         }
     }
     
+    /* 編集モードで戻るボタンが押されたとき */
     @objc func backButtonTapped() {
         print("Back button tapped.")
+        
+        isEditMode = false
     }
     
     @objc func moveButtonTapped() {
@@ -396,12 +410,6 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
             
             if isEditMode {
                 tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            } else {
-                if let selectedRows = tableView.indexPathsForSelectedRows {
-                    for row in selectedRows {
-                        tableView.deselectRow(at: row, animated: true)
-                    }
-                }
             }
         }
     }
