@@ -582,6 +582,13 @@ class SubViewController: UIViewController, ItemDelegate {
         return timeString
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("Tapped!")
+        
+        // キーボードを閉じる
+        view.endEditing(true)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("SubViewController/viewWillAppear/画面が表示される直前")
