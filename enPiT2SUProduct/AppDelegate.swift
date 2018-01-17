@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Utility.userDefault.register(defaults: ["firstLaunch": true])
         
-        if userDefault.bool(forKey: "firstLaunch") {
+        if Utility.userDefault.bool(forKey: "firstLaunch") {
             Utility.userDefault.set(false, forKey: "firstLaunch")
             print("初回起動の時だけ呼ばれるよ")
             
