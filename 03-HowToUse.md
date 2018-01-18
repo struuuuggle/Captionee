@@ -10,6 +10,24 @@
 $ git clone https://github.com/enpit2su-ics/team-E.git
 ```  
 
+### CocoaPods の設定
+
+Captionee では CocoaPods を使ってフレームワークを導入しています。  
+以下の手順に沿って導入してください。
+
+#### Step.1 CocoaPods のインストール
+詳しい手順は[こちら](https://qiita.com/ShinokiRyosei/items/3090290cb72434852460)の記事を参考にしてください。
+
+#### Step.2 フレームワークの導入
+ターミナルから以下のコマンドを実行し、フレームワークを導入してください。
+
+```
+$ cd team-E
+$ pod install
+```
+
+CocoaPods の設定は以上です。
+
 ## 事前準備
 
 ### IBM Cloud の設定
