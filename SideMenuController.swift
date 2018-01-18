@@ -48,6 +48,11 @@ class SideMenuController: UIViewController {
         headerView.backgroundColor = UIColor.orange
         sideView.addSubview(headerView)
         
+        let headerImageView = UIImageView(frame: headerView.frame)
+        headerImageView.image = UIImage(named: "tapet")
+        //headerImageView.sizeToFit()
+        headerView.addSubview(headerImageView)
+        
         let buttonView = UIView(frame: CGRect(x: 0, y: height, width: width, height: screenHeight-height))
         buttonView.backgroundColor = UIColor.white
         sideView.addSubview(buttonView)
