@@ -41,9 +41,14 @@ class SettingsViewController: FormViewController {
         print("SettingsViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // ViewControllerのTitleを設定
-        navigationItem.titleLabel.text = "設定"
-        navigationItem.titleLabel.font = RobotoFont.bold
+        navigationItem.titleLabel.text = "Captionee"
+        navigationItem.titleLabel.font = RobotoFont.medium(with: 18)
         navigationItem.titleLabel.textColor = UIColor.white
+        navigationItem.titleLabel.textAlignment = .center
+        navigationItem.detailLabel.text = "設定"
+        navigationItem.detailLabel.font = RobotoFont.bold(with: 12)
+        navigationItem.detailLabel.textColor = UIColor.white
+        navigationItem.detailLabel.textAlignment = .center
         
         // 背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100

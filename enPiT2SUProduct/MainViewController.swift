@@ -49,13 +49,17 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         print("MainViewController/viewDidLoad/インスタンス化された直後（初回に一度のみ）")
         
         // NavigationBarの左側にMenuButtonを設置
-        
         menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
         navigationItem.leftViews = [menuButton]
         
-        navigationItem.titleLabel.text = "メイン"
-        navigationItem.titleLabel.font = RobotoFont.bold
+        navigationItem.titleLabel.text = "Captionee"
+        navigationItem.titleLabel.font = RobotoFont.medium(with: 18)
         navigationItem.titleLabel.textColor = UIColor.white
+        navigationItem.titleLabel.textAlignment = .center
+        navigationItem.detailLabel.text = "メイン"
+        navigationItem.detailLabel.font = RobotoFont.bold(with: 12)
+        navigationItem.detailLabel.textColor = UIColor.white
+        navigationItem.detailLabel.textAlignment = .center
         
         // Viewの背景色を設定
         view.backgroundColor = MDCPalette.grey.tint100
