@@ -452,6 +452,14 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
         label.font = MDCTypography.captionFont()
         label.alpha = MDCTypography.captionFontOpacity()
         
+        let labelText = cell.viewWithTag(4) as! UITextField
+        labelText.isHidden = true
+        labelText.font = MDCTypography.captionFont()
+        labelText.alpha = MDCTypography.captionFontOpacity()
+        
+        let button = cell.viewWithTag(3) as! UIButton
+        button.isHidden = true
+        
         return cell
     }
     
