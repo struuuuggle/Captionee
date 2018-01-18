@@ -1,5 +1,15 @@
 # Captionee の使い方
 
+## 導入方法
+
+### プロジェクトの導入
+
+ターミナルから以下のコマンドを実行し、プロジェクトを導入してください。
+
+```
+$ git clone https://github.com/enpit2su-ics/team-E.git
+```  
+
 ## 事前準備
 
 ### IBM Cloud の設定
