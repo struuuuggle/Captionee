@@ -19,8 +19,8 @@ class CustomNavigationController: NavigationController {
             return
         }
         
-        navigationBar.depthPreset = .none
+        navigationBar.depthPreset = .depth2
         navigationBar.backgroundColor = MDCPalette.orange.tint500
-        navigationBar.dividerColor = UIColor.white
+        navigationBar.dividerColor = MDCPalette.orange.tint500
     }
 }
