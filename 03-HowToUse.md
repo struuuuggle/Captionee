@@ -12,7 +12,7 @@ $ git clone https://github.com/enpit2su-ics/team-E.git
 
 ### CocoaPods の設定
 
-Captionee では CocoaPods を使ってフレームワークを導入しています。  
+Captionee では CocoaPods を使ってフレームワークを導入しています。  
 以下の手順に沿って導入してください。
 
 #### Step.1 CocoaPods のインストール
@@ -27,6 +27,47 @@ $ pod install
 ```
 
 CocoaPods の設定は以上です。
+
+### Carthage の設定
+
+Captionee では Carthage を使ってフレームワークを導入しています。  
+以下の手順に沿って導入してください。
+
+#### Step.1 Carthage のインストール
+詳しい手順は[こちら](https://qiita.com/ShinokiRyosei/items/9b856ebdec5379b6c631)の記事を参考にしてください。
+
+#### Step.2 フレームワークのビルド
+ターミナルから以下のコマンドを実行し、フレームワークをビルドしてください。
+
+```
+$ cd team-E
+$ carthage update --platform ios --no-use-binaries
+```
+
+#### Step.3 フレームワークの導入
+ターミナルから以下のコマンドを実行し、プロジェクトを開きます。
+
+```
+$ open enPiT2SUProduct.xcworkspace/
+```
+
+プロジェクトファイル > General > Linked Frameworks and Libraries にある ＋ ボタンを押してください。  
+`Add Other...` を選択します。  
+team-E > Carthage > Build > SpeechToTextV1.framework を選択し、 `Open` を押してください。  
+プロジェクトファイル > Build Phases の左上の + ボタンから `New Run Script Phase` を選択します。  
+Run Script のコード部分に以下のスクリプトを追記します。
+
+```
+/usr/local/bin/carthage copy-frameworks
+```
+
+Input Files の + ボタンを押し、以下のように書き換えてください。
+
+```
+$(SRCROOT)/Carthage/Build/iOS/SpeechToTextV1.framework
+```
+
+Carthage の設定は以上です。
 
 ## 事前準備
 
