@@ -50,7 +50,6 @@ class SideMenuController: UIViewController {
         
         let headerImageView = UIImageView(frame: headerView.frame)
         headerImageView.image = UIImage(named: "tapet")
-        //headerImageView.sizeToFit()
         headerView.addSubview(headerImageView)
         
         let buttonView = UIView(frame: CGRect(x: 0, y: height, width: width, height: screenHeight-height))
