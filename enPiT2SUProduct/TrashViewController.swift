@@ -519,7 +519,7 @@ class TrashViewController: UIViewController, SideMenuDelegate, UITableViewDelega
     
     /* TableViewが空のときに表示する画像を設定 */
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-        return UIImage(named: "")
+        return UIImage(named: "trash-1")
     }
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */

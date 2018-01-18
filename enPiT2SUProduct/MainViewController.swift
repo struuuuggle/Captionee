@@ -95,19 +95,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         let edgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(edgePanGesture))
         edgePanGestureRecognizer.edges = .left
         view.addGestureRecognizer(edgePanGestureRecognizer)
-        
-        /* TextFieldの設定
-        textField.isHidden = true
-        view.addSubview(textField)
-        
-        // TextFieldの制約を設定
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textField.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        textField.widthAnchor.constraint(equalToConstant: view.frame.width*2/3).isActive = true
-        textField.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        */
-        
+   
         // StatusBarの高さ
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         // NavigationBarの高さ
@@ -777,7 +765,8 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         textField.placeholder = "タイトル入力"
         textField.text = label.text
         label.text = ""
-
+        textField.returnKeyType = UIReturnKeyType.done
+        
         
         // テキストを全消去するボタンを表示
         textField.clearButtonMode = .always
@@ -786,6 +775,11 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         tableView.allowsSelection = false
         menuButton.isEnabled = false
         
+    }
+    
+    /* TableViewが空のときに表示する画像を設定 */
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "NoUploaded")
     }
     
     /* TableViewが空のときに表示する内容のタイトルを設定 */
