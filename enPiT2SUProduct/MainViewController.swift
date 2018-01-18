@@ -126,9 +126,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         
         //tableViewの更新
         let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = UIColor.blue
-        let attstr: NSAttributedString? = NSMutableAttributedString(string: NSLocalizedString("Loading", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.blue, NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 13.0)])
-        refreshControl.attributedTitle = attstr
+        refreshControl.tintColor = MDCPalette.orange.tint300
         refreshControl.addTarget(self, action: #selector(refreshControlValueChanged), for: .valueChanged)
         tableView.addSubview(refreshControl)
     }
