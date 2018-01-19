@@ -20,7 +20,7 @@
 <img src=https://github.com/struuuuggle/Captionee/blob/master/Screenshot/ScreenShot2.png width=200px>     
 <img src=https://github.com/struuuuggle/Captionee/blob/master/Screenshot/ScreenShot3.png width=200px>
 
-公式ホームページは[こちら](http://captionee.servehttp.com/help.html)  
+公式ホームページは[こちら](http://captionee.servehttp.com)  
 
 
 # 想定利用者像
