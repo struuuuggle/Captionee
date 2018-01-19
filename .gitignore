@@ -50,7 +50,7 @@ Pods/
 # Carthage
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
+Carthage/Checkouts
 
 Carthage/Build
 
@@ -73,3 +73,5 @@ enPiT2SUProduct.xcworkspace/xcuserdata/yusuke.xcuserdatad/UserInterfaceState.xcu
 enPiT2SUProduct/.DS_Store
 
 init.sh
+
+enPiT2SUProduct/Credentials.swift
