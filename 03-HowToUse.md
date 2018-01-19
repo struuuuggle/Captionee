@@ -7,7 +7,7 @@
 ターミナルから以下のコマンドを実行し、プロジェクトを導入してください。
 
 ```
-$ git clone https://github.com/enpit2su-ics/team-E.git
+$ git clone https://github.com/struuuuggle/Captionee.git
 ```  
 
 ### CocoaPods の設定
