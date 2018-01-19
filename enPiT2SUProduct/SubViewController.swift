@@ -572,7 +572,7 @@ class SubViewController: UIViewController, ItemDelegate {
                 
                 wself.caption.text = ""
             } else {
-                wself.caption.text = "Caption is nil."
+                wself.caption.text = "字幕を生成しています..."
             }
         }
     }
