@@ -16,8 +16,7 @@ class Translation {
 	var translation: String = ""
 	
 	init(_ sourceLanguage: String, _ targetLanguage: String) {
-		//self.API_KEY = "AIzaSyBy25ZpPXYkIDHYfUAzBnbk2GUAfRSD4Ko"
-		self.API_KEY = "AIzaSyC_Pr-LZAncvufc7wN_VHDY2FGgevyx4ZQ"
+		self.API_KEY = Credentials.CloudTranslationApiKey
 		self.sourceLanguage = sourceLanguage
 		self.targetLanguage = targetLanguage
 	}

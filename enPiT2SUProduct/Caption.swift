@@ -11,15 +11,13 @@ import SpeechToTextV1
 /* 字幕の情報を管理するクラス */
 class Caption: NSObject, NSCoding {
     
-    var sentences: [Sentence]
+    var sentences = [Sentence]()
     
 	init(_ results: SpeechRecognitionResults) {
-		sentences = [Sentence]()
-		
 		print("Results count = \(results.results.count)")
 		
 		for result in results.results {
-			let original = result.alternatives[0].transcript
+			let original = result.alternatives[0].transcript + "."
 			let startTime = result.alternatives[0].timestamps![0].startTime
 			let endTime = result.alternatives[0].timestamps![result.alternatives[0].timestamps!.count-1].endTime
 			

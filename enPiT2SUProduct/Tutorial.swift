@@ -2,7 +2,7 @@
 //  Tutorial.swift
 //  enPiT2SUProduct
 //
-//  Created by 池崎雄介 on 2017/12/20.
+//  Created by team-E on 2017/12/20.
 //  Copyright © 2017年 enPiT2SU. All rights reserved.
 //
 
@@ -18,7 +18,9 @@ class Tutorial {
     static func create(_ view: UIView, _ titleText: String, _ bodyText: String, _ completion: ((Bool) -> ())?) -> MDCFeatureHighlightViewController {
         let highlightController = MDCFeatureHighlightViewController(highlightedView: view, completion: completion)
         highlightController.titleText = titleText
+        highlightController.titleColor = UIColor.white
         highlightController.bodyText = bodyText
+        highlightController.bodyColor = UIColor.white
         highlightController.outerHighlightColor =
             MDCPalette.orange.tint500.withAlphaComponent(kMDCFeatureHighlightOuterHighlightAlpha)
         

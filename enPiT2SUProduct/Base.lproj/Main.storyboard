@@ -15,42 +15,6 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Setting-->
-        <scene sceneID="FXX-or-jCW">
-            <objects>
-                <viewController title="Setting" id="R3h-QI-D0b" customClass="SettingViewController" customModule="enPiT2SUProduct" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nlt-nt-ZyM"/>
-                        <viewControllerLayoutGuide type="bottom" id="IWh-kH-ILL"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ch9-0J-ErS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xW3-1d-H2a">
-                                <rect key="frame" x="137.5" y="318.5" width="100" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="ufa-va-FXx"/>
-                                </constraints>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="xW3-1d-H2a" firstAttribute="centerY" secondItem="Ch9-0J-ErS" secondAttribute="centerY" id="OeS-Bf-Etn"/>
-                            <constraint firstItem="xW3-1d-H2a" firstAttribute="centerX" secondItem="Ch9-0J-ErS" secondAttribute="centerX" id="XMu-Ab-Ju9"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="textField" destination="xW3-1d-H2a" id="RWg-x0-gPJ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jDT-m7-Kgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="928.79999999999995" y="-690.40479760119945"/>
-        </scene>
         <!--Captionee-->
         <scene sceneID="7ht-LL-fkl">
             <objects>
@@ -86,7 +50,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPN-2v-sGp">
+                                                <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPN-2v-sGp">
                                                     <rect key="frame" x="346" y="10" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="ZiP-zO-7bi"/>
@@ -114,45 +78,18 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="Z6o-d9-NA3" id="Jxg-Kw-Bbd"/>
-                                    <outlet property="delegate" destination="Z6o-d9-NA3" id="9LF-z6-gNS"/>
-                                </connections>
                             </tableView>
-                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjN-qc-j9U" customClass="MDCFloatingButton">
-                                <rect key="frame" x="303" y="595" width="56" height="56"/>
-                                <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="56" id="2jk-F4-cQX"/>
-                                    <constraint firstAttribute="width" constant="56" id="yS9-ae-ROb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <state key="normal" image="Add"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="28"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="selectImage:" destination="Z6o-d9-NA3" eventType="touchUpInside" id="j2B-Qw-VBB"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="IjN-qc-j9U" secondAttribute="trailing" constant="16" id="9dH-mE-KyH"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="top" secondItem="YeP-2x-JQh" secondAttribute="bottom" id="DwL-Ms-OQC"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="leading" secondItem="FMJ-NX-m0Y" secondAttribute="leading" id="LAd-oM-80B"/>
-                            <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="IjN-qc-j9U" secondAttribute="bottom" constant="16" id="aTy-nL-z0K"/>
                             <constraint firstItem="FFM-b4-kCp" firstAttribute="top" secondItem="UgA-5K-BkH" secondAttribute="bottom" id="o6D-fc-4a1"/>
                             <constraint firstItem="UgA-5K-BkH" firstAttribute="trailing" secondItem="FMJ-NX-m0Y" secondAttribute="trailing" id="z4c-qb-OAy"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Captionee" id="Jb1-iO-anK"/>
                     <connections>
-                        <outlet property="selectImageButton" destination="IjN-qc-j9U" id="J18-dS-rmA"/>
-                        <outlet property="tableView" destination="UgA-5K-BkH" id="O53-Mn-bP8"/>
                         <segue destination="tI5-RB-fPo" kind="show" identifier="toSubViewController" id="e8m-EU-3v6"/>
                     </connections>
                 </viewController>
@@ -171,34 +108,8 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="c5f-MH-R5h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="字幕を表示" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KTv-ER-9my">
-                                <rect key="frame" x="272" y="410" width="87" height="20.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aga-F4-Bt2">
-                                <rect key="frame" x="20" y="611" width="36" height="36"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="8yC-Lp-zTs"/>
-                                    <constraint firstAttribute="width" constant="36" id="SPj-y5-mHE"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" image="Play"/>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Ccu-9G-Qg2" firstAttribute="top" secondItem="aga-F4-Bt2" secondAttribute="bottom" constant="20" id="6J4-8X-YTW"/>
-                            <constraint firstItem="aga-F4-Bt2" firstAttribute="leading" secondItem="c5f-MH-R5h" secondAttribute="leading" constant="20" id="iGy-tA-JJH"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="caption" destination="KTv-ER-9my" id="tc5-VB-WhD"/>
-                        <outlet property="playButton" destination="aga-F4-Bt2" id="0pl-dk-0cT"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5o-aQ-1Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="T1T-gk-u30">
@@ -229,8 +140,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add" width="24" height="24"/>
-        <image name="Play" width="36" height="36"/>
         <image name="Vertical" width="24" height="24"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
