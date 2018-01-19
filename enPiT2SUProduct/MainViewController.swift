@@ -282,7 +282,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                         
                         // 動画をサーバにアップロードする
                         // 長い動画をアップロードするときは極力ここをコメントアウトしてね
-                        //self.uploadFileToServer(name)
+                        self.uploadFileToServer(name)
                     })
                     
                     // メインスレッドで実行
@@ -544,7 +544,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
                 print("Unaccepted")
             }
         }
-        let tutorial = Tutorial.create(selectImageButton, "チュートリアル", "チュートリアルを再生します。", completion)
+        let tutorial = Tutorial.create(selectImageButton, "アップロードボタン", "このボタンから動画をアップロードします", completion)
         present(tutorial, animated: true, completion: nil)
     }
     
@@ -745,7 +745,7 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         navigationController?.pushViewController(subViewController, animated: true)
     }
     
-    @objc func labelEditButton(_ sender: MDCButton) {
+    @objc func labelEditButton(_ sender: UIButton) {
         print("編集")
         
 

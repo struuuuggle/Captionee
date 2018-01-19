@@ -75,6 +75,7 @@ class SubViewController: UIViewController, ItemDelegate {
     var stepper = UIStepper()
     var elapsedTimeLabel = UILabel()
     var remainingTimeLabel = UILabel()
+    let itemButton = IconButton(image: Icon.moreHorizontal, tintColor: UIColor.white)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -243,7 +244,6 @@ class SubViewController: UIViewController, ItemDelegate {
         stepper.heightAnchor.constraint(equalToConstant: 18).isActive = true
         
         // NavigationBarの右側にItemButtonを設置
-        let itemButton = IconButton(image: Icon.moreHorizontal, tintColor: UIColor.white)
         itemButton.addTarget(self, action: #selector(itemButtonTapped), for: .touchUpInside)
         navigationItem.rightViews = [itemButton]
         
@@ -465,9 +465,27 @@ class SubViewController: UIViewController, ItemDelegate {
             } else {
                 print("Unaccepted")
             }
+            
+            self.tutorial4()
         }
         let tutorial3 = Tutorial.create(timeSlider, "スライダー", "このスライダーを操作することで、動画の再生をコントロールします", completion3)
         present(tutorial3, animated: true, completion: nil)
+    }
+    
+    /* チュートリアル4 */
+    func tutorial4() {
+        let completion4 = { (accepted: Bool) in
+            if accepted {
+                print("Accepted")
+            } else {
+                print("Unaccepted")
+            }
+            
+            self.itemButton.tintColor = UIColor.white
+        }
+        itemButton.tintColor = UIColor.black
+        let tutorial4 = Tutorial.create(itemButton, "機能ボタン", "字幕の編集と翻訳はこのボタンからできます", completion4)
+        present(tutorial4, animated: true, completion: nil)
     }
     
     /* 動画を再生する */
